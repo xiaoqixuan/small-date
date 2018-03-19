@@ -1,0 +1,609 @@
+.loginTab{
+	width: 100%;
+	display: table;
+}
+.loginTab p{
+	width: 50%;
+}
+.telLogin{
+	width: 100%;
+}
+.telLogin input{
+	border-top: solid 1px #e5e5e5;
+	border-bottom: solid 1px #e5e5e5;
+	border-left: none;
+	border-right: none;
+	height: .88rem;
+	line-height: .88rem;
+	padding: 0 3%;
+	display: block;
+	width: 100%;
+}
+.telLogin p{
+	width: 100%;
+	display: table;
+	border-bottom: solid 1px #e5e5e5;
+}
+.telLogin p input{
+	width: 50%;
+	border: none;
+	padding: 0 0 0 .3rem;
+	display: block;
+	height: .87rem;
+	line-height: .88rem;
+}
+.telLogin p span{
+	width: 45%;
+	height: .88rem;
+	line-height: .88rem;
+	display: block;
+}
+.passWordClass{
+	padding: .22rem .3rem .38rem 0;
+	display: block !important;
+	border: none !important;
+	width: auto !important;
+}
+.loginButton{
+	width: 90%;
+	margin: 0 auto;
+	height: .8rem;
+	line-height: .8rem;
+	color: #FFFFFF;
+	border-radius: .1rem;
+}
+/*注册*/
+.registerDiv{
+	padding: 0 .3rem;
+}
+.registerDiv span{
+	width: 30%;
+	display: block;
+}
+.registerDiv input,select{
+	border: none;
+	width: 40%;
+	display: block;
+	padding: 0 .4rem 0 0;
+	margin: 0;
+	color: #B4B4B4;
+}
+.registerDiv input{
+	background-image: url(../img/rightpointer.png);
+	background-repeat: no-repeat;
+	background-position: right;
+	background-size: 10%;
+}
+select{
+	background-color: #FFFFFF;
+}
+option{
+	width: 100%;
+	display: table;
+	height: .88rem;
+}
+.divTy{
+	padding-top: .3rem;
+	height: .3rem;
+	line-height: .3rem;
+}
+.ty{
+	background-image: url(../img/ty.png);
+	background-repeat: no-repeat;
+	background-size: .29rem;
+	width: .3rem;
+	height: .3rem;
+	display: inline-block;
+}
+/*透明层*/
+body{
+}
+.tmc{
+	position: absolute;
+	background-color: #000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	opacity:0.5;
+	z-index: 5;
+}
+.sexTs{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+}
+.sexTs div{
+	background-color: #fff;
+	width: 80%;
+	height: 3rem;
+	margin: 0 auto;
+	border-radius: 10px;
+	margin-top: 40%;
+	overflow: hidden;
+}
+.sexTs div .p1{
+	height: 2rem;
+	line-height: 2rem;
+}
+.sexTs div .p2{
+	height: .6rem;
+	line-height: .6rem;
+	width: 100%;
+	background-color: #f2f2f2;
+	padding: .2rem 0;
+	display: table;
+}
+.sexTs div .p2 .s1,.s2{
+	width: 49.6%;
+	display: block;
+}
+.s1{
+	border-right: solid 1px #e5e5e5;
+}
+/*首页*/
+.indexImg{
+	margin: 0 auto;
+	width: 4.8rem;
+	height: 7.58rem;
+	padding-top: 1.28rem;
+}
+.coffee{
+	padding-top: .6rem;
+	font-size: .28rem;
+	color: #999999;
+	font-weight: bold;
+}
+.coffee label{
+	font-size: .48rem;
+}
+.indexButton{
+	margin-top: 1rem;
+	display: block;
+}
+.wathYh{
+	margin-top: .2rem;
+	padding-bottom: 1.5rem;
+}
+footer .indexS1{
+	background-image: url(../img/tabbar_default_date.png);
+}
+footer .indexS01{
+	background-image: url(../img/tabbar_pressed_date.png);
+}
+footer .indexS2{
+	background-image: url(../img/tabbar_default_record.png);
+}
+footer .indexS02{
+	background-image: url(../img/tabbar_pressed_record.png);
+}
+footer .indexS3{
+	background-image: url(../img/tabbar_default_mine.png);
+}
+footer .indexS03{
+	background-image: url(../img/tabbar_pressed_mine.png);
+}
+/*约会记录*/
+.recordList{
+	height: .9rem;
+	width: 100%;
+	padding: .15rem .3rem;
+	display: table;
+}
+.recordList:hover{
+	background-color: #eaeaea;
+}
+.recordList p{
+	height: .45rem;
+	line-height: .45rem;
+	display: block;
+}
+.recordList p span{
+	width: 50%;
+	display: block;
+	line-height: .45rem;
+}
+.recordPicS1{
+	background-image: url(../img/tabbar_default_date.png) !important;
+}
+.recordPicS2{
+	background-image: url(../img/tabbar_pressed_record.png) !important;
+}
+/*约会详情*/
+.dateList{
+	width: 100%;
+	padding: 0 .3rem;
+	display: table;
+}
+.dateListTitle{
+	width: 30%;
+}
+.dateListName{
+	width: 70%;
+}
+.evaluate{
+	width: 100%;
+	display: table;
+	margin-top: .2rem;
+	border-top: solid 1px #e5e5e5;
+}
+.evaluate span{
+	width: 100%;
+	padding: 0 .3rem;
+}
+.evaluate textarea{
+	width: 100%;
+	border: none;
+	padding: 0 .3rem;
+	outline: none;
+}
+/*个人中心*/
+.centerDivTop{
+	width: 100%;
+	background-image: url(../img/center.jpg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 100%;
+	height: 3.5rem;
+	background-color: #FFFFFF;
+}
+.centerDivTop img{
+	width: 1.6rem;
+	margin-top: 1rem;
+}
+.centerDivTop span{
+	display: block;
+	color: #FFFFFF;
+}
+.centerdiv1{
+	width: 100%;
+	display: table;
+	padding: .3rem 0;
+	background-color: #FFFFFF;
+}
+.personal{
+	width: 50%;
+	line-height: .58rem;
+	border-right:solid 1px #e5e5e5;
+}
+.photo{
+	width: 50%;
+	line-height: .58rem;
+}
+.personal i{
+	background-image: url(../img/home_edit.png);
+	width: .44rem;
+	height: .44rem;
+	display: inline-block;
+	background-size: .44rem;
+	vertical-align: middle;
+	margin-right: .2rem;
+}
+.photo i{
+	background-image: url(../img/home_photo.png);
+	width: .44rem;
+	height: .44rem;
+	display: inline-block;
+	background-size: .44rem;
+	vertical-align: middle;
+	margin-right: .2rem;
+}
+.datumList{
+	margin-top: .2rem;
+	border-top: solid 1px #e5e5e5;
+	background-color: #FFFFFF;
+}
+.datumListBox{
+	width: 100%;
+	display: table;
+	padding: .05rem .2rem;
+}
+.datumListBox i{
+	width: .44rem;
+	height: .44rem;
+	display: inline-block;
+	background-size: .44rem;
+	vertical-align: middle;
+	margin-right: .2rem;
+}
+.datumListBox label{
+	background-image: url(../img/rightpointer.png);
+	width: .34rem;
+	height: .34rem;
+	display: inline-block;
+	background-size: .34rem;
+	vertical-align: middle;
+	line-height: .88rem;
+	margin-top: .27rem;
+}
+.account{
+	background-image: url(../img/home_account.png);
+}
+.ideal{
+	background-image: url(../img/home_heart.png);
+}
+.identity{
+	background-image: url(../img/home_person.png);
+}
+.privacy{
+	background-image: url(../img/home_set.png);
+}
+/*隐私设置*/
+.privacyList{
+	padding: 0 .3rem;
+}
+/*我的相册*/
+.photoDiv{
+	width: 1.2rem;
+	height: 1.2rem;
+	background-image: url(../img/photoSc.png);
+	background-size: 1.2rem;
+	margin: .7rem auto 0;
+}
+/*我的账户*/
+.accountBanner{
+	background-image: url(../img/account.jpg);
+	background-size: 7rem 3.5rem;
+	height: 3.5rem;
+	width: 7rem;
+	margin: .24rem .3rem 0 .3rem;
+}
+.accountList{
+	height: .61rem;
+	padding: .3rem .3rem .19rem .3rem;
+	width: 100%;
+	display: table;
+	line-height: .61rem
+}
+.kaitong{
+	line-height: .61rem;
+	background-color: #fe5c5c;
+	color: #fff;
+	padding: 0 .25rem;
+	border-radius: .1rem;
+}
+.accountListCz{
+	height: 1.1rem;
+	padding: .1rem .3rem 0 .3rem;
+}
+.yue{
+	height: .44rem;
+	line-height: .44rem;
+	width: 100%;
+	display: table;
+}
+.accountMon{
+	height: .66rem;
+	line-height: .66rem;
+	width: 100%;
+}
+.chongzhi{
+	height: .56rem;
+	line-height: .56rem;
+}
+.jiantou{
+	background-image: url(../img/rightpointer.png);
+	background-repeat: no-repeat;
+	background-position: right;
+	padding-right: 0.44rem;
+	background-size: .34rem;
+}
+.cashDiv{
+	width: 100%;
+	display: block;
+}
+/*我的押金*/
+.myCash{
+	font-size: .36rem;
+	color: #666666;
+	padding: 2.3rem 0 .7rem 0;
+}
+.cashMoney{
+	width: 100%;
+	display: table;
+	padding-bottom: 2.3rem;
+}
+.spanMoney{
+	font-size: .8rem;
+}
+/*余额充值*/
+.yueDiv{
+	border-top: solid 1px #e5e5e5;
+}
+.moneySpan{
+	border: 0;
+	padding: 0 0 0 .1rem; 
+	height: .85rem;
+	line-height: .85rem;
+}
+/*个人资料*/
+.basicsTab{
+	width: 33.3333%;
+	height: .84rem;
+}
+.basicsActive{
+	color: #fe5c5c;
+	border-bottom: .04rem solid #fe5c5c;
+}
+.basicsDiv{
+	margin-top: .2rem;
+}
+.basicsInput{
+	padding: 0;
+	margin: 0;
+	border: none;
+	height: .85rem;
+	width: 50%;
+	background-image: url(../img/rightpointer.png);
+	background-repeat: no-repeat;
+	background-position: right;
+	padding-right: 0.44rem;
+	background-size: .34rem;
+}
+.divBasics{
+	height: 2.88rem !important;
+}
+.trueName{
+	height: .84rem !important;
+	line-height: .84rem !important;
+	padding: 0 .2rem !important;
+}
+.basicsNameDiv{
+	padding: 0 .2rem !important;
+	height: 1rem;
+	line-height: 1rem;
+	width: 100%;
+	position: relative;
+}
+.basicsName{
+	border: none;
+	width: 100%;
+}
+.qingkong{
+	position: absolute;
+	right: .2rem;
+	top: .35rem;
+	background-image: url(../img/panel_off.png);
+	background-repeat: no-repeat;
+	background-position: right;
+	background-size: .3rem;
+	width: .3rem;
+	height: .3rem;
+	display: inline-block;
+}
+/*实名认证*/
+.realNameDiv{
+	width: 100%;
+	display: table;
+}
+.realNamePic{
+	background-image: url(../img/name.png);
+	background-repeat: no-repeat;
+	background-size: .8rem;
+	width: .8rem;
+	height: .8rem;
+	display: block;
+	vertical-align: middle;
+	margin: .6rem auto .2rem auto;
+}
+.realName{
+	width: 100%;
+	display: block;
+	padding-bottom: .3rem;
+}
+.realNamePhoto{
+	padding: .24rem;
+	height: 3.4rem;
+}
+.realNameBoder{
+	border: .01rem dashed #fe5c5c;
+	width: 100%;
+	height: 3.38rem;
+	border-radius: 0.05rem;
+	position: relative;
+}
+.photoNum{
+	position: absolute;
+	right: .2rem;
+	top: .2rem;
+	display: inline-block;
+}
+.realNameYu{
+	padding-top: .5rem;
+}
+.educationPic{
+	background-image: url(../img/education.png);
+}
+.companyPic{
+	background-image: url(../img/company.png);
+}
+.rzTjPic{
+	margin-top: 2.2rem;
+	background-image: url(../img/success.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 1.4rem;
+	height: 1.4rem;
+}
+.rzTitle{
+	padding-top: .4rem;
+}
+/*开通会员*/
+.balanceBox{
+	width: 90%;
+	display: table;
+	padding: .4rem 0;
+	margin: 0 auto
+}
+.balanceDiv{
+	border: solid .02rem #fe5c5c;
+	width: 3.26rem;
+	height: 1.48rem;
+	padding: .3rem 0 .3rem .3rem;
+	border-radius: .2rem;
+}
+.balanceMon{
+	width: 70%;
+	height: .44rem;
+}
+.scx{
+	text-decoration: line-through;
+}
+.balanceZk{
+	background-image: url(../img/zk.png);
+	background-repeat: no-repeat;
+	width: 30%;
+	height: .34rem;
+	color:#FFFFFF;
+	line-height: .34rem;
+	background-size: 100% .34rem;
+	margin-top: .05rem;
+	padding-left: .25rem;
+}
+.balanceTop{
+	width:100%;
+	height: .44rem;
+}
+.balanceMonth{
+	height: .44rem;
+	line-height: .54rem;
+	color:#888;
+	width: 100%;
+	overflow: hidden;
+}
+.xsTq{
+	padding: 0 .4rem;
+}
+.xsTqSpan{
+	width: 100%;
+	display: block;
+	height: .5rem;
+	line-height: .5rem;
+}
+.yuandian{
+	width: .1rem;
+	height: .1rem;
+	margin-top: .2rem;
+	margin-right: .1rem;
+	display: inline-block;
+	border-radius: .1rem;
+	background-color: #fe5c5c;
+}
+.balanceActive{
+	background-color: #fe9898;
+}
+.balanceActive .balanceTop .balanceMon span{
+	color: #FFFFFF;
+}
+.balanceActive .balanceMonth{
+	color: #FFFFFF;
+}
+/*发布约会*/
+.releaseDate{
+	background-color: #fe9898;
+	height: 3rem;
+	width: 100%;
+}
