@@ -190,7 +190,8 @@ export default {
                 { label: '工作单位', value: '国美', type: 'workUnit' }, 
                 { label: '职位', value: '开发', type: 'position' }, 
                 { label: '年收入', value: '10', type: 'weight' }, 
-                { label: '资产状况', value: '没房没车', type: 'hasHouse hasCar' }, 
+                { label: '资产状况', value: '没房没车', type: 'hasHouse' }, 
+                { label: '资产状况', value: '没房没车', type: 'hasCar' },
                 { label: '毕业院校', value: '家里蹲', type: 'university' }
             ],
             hobby: [ // 兴趣爱好
@@ -214,14 +215,19 @@ export default {
     methods:{
         getDetail () {
             let self = this
-            // const token = self.$cookie.get('samllLogin')
-            // this.$http.get('/api/member/memberbaseinfo/info',data,{headers: { 'content-type': 'application/x-www-form-urlencoded'}}).then((data) => {
-            //     console.log(data)
-            // })
             this.getData(`/member/memberbaseinfo/info`)
             .then(_data => {
-               console.log(_data)
-            });
+                const { memberBaseInfo } = _data
+                self.base.forEach(it => {
+                    it.value = memberBaseInfo[it.type]
+                })
+                self.work.forEach(it => {
+                    it.value = memberBaseInfo[it.type]
+                })
+                self.hobby.forEach(it => {
+                    it.value = memberBaseInfo[it.type]
+                })
+            })
         },
         changeTab (type) {
             const self = this

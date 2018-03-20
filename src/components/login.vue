@@ -39,27 +39,11 @@ export default {
 		// 登录
 		loginBut(){
 			let self = this
-			/*let data = 'mobile='+self.loginTel+'&password='+self.loginPas
-			self.$http.post('/api/login',data,{
-				headers: { 'content-type': 'application/x-www-form-urlencoded'}
-			}).then((data) => {
-				if(data.body.code == 0) {
-					// self.$cookie.set('samllLogin', data.body.token, 7)
-					sessionStorage.setItem("samllLogin", data.body.token)
-					window.sessionStorage.samllLogin
-					self.$router.push({path:'/center'})
-				}
-			})*/
-			this.getData('/login', {
-				mobile: self.loginTel,
-				password: self.loginPas
-			},{
-				headers: { 'content-type': 'application/x-www-form-urlencoded'}
-			}).then(_data => {
-				if(data.body.code == 0) {
-					// self.$cookie.set('samllLogin', data.body.token, 7)
-					sessionStorage.setItem("samllLogin", data.body.token)
-					window.sessionStorage.samllLogin
+			let data = 'mobile='+self.loginTel+'&password='+self.loginPas
+			this.getData('/login', data, 'Form').then(res => {
+				console.log(res)
+				if(res.code == 0) {
+					sessionStorage.setItem("samllLogin", res.token)
 					self.$router.push({path:'/center'})
 				}
 			})	

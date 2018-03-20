@@ -10,35 +10,31 @@ function jsonToQueryString(json) {
 }
 
 function getData(Vue, options) {
-    return function (_url, _data, opt) {
+    return function (_url, _data, type) {
         return new Promise(function (resolve, reject) {
             let requestUrl = Host + _url;
-            // const token = this.$cookie.get('samllLogin')
-            console.log(window.sessionStorage.samllLogin)
-            requestUrl += (requestUrl.indexOf('?') > -1 ? '&' : '?') + 'token=' + window.sessionStorage.samllLogin || '';
+            const token = window.sessionStorage.samllLogin || ''
+            if (token) {
+                requestUrl += (requestUrl.indexOf('?') > -1 ? '&' : '?') + 'token=' + window.sessionStorage.samllLogin || '';
+            }
             fetch(requestUrl, {
                 method: 'POST',
                 headers: {
-                    "Content-Type": "application/json;charset=utf-8",
+                    "Content-Type": type ? "application/x-www-form-urlencoded" : "application/json;charset=utf-8",
                     // "User-SessionID": window.sessionStorage.sessionId || "",
                 },
-                ...opt,
-                body: JSON.stringify(_data)
-                // body: _data
+                body: _data
             }).then(function (_res) {
                 return _res.json();
             }).then(function (_data) {
                 switch (_data.code) {
-                    case 200:
-                        if (_data.sessionId) {
-                            window.sessionStorage.sessionId = _data.sessionId;
-                        }
+                    case 0:
                         resolve(_data);
                         break;
-                    case 401:
-                        window.sessionStorage.removeItem('sessionId');
-                        window.sessionStorage.removeItem('userInfo');
-                        window.location.assign('/#/autologin');
+                    case 500:
+                        // window.sessionStorage.removeItem('sessionId');
+                        // window.sessionStorage.removeItem('userInfo');
+                        window.location.assign('/#/login');
                         reject(_data.remark);
                         break;
                     case 404:
