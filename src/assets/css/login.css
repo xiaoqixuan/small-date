@@ -202,8 +202,9 @@ footer .indexS03{
 	display: block;
 }
 .recordList p span{
-	width: 50%;
 	display: block;
+	width: 50%;
+	height: inherit;
 	line-height: .45rem;
 }
 .recordPicS1{
@@ -237,7 +238,7 @@ footer .indexS03{
 .evaluate textarea{
 	width: 100%;
 	border: none;
-	padding: 0 .3rem;
+	padding: .3rem;
 	outline: none;
 }
 /*个人中心*/
@@ -437,7 +438,7 @@ footer .indexS03{
 	margin: 0;
 	border: none;
 	height: .85rem;
-	width: 50%;
+	width: 70%;
 	/*background-image: url(../img/rightpointer.png);
 	background-repeat: no-repeat;
 	background-position: right;

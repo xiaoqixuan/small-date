@@ -8,8 +8,8 @@
 	}
 	.current {
 	    display: inline-block;
-	    padding-left: calc(50% - .2rem);
-	    width: 50%; 
+	    /*padding-left: calc(50% - .2rem);*/
+	    padding: 0 .3rem 0 calc(30% + .2rem);
 	}
 	.current .fa {
 		float: right;
@@ -19,7 +19,7 @@
 	.item-wrap {
 	    line-height: 2;
 	    background: #fff;
-	    padding: .2rem 0;
+	    /*padding: .2rem 0;*/
     	text-align: center;
 	}
 	.item-wrap li {

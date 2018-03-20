@@ -24,20 +24,24 @@ export default {
 			indexClick03: this.classStyle[2]
 		}
   	},
+    computed: {
+        token () {
+            return window.sessionStorage.samllLogin || ''
+        },
+    },
  	methods:{
 		indexClick () {
 			this.$router.push({path:'/'})
 		},
     	recordClick () {
-			this.$router.push({path:'/recordDate'})
-			// if(this.$cookie.get('samllLogin')){
-			// 	this.$router.push({path:'/recordDate'})
-			// }else{
-			// 	this.$router.push({path:'/login'})
-			// }
+			if(this.token){
+				this.$router.push({path:'/recordDate'})
+			}else{
+				this.$router.push({path:'/login'})
+			}
 		},
 		centerClick () {
-			if(this.$cookie.get('samllLogin')){
+			if(this.token){
 				this.$router.push({path:'/center'})
 			}else{
 				this.$router.push({path:'/login'})
