@@ -29,11 +29,12 @@ export default {
 			this.$router.push({path:'/'})
 		},
     	recordClick () {
-			if(this.$cookie.get('samllLogin')){
-				this.$router.push({path:'/recordDate'})
-			}else{
-				this.$router.push({path:'/login'})
-			}
+			this.$router.push({path:'/recordDate'})
+			// if(this.$cookie.get('samllLogin')){
+			// 	this.$router.push({path:'/recordDate'})
+			// }else{
+			// 	this.$router.push({path:'/login'})
+			// }
 		},
 		centerClick () {
 			if(this.$cookie.get('samllLogin')){
