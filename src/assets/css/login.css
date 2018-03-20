@@ -265,7 +265,7 @@ footer .indexS03{
 	background-color: #FFFFFF;
 }
 .personal{
-	width: 50%;
+    width: calc(50% - 1px);
 	line-height: .58rem;
 	border-right:solid 1px #e5e5e5;
 }
@@ -433,15 +433,15 @@ footer .indexS03{
 }
 .basicsInput{
 	padding: 0;
+	padding-right: .3rem;
 	margin: 0;
 	border: none;
 	height: .85rem;
 	width: 50%;
-	background-image: url(../img/rightpointer.png);
+	/*background-image: url(../img/rightpointer.png);
 	background-repeat: no-repeat;
 	background-position: right;
-	padding-right: 0.44rem;
-	background-size: .34rem;
+	background-size: .34rem;*/
 }
 .divBasics{
 	height: 2.88rem !important;

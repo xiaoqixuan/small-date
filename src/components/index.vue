@@ -10,18 +10,18 @@
       <!-- <router-link :to="{path:'/login'}" class="indexButton loginButton textC centertBC fontSize28" @click="loginBut">立即体验</router-link>  style="height:100%;width:100%;background:#fff;"-->
 			<div class="textC colorfe5c5c wathYh">什么是小约会？</div>
 		</section>
-		 <my-footer :classStyle="[true,false,false]"></my-footer>
+		<my-footer :classStyle="[true,false,false]"></my-footer>
   </div>
 </template>
 
 <script>
 import footer from './comm/footer.vue'
 export default {
-  name: 'index',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
+  	name: 'index',
+  	data () {
+	    return {
+	      msg: 'Welcome to Your Vue.js App'
+	    }
 	},
 	components: {
 		'my-footer':footer,
@@ -29,11 +29,11 @@ export default {
 	created () {
 		
 	},
-  methods: {
-    loginBut(){
-      this.$router.push({path:'/releaseDate'})
+  	methods: {
+		loginBut(){
+	  		this.$router.push({path:'/releaseDate'})
 		}
-  }
+	}
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -3,23 +3,17 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import iView from 'iview'
-import 'iview/dist/styles/iview.css'
 import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import VueResource from 'vue-resource'
 import Request from './utils/request'
 import VueCookie from 'vue-cookie'
 
-
-
-
-
 router.beforeEach((to,from,next) => {
   window.document.title = to.meta.title
   next()
 })
-Vue.use(iView)
+
 Vue.use(Mint)
 Vue.use(VueResource)
 Vue.use(Request)

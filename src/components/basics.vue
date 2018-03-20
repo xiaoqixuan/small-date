@@ -18,9 +18,12 @@
                     @click="getEditInformation(n)"
                     v-for="(n,index) in base">
                     {{n.label}}
+
                     <input class="fr basicsInput backGFFF"
                         type="text" style="height:.84rem;line-height:.84rem"
-                        v-model="n.value" disabled>
+                        v-if="n.type !== 'maritalStatus'"
+                        v-model="n.value">
+                    <dropdown v-show="n.type === 'maritalStatus'" :options="options.maritalStatus" @changeVal="changeVal"></dropdown>
                 </li>
             </ul>
             <ul class="basicsDiv backGFFF" v-if="workTab">
@@ -45,124 +48,34 @@
                         v-model="n.value" disabled>
                 </li>
             </ul>
+            <div class="indexButton loginButton textC centertBC fontSize28" @click="save">保存</div>
         </section>
-        <!-- <section>
-            <div class="height88 backGFFF fontSize28 borderBottome5e5e5">
-                <span class="basicsTab textC color888 fl" :class="{ basicsActive: basicsTab1 }" @click="basicsTab1=true,basicsTab2=false,basicsTab3=false">基本资料</span>
-                <span class="basicsTab textC color888 fl" :class="{ basicsActive: basicsTab2 }" @click="basicsTab1=false,basicsTab2=true,basicsTab3=false">工作学习</span>
-                <span class="basicsTab textC color888 fl" :class="{ basicsActive: basicsTab3 }" @click="basicsTab1=false,basicsTab2=false,basicsTab3=true">兴趣爱好</span>
-            </div>
-            <div class="basicsDiv backGFFF" v-if="basicsTab1">
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR borderTop5e5e5" @click="editInformation()">
-                  真实姓名
-                  <input value="Daisy" class="fr basicsInput backGFFF" type="text" style="height:.84rem;line-height:.84rem" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  出生年月
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  身高
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  体重
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  最好学历
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  婚姻状况
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  籍贯
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-            </div>
-            <div class="basicsDiv backGFFF" v-if="basicsTab2">
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR borderTop5e5e5">
-                  工作行业
-                  <input class="fr basicsInput backGFFF" type="text" style="height:.84rem;line-height:.84rem" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  工作单位
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  职位
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  年收入
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  资产状况
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  毕业院校
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-            </div>
-            <div class="basicsDiv backGFFF" v-if="basicsTab3">
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR borderTop5e5e5">
-                  自我介绍
-                  <input class="fr basicsInput backGFFF" type="text" style="height:.84rem;line-height:.84rem" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  喜欢的食物
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  喜欢的电影
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  喜欢的书
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  喜欢的歌
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  喜欢的情话
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  喜欢的名人爱情
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-              <div class="height88 fontSize28 textL borderBottome5e5e5 paddingLR">
-                  希望你是
-                  <input class="fr basicsInput backGFFF" type="text" disabled>
-              </div>
-            </div> -->
-        </section>
-        <div class="tmc" v-if="editOpen"></div>
+
+        
+        
+
+        <!-- <div class="tmc" v-if="editOpen"></div>
         <div class="sexTs" v-if="editOpen">
             <div class="divBasics">
                 <p class="fontSize30 textL p2 trueName borderBottome5e5e5 color888">
-            		{{editObj.label}}
-            	</p>
-            	<!-- <p class="fontSize30 textC borderBottome5e5e5 p1 color42 trueName">性别一旦提交，就不能更改哦</p> -->
+                    {{editObj.label}}
+                </p>
+                <p class="fontSize30 textC borderBottome5e5e5 p1 color42 trueName">性别一旦提交，就不能更改哦</p>
                 <p class="basicsNameDiv">
                     <input type="text" v-model="editObj.value" class="basicsName color42 borderBottome5e5e5">
                     <span class="qingkong" @click="clear"></span>
                 </p>
-            	<p class="fontSize30 textC p2">
-            		<span class="s1 fl color888" @click="editOpen=false">取消</span>
-            		<span class="s2 fr colorfe5c5c" @click="save">确定</span>
-            	</p>
+                <p class="fontSize30 textC p2">
+                    <span class="s1 fl color888" @click="editOpen=false">取消</span>
+                    <span class="s2 fr colorfe5c5c" @click="save">确定</span>
+                </p>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
+
+import dropdown from './comm/dropdown.vue'
 export default {
     name: 'basics',
     data () {
@@ -204,15 +117,33 @@ export default {
                 { label: '喜欢的情话', value: '我在', type: 'favorite_love_words' }, 
                 { label: '喜欢的名人爱情', value: '梁祝', type: 'favorite_love_story' }
             ],
-
-            editOpen: false,
-            editObj: {}
+            options: {
+                maritalStatus: [
+                    { label: '未婚', value: 1, type: 'maritalStatus' },
+                    { label: '离异无孩', value: 2, type: 'maritalStatus' },
+                    { label: '离异有孩', value: 3, type: 'maritalStatus' }
+                ],
+            },
+            
+            // editOpen: false,
+            // editObj: {}
+            currentTab: 'base'
         }
+    },
+    components: {
+        dropdown,
     },
     created(){
         this.getDetail()
     },
     methods:{
+        changeVal (obj) {
+            this[this.currentTab].forEach(item => {
+                if(obj.type === item.type) {
+                    item.value = obj.value
+                }
+            })
+        },
         getDetail () {
             let self = this
             this.getData(`/member/memberbaseinfo/info`)
@@ -234,6 +165,7 @@ export default {
             this.tab.forEach(it => {
                 if (it.type === type) {
                     it.isActive = true
+                    self.currentTab = type
                 } else {
                     it.isActive = false
                 }
@@ -241,29 +173,40 @@ export default {
             })
         },
         getEditInformation (item) {
-            this.editOpen = true
-            this.editObj = { ...item }
-            console.log(this.editObj)
+            // this.editOpen = true
+            // this.editObj = { ...item }
+            // console.log(this.editObj)
         },
         clear () {
             this.editObj.value = ''
         },
         save () {
-            const { type, value } = this.editObj
-            const self = this
-            const param = {
-                id: '',
-                [type]: value
-            }
+            // const { type, value } = this.editObj
+            // const self = this
+            // const param = {
+            //     [type]: value
+            // }
+            const param = this[this.currentTab].map(item => {
+                return {
+                    [item.type]: item.value
+                }
+            })
             console.log(param)
-            self.$http.post('/api/member/memberbaseinfo/update', param, {
-                headers: { 'content-type': 'application/x-www-form-urlencoded'}
-            }).then((data) => {
-                if(data.body.code == 0) {
+            this.getData('/member/memberbaseinfo/update', JSON.stringify(param)).then(res => {
+                console.log(res)
+                if(res.code == 0) {
                     self.editOpen = false
                     self.getDetail()
                 }
             })
+            // self.$http.post('/api/member/memberbaseinfo/update', param, {
+            //     headers: { 'content-type': 'application/x-www-form-urlencoded'}
+            // }).then((data) => {
+            //     if(data.body.code == 0) {
+            //         self.editOpen = false
+            //         self.getDetail()
+            //     }
+            // })
         }
     }
 }

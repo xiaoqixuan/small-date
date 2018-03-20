@@ -16,19 +16,19 @@
 <script>
 export default {
 	props:['classStyle'],
-  name:'footer',
-  data () {
-      return{
-				indexClick01: this.classStyle[0],
-				indexClick02: this.classStyle[1],
-				indexClick03: this.classStyle[2]
-			}
-  },
-  methods:{
+  	name:'footer',
+  	data () {
+      	return{
+			indexClick01: this.classStyle[0],
+			indexClick02: this.classStyle[1],
+			indexClick03: this.classStyle[2]
+		}
+  	},
+ 	methods:{
 		indexClick () {
 			this.$router.push({path:'/'})
 		},
-    recordClick () {
+    	recordClick () {
 			if(this.$cookie.get('samllLogin')){
 				this.$router.push({path:'/recordDate'})
 			}else{
@@ -42,7 +42,7 @@ export default {
 				this.$router.push({path:'/login'})
 			}
 		}
-  }
+  	}
 }
 </script>
 

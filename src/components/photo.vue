@@ -5,6 +5,8 @@
     </header>
     <section>
         <div class="photoDiv"></div>
+        <!-- <div id="easyContainer"></div> -->
     </section>
   </div>
 </template>
+
