@@ -25,7 +25,7 @@
 	border-bottom: solid 1px #e5e5e5;
 }
 .telLogin p input{
-	width: 50%;
+	width: 70%;
 	border: none;
 	padding: 0 0 0 .3rem;
 	display: block;
@@ -33,7 +33,7 @@
 	line-height: .88rem;
 }
 .telLogin p span{
-	width: 45%;
+	width: 30%;
 	height: .88rem;
 	line-height: .88rem;
 	display: block;
@@ -57,8 +57,12 @@
 	padding: 0 .3rem;
 }
 .registerDiv span{
-	width: 30%;
-	display: block;
+	width: calc(36% - .1rem);
+	display: inline-block;
+}
+.registerDiv .fa {
+	font-size: .4rem;
+	line-height: .88rem;
 }
 .registerDiv input,select{
 	border: none;
@@ -69,10 +73,10 @@
 	color: #B4B4B4;
 }
 .registerDiv input{
-	background-image: url(../img/rightpointer.png);
+	/*background-image: url(../img/rightpointer.png);
 	background-repeat: no-repeat;
 	background-position: right;
-	background-size: 10%;
+	background-size: 10%;*/
 }
 select{
 	background-color: #FFFFFF;

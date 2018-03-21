@@ -11,7 +11,7 @@ export default {
 </script>
 <style src="./assets/css/com.css"></style>
 <style src="./assets/css/login.css"></style>
-<!-- <style src="./assets/css/photo.css"></style> -->
+<style src="./assets/css/releaseDeta.css"></style>
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

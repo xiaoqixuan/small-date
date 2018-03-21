@@ -3,20 +3,53 @@
     <header class="centertBC textC fontSize36">
         <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>发布约会
     </header>
-    <section>
+    <section class="release-wrap">
         <div class="releaseDate"></div>
         <ul class="basicsDiv backGFFF">
-            <li class="height88 fontSize28 textL borderBottome5e5e5 paddingLR"
-                v-for="(n,index) in deta">
-                {{n.label}}
-
-                <input class="fr basicsInput backGFFF"
-                    type="text" style="height:.84rem;line-height:.84rem"
-                    :placeholder="`请输入${n.label}`"
-                    v-model="n.value">
+            <li class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF"
+                :class="{heightAuto: openDateType}">
+                <span class="padL">约会项目</span>
+                <span class="fr height88 padR inputColor" style="width:64%;"
+                    @click="openDateType = !openDateType">
+                    {{deta.dateType}}
+                    <i class="fa fr" :class="{'fa-angle-down': !openDateType, 'fa-angle-up': openDateType}"></i>
+                </span>
+                <ul v-if="openDateType" class="list-wrap borderTop5e5e5" style="text-align:center;">
+                    <li :class="{active: m.isChecked}"
+                        v-for="(m,index) in dateType"
+                        @click="chooseVal('dateType', m.value)" >{{m.value}}</li>
+                </ul>
+            </li>
+            <li class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
+                <span class="padL">约会时间</span>
+                <span class="fr height88 padR inputColor" style="width:64%;"
+                    @click="openPicker">{{deta.dateTime || '点击选择时间'}}</span>
+                <mt-datetime-picker
+                    ref="picker"
+                    type="datetime"
+                    v-model="deta.dateTime">
+                </mt-datetime-picker>
+            </li>
+            <li class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF"
+                :class="{heightAuto: openDatePlace}">
+                <span class="padL">约会地点</span>
+                <span class="fr height88 padR inputColor" style="width:64%;"
+                    @click="openDatePlace = !openDatePlace">
+                    {{deta.datePlace}}
+                    <i class="fa fr" :class="{'fa-angle-down': !openDatePlace, 'fa-angle-up': openDatePlace}"></i>
+                </span>
+                <ul v-if="openDatePlace" class="list-wrap borderTop5e5e5" style="text-align:center;">
+                    <li :class="{active: m.isChecked}"
+                        v-for="(m,index) in datePlace"
+                        @click="chooseVal('datePlace', m.value)" >{{m.value}}</li>
+                </ul>
+            </li>
+            <li class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
+                <span class="padL">详细地址</span>
+                <input type="text" class="fr height88 padR inputColor" style="width:64%;height: calc(.88rem - 1px);" placeholder="请输入详细地址"  v-model="deta.dateDetailAddress">
             </li>
         </ul>
-       <!--  <div class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
+        <!-- <div class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
             <span class="fl textL">约会项目</span>
             <input type="text" class="fr height88 textR inputColor" style="height:.86rem;line-height:.86rem" placeholder="" readonly="value" />
         </div>
@@ -42,44 +75,88 @@ export default {
     name:'recordDate',
     data () {
         return {
-            deta: [ // 基本资料'
-                { label: '约会项目', value: '', type: 'dateType' }, 
-                { label: '约会时间', value: '', type: 'dateTime' }, 
-                { label: '约会地点', value: '', type: 'datePlace' }, 
-                { label: '详细地址', value: '', type: 'dateDetailAddress' }
-            ],
+            deta: {
+                dateType: '',
+                dateTime: '',
+                datePlace: '',
+                dateDetailAddress: ''
+            },
+            pager: {
+                limit: 100,
+                page: 1,
+                sidx: 'create_time',
+                order: 'asc'
+            },
+            dateType: [],
+            datePlace: [],
+            openDateType: false,
+            openDatePlace: false
         }
     },
+    created(){
+        this.getList()
+    },
     methods:{
+        getList () {
+            const { limit, page, sidx, order } = this.pager
+            this.getData(`/engage/engagebasedatetype/list?limit=${limit}&page=${page}&sidx=${sidx}&order=${order}`)
+            .then(res => {
+                if (res.code === 0) {
+                    this.dateType = res.page.list.map(it => {
+                        return {
+                            value: it.dateType,
+                            isChecked: false
+                        }
+                    })
+                }
+                console.log(res)
+            })
+            this.getData(`/engage/engagebasedateplace/list?limit=${limit}&page=${page}&sidx=${sidx}&order=${order}`)
+            .then(res => {
+                if (res.code === 0) {
+                    this.datePlace = res.page.list.map(it => {
+                        return {
+                            value: it.datePlace,
+                            isChecked: false
+                        }
+                    })
+                }
+                console.log(res)
+            })
+        },
+        chooseVal (type, val) {
+            this.deta[type] = val
+            if (type == 'dateType') {
+                this.openDateType = false
+            } else {
+                this.openDatePlace = false
+            }
+            this[type].forEach(it => {
+                if (it.value === val) {
+                    it.isChecked = true
+                } else {
+                    it.isChecked = false
+                }
+            })
+        },
+        openPicker() {
+            this.$refs.picker.open();
+        },
         checkVal (obj) {
             return true
         },
-        processed (obj) {
-            let arr = []
-            for (let k in obj) {
-                arr.push(k + '=' + obj[k]) 
-            }
-            return arr.join('&')
-        },
         save () {
-            // this.$router.push({path:'/'})
             let param = {
                 createUserId: 1,
-                createUser: 'Daisy'
+                createUser: 'Daisy',
+                ...this.deta
             }
-            this.deta.forEach(item => {
-                param[item.type] = item.value
-            })
             const result = this.checkVal(param)
-            // param = this.processed(param)
-            
             if (result) {
                 this.getData('/engage/engageengageinfo/save', param, 'Form').then(res => {
                     console.log(res)
                     if(res.code == 0) {
                         alert('发布成功')
-                        // sessionStorage.setItem("samllLogin", res.token)
-                        // self.$router.push({path:'/center'})
                     }
                 })
             }

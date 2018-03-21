@@ -1,0 +1,14 @@
+.release-wrap .registerDiv {
+	padding: 0;
+	text-align: left;
+}
+.release-wrap .padL {
+	padding-left: .3rem;
+    vertical-align: top;
+}
+.release-wrap .padR {
+	padding-right: .3rem;
+}
+.release-wrap .list-wrap .active {
+	background-color: rgba(254, 92, 92, .8);
+}

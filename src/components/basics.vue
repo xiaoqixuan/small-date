@@ -208,31 +208,19 @@ export default {
                 self[it.type + 'Tab'] = it.isActive
             })
         },
-        getEditInformation (item) {
-            // this.editOpen = true
-            // this.editObj = { ...item }
-            // console.log(this.editObj)
-        },
-        clear () {
-            this.editObj.value = ''
-        },
         save () {
-            const param = []
-            this[this.currentTab].map(item => {
+            const param = {}
+            this[this.currentTab].forEach(item => {
                 if (item.type === 'assets') { // 资产状况
-                    const result = [
-                        { hasHouse: item.value.hasHouse },
-                        { hasCar: item.value.hasCar }
-                    ]
-                    param.push(...result)
-                    
+                    param.hasHouse = item.value.hasHouse
+                    param.hasCar = item.value.hasCar
                 } else {
-                    param.push({ [item.type]: item.value })
+                    param[item.type] = item.value
                 }
                 
             })
             console.log(param)
-            this.getData('/member/memberbaseinfo/update', JSON.stringify(param)).then(res => {
+            this.getData('/member/memberbaseinfo/update', param).then(res => {
                 console.log(res)
                 if(res.code == 0) {
                     self.editOpen = false

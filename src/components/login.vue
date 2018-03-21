@@ -13,7 +13,7 @@
 				<input type="password" class="" placeholder="请输入您的密码" style="border-top:none;" v-model="password" v-if="isLogin" />
 				<p class="backGFFF" v-if="!isLogin">
 					<input class="fl" placeholder="请输入短信验证码" />
-					<span class="fl textR">获取验证码</span>
+					<span class="fl" @click="getCode">获取验证码</span>
 				</p>
 				<a class="textR colorfe5c5c fontSize22 passWordClass" v-if="isLogin" @click="passwordLink()">
 					忘记密码？
@@ -36,7 +36,7 @@ export default {
 	},
 	methods: {
 		// 登录
-		loginBut(){
+		loginBut () {
 			const { mobile, password } = this
 			const data = { mobile, password }
 			this.getData('/login', data, 'Form').then(res => {
@@ -46,6 +46,16 @@ export default {
 					this.$router.push({path:'/center'})
 				}
 			})	
+		},
+		getCode () {
+			const { mobile } = this
+			const data = { mobile }
+			this.getData('/sendCoden', data, 'Form').then(res => {
+				console.log(res)
+				if(res.code == 0) {
+					console.log(res)
+				}
+			})
 		},
 		// 忘记密码
 		passwordLink () {

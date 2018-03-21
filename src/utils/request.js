@@ -36,17 +36,19 @@ function getData(Vue, options) {
                     case 500:
                         // window.sessionStorage.removeItem('sessionId');
                         // window.sessionStorage.removeItem('userInfo');
-                        window.location.assign('/#/login');
-                        reject(_data.remark);
+                        if (_data.msg === 'token为空') {
+                            window.location.assign('/#/login');
+                        }
+                        reject(_data.msg);
                         break;
                     case 404:
-                        reject(_data.remark);
+                        reject(_data.msg);
                         break;
                     case 408:
-                        reject(_data.remark);
+                        reject(_data.msg);
                         break;
                     default:
-                        reject(_data.remark);
+                        reject(_data.msg);
                 }
             }).catch(function (err) {
                 reject(err);
