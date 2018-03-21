@@ -71,7 +71,7 @@ export default {
                 param[item.type] = item.value
             })
             const result = this.checkVal(param)
-            param = this.processed(param)
+            // param = this.processed(param)
             
             if (result) {
                 this.getData('/engage/engageengageinfo/save', param, 'Form').then(res => {

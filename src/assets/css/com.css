@@ -52,6 +52,9 @@ select{
 	height: .88rem;
 	line-height: .88rem;
 }
+.heightAuto {
+	height: inherit;
+}
 .historyGo{
 	position: absolute;
 	left: .2rem;

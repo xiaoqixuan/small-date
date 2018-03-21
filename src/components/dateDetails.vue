@@ -89,10 +89,14 @@ export default {
         },
         save () {
             // this.$router.push({path:'/'})
-            let self = this
-            const msg = self.comment.replace(/(^\s*)|(\s*$)/g, "")
+            // let self = this
+            const { id, comment } = this
+            const msg = comment.replace(/(^\s*)|(\s*$)/g, '')
             if (msg) {
-                let data = 'id='+self.id+'&comment='+msg
+                let data = {
+                    id,
+                    comment: msg
+                }
                 this.getData('/engage/engageengageinfo/update', data, 'Form').then(res => {
                     console.log(res)
                     if(res.code == 0) {

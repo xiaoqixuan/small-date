@@ -3,7 +3,7 @@
         <header class="centertBC textC fontSize36">
             <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>基本资料
         </header>
-        <section>
+        <section class="basics">
             <ul class="height88 backGFFF fontSize28 borderBottome5e5e5">
                 <li class="basicsTab textC color888 fl"
                     :class="{ basicsActive: n.isActive }"
@@ -23,18 +23,30 @@
                         type="text" style="height:.84rem;line-height:.84rem"
                         v-if="n.type !== 'maritalStatus'"
                         v-model="n.value">
-                    <dropdown v-show="n.type === 'maritalStatus'" :options="options.maritalStatus" @changeVal="changeVal"></dropdown>
+                    <dropdown v-if="n.type === 'maritalStatus'" :options="options.maritalStatus" :default.sync="n.value" @changeVal="changeMaritalStatus"></dropdown>
                 </li>
             </ul>
             <ul class="basicsDiv backGFFF" v-if="workTab">
                 <li class="height88 fontSize28 textL borderBottome5e5e5 paddingLR"
-                    :class="{borderTop5e5e5: index === 0}"
+                    :class="{borderTop5e5e5: index === 0, heightAuto: n.type == 'assets'}"
                     @click="getEditInformation(n)"
                     v-for="(n,index) in work">
                     {{n.label}}
                     <input class="fr basicsInput backGFFF"
                         type="text" style="height:.84rem;line-height:.84rem"
-                        v-model="n.value" disabled>
+                        v-if="n.type !== 'assets'"
+                        v-model="n.value">
+
+                    <!-- 资产状况单独处理 -->
+                    <ul v-if="n.type === 'assets'" style="text-align: center;">
+                        <li v-for="(val, key) in n.value">
+                            <label v-for="(k) in [1,2]" :for="key+k" @click="chooseAssets(key, k)">
+                                <input v-if="val == k" :id="key+k" type="radio" :value="k" :name="key" Checked>
+                                <input v-if="val != k" :id="key+k" type="radio" :value="k" :name="key">
+                                {{k === 1 ? '有' : '无'}}{{key === 'hasHouse' ? '房' : '车'}}
+                            </label>
+                        </li>
+                    </ul>
                 </li>
             </ul>
             <ul class="basicsDiv backGFFF" v-if="hobbyTab">
@@ -99,13 +111,16 @@ export default {
                 { label: '籍贯', value: '四川', type: 'nativePlace' }
             ],
             work: [ // 工作学习
-                { label: '工作行业', value: '互联网', type: '缺字段' }, 
+                // { label: '工作行业', value: '互联网', type: '缺字段' }, 
                 { label: '工作单位', value: '国美', type: 'workUnit' }, 
                 { label: '职位', value: '开发', type: 'position' }, 
                 { label: '年收入', value: '10', type: 'weight' }, 
-                { label: '资产状况', value: '没房没车', type: 'hasHouse' }, 
-                { label: '资产状况', value: '没房没车', type: 'hasCar' },
-                { label: '毕业院校', value: '家里蹲', type: 'university' }
+                { label: '毕业院校', value: '家里蹲', type: 'university' },
+                {
+                    label: '资产状况',
+                    value: {hasHouse: '有房', hasCar: '有车'},
+                    type: 'assets'
+                } 
             ],
             hobby: [ // 兴趣爱好
                 { label: '自我介绍', value: '我是Daisy', type: 'selfIntroduction' }, 
@@ -123,6 +138,10 @@ export default {
                     { label: '离异无孩', value: 2, type: 'maritalStatus' },
                     { label: '离异有孩', value: 3, type: 'maritalStatus' }
                 ],
+                hasHouse: [
+                    { label: '有房', value: 1, type: 'hasHouse' },
+                    { label: '无房', value: 2, type: 'hasHouse' },
+                ]
             },
             
             // editOpen: false,
@@ -137,10 +156,20 @@ export default {
         this.getDetail()
     },
     methods:{
-        changeVal (obj) {
-            this[this.currentTab].forEach(item => {
-                if(obj.type === item.type) {
+        // 更改婚姻状态
+        changeMaritalStatus (obj) {
+            this.base.forEach(item => {
+                if(obj.type === item.type) { // 找到对应字段
                     item.value = obj.value
+                }
+            })
+        },
+        // 选择资产
+        chooseAssets (type, val) {
+            console.log(type, val)
+            this.work.forEach(item => {
+                if(item.type === 'assets') { // 找到对应字段
+                    item.value[type] = val
                 }
             })
         },
@@ -153,7 +182,14 @@ export default {
                     it.value = memberBaseInfo[it.type]
                 })
                 self.work.forEach(it => {
-                    it.value = memberBaseInfo[it.type]
+                    if (it.type === 'assets') { // 资产状况
+                        it.value = {
+                            hasHouse: memberBaseInfo.hasHouse, 
+                            hasCar: memberBaseInfo.hasCar
+                        }
+                    } else {
+                        it.value = memberBaseInfo[it.type]
+                    }
                 })
                 self.hobby.forEach(it => {
                     it.value = memberBaseInfo[it.type]
@@ -181,15 +217,19 @@ export default {
             this.editObj.value = ''
         },
         save () {
-            // const { type, value } = this.editObj
-            // const self = this
-            // const param = {
-            //     [type]: value
-            // }
-            const param = this[this.currentTab].map(item => {
-                return {
-                    [item.type]: item.value
+            const param = []
+            this[this.currentTab].map(item => {
+                if (item.type === 'assets') { // 资产状况
+                    const result = [
+                        { hasHouse: item.value.hasHouse },
+                        { hasCar: item.value.hasCar }
+                    ]
+                    param.push(...result)
+                    
+                } else {
+                    param.push({ [item.type]: item.value })
                 }
+                
             })
             console.log(param)
             this.getData('/member/memberbaseinfo/update', JSON.stringify(param)).then(res => {
@@ -199,14 +239,6 @@ export default {
                     self.getDetail()
                 }
             })
-            // self.$http.post('/api/member/memberbaseinfo/update', param, {
-            //     headers: { 'content-type': 'application/x-www-form-urlencoded'}
-            // }).then((data) => {
-            //     if(data.body.code == 0) {
-            //         self.editOpen = false
-            //         self.getDetail()
-            //     }
-            // })
         }
     }
 }

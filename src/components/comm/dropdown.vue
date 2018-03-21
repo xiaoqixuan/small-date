@@ -9,7 +9,7 @@
 	.current {
 	    display: inline-block;
 	    /*padding-left: calc(50% - .2rem);*/
-	    padding: 0 .3rem 0 calc(30% + .2rem);
+	    padding: 0 .3rem 0 calc(40% + .2rem);
 	}
 	.current .fa {
 		float: right;
@@ -46,17 +46,24 @@
 </template>
 <script>
 export default {
-	props:['options'],
+	props:['options', 'default'],
   	name:'dropdown',
   	data () {
       	return{
       		isOpen: false,
-			current: this.options[0]
+			current: {}
 		}
   	},
+	watch: {
+        default (val) {
+            this.current = val;
+            const result = this.options.filter(item => item.value === val)
+            this.current = result.length ? result[0] : this.options[0]
+            console.log(this.current, this.options, val)
+        },
+    },
  	methods:{
         changeVal (n) {
-        	this.current = n
         	this.isOpen = false
             this.$emit("changeVal", n)
         }

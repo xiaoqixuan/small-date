@@ -17,6 +17,8 @@ function getData(Vue, options) {
             if (token) {
                 requestUrl += (requestUrl.indexOf('?') > -1 ? '&' : '?') + 'token=' + window.sessionStorage.samllLogin || '';
             }
+            // 根据type判断是否为表单提交
+            _data = type ? jsonToQueryString(_data) : JSON.stringify(_data)
             fetch(requestUrl, {
                 method: 'POST',
                 headers: {
