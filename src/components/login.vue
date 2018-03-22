@@ -43,7 +43,7 @@ export default {
 				console.log(res)
 				if(res.code == 0) {
 					sessionStorage.setItem("samllLogin", res.token)
-					this.$router.push({path:'/center'})
+					this.$router.push({path:'/releaseDate'})
 				}
 			})	
 		},

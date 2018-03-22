@@ -42,7 +42,7 @@
             <span class="fl color888 fontSize24 dateListTitle textL">约会时间</span>
             <span class="fl color42 fontSize28 dateListName textL">2017-12-12 17:00</span>
         </div> -->
-        <div class="height88 borderBottome5e5e5 evaluate backGFFF">
+        <div v-if="status == 3" class="height88 borderBottome5e5e5 evaluate backGFFF">
             <span class="fl color42 fontSize28 textL borderBottome5e5e5">约会评价</span>
             <textarea rows="3" cols="20" placeholder="描述一下对对方的印象吧！" v-model="comment">
             </textarea>
@@ -52,6 +52,7 @@
   </div>
 </template>
 <script>
+import { Indicator } from 'mint-ui'
 export default {
     name:'dateDetails',
     data () {
@@ -59,37 +60,44 @@ export default {
             detail: [ // 基本资料'
                 { label: '发起人', value: '晓晓', type: 'createUser' }, 
                 { label: '约会对象', value: '我', type: 'joinUser' }, 
-                { label: '约会状态', value: '约会结束', type: '缺字段' }, 
+                { label: '约会状态', value: '约会结束', type: 'status' }, 
                 { label: '约会项目', value: '喝咖啡', type: 'dateType' }, 
                 { label: '约会地点', value: '星巴克咖啡', type: 'datePlace' }, 
                 { label: '约会时间', value: '2017-12-12 17:00', type: 'dateTime' }
             ],
-            comment: '888'
+            comment: ''
         }
     },
     computed: {
         id () {
             return this.$route.query.id
         },
+        status () {
+            return this.$route.query.status
+        }
     },
     created(){
-        this.getList()
+        this.getDetail()
     },
     methods:{
-        getList () {
+        getDetail () {
             let self = this
+            Indicator.open(); // loading组件
             this.getData(`/engage/engageengageinfo/info/${this.id}`)
             .then(res => {
                 if (res.code === 0) {
                     self.detail.forEach(it => {
-                        it.value = res.engageEngageInfo[it.type]
+                        if (it.type == 'status') {
+                            it.value = ['未开始', '约会中', '约会结束'][self.status-1]
+                        } else {
+                            it.value = res.engageEngageInfo[it.type]
+                        }
                     })
+                    Indicator.close(); // loading组件
                 }
             })
         },
         save () {
-            // this.$router.push({path:'/'})
-            // let self = this
             const { id, comment } = this
             const msg = comment.replace(/(^\s*)|(\s*$)/g, '')
             if (msg) {
@@ -97,12 +105,10 @@ export default {
                     id,
                     comment: msg
                 }
-                this.getData('/engage/engageengageinfo/update', data, 'Form').then(res => {
+                this.getData('/engage/engageengageinfo/update', data).then(res => {
                     console.log(res)
                     if(res.code == 0) {
                         alert('保存成功')
-                        // sessionStorage.setItem("samllLogin", res.token)
-                        // self.$router.push({path:'/center'})
                     }
                 })
             } else {

@@ -8,6 +8,7 @@ import 'mint-ui/lib/style.css'
 import VueResource from 'vue-resource'
 import Request from './utils/request'
 import VueCookie from 'vue-cookie'
+import VueScroller from 'vue-scroller' // 上拉加载，下拉刷新插件
 
 router.beforeEach((to,from,next) => {
   window.document.title = to.meta.title
@@ -18,6 +19,7 @@ Vue.use(Mint)
 Vue.use(VueResource)
 Vue.use(Request)
 Vue.use(VueCookie)
+Vue.use(VueScroller)
 
 Vue.config.productionTip = false
 // Vue.http.interceptors.push((request,next)=>{

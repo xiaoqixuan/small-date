@@ -36,7 +36,7 @@ function getData(Vue, options) {
                     case 500:
                         // window.sessionStorage.removeItem('sessionId');
                         // window.sessionStorage.removeItem('userInfo');
-                        if (_data.msg === 'token为空') {
+                        if (_data.msg.indexOf('token') > -1) {
                             window.location.assign('/#/login');
                         }
                         reject(_data.msg);

@@ -6,7 +6,17 @@
 
 <script>
 export default {
-  name: 'App'
+    name: 'App',
+    computed: {
+        token () {
+            return window.sessionStorage.samllLogin || ''
+        },
+    },
+    beforeMount() {
+        if (this.token) {
+            this.$router.push("/ReleaseDate")
+        }
+    }
 }
 </script>
 <style src="./assets/css/com.css"></style>
@@ -14,10 +24,10 @@ export default {
 <style src="./assets/css/releaseDeta.css"></style>
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
 }
 ul {
 	margin: 0;

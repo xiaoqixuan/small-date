@@ -18,16 +18,6 @@
                     </router-link>
                 </li>
             </ul>
-            <!-- <router-link :to="{path:'/dateDetails',query:{id:'123'}}" class="recordList borderBottome5e5e5 backGFFF">
-                <p class="color42">
-                    <span class="textL fontSize30 fl">晓晓</span>
-                    <span class="textR fontSize30 fl">约会结束</span>
-                </p>
-                <p class="color888">
-                    <span class="textL fontSize18 fl">发起人</span>
-                    <span class="textR fontSize18 fl">2017-12-24</span>
-                </p>
-            </router-link> -->
 		</section>
         <my-footer :classStyle="[false,true,false]"></my-footer>
   </div>

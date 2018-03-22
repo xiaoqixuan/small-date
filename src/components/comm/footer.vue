@@ -31,7 +31,11 @@ export default {
     },
  	methods:{
 		indexClick () {
-			this.$router.push({path:'/'})
+			if (this.token) {
+            	this.$router.push("/ReleaseDate")
+        	} else {
+        		this.$router.push({path:'/'})
+        	}
 		},
     	recordClick () {
 			if(this.token){

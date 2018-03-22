@@ -86,7 +86,7 @@
     </div>
 </template>
 <script>
-
+import { Indicator } from 'mint-ui'
 import dropdown from './comm/dropdown.vue'
 export default {
     name: 'basics',
@@ -175,6 +175,7 @@ export default {
         },
         getDetail () {
             let self = this
+            Indicator.open(); // loading组件
             this.getData(`/member/memberbaseinfo/info`)
             .then(_data => {
                 const { memberBaseInfo } = _data
@@ -194,6 +195,8 @@ export default {
                 self.hobby.forEach(it => {
                     it.value = memberBaseInfo[it.type]
                 })
+                Indicator.close(); // loading组件
+
             })
         },
         changeTab (type) {
