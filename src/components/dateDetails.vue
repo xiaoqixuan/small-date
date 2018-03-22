@@ -44,8 +44,8 @@
         </div> -->
         <div v-if="status == 3" class="height88 borderBottome5e5e5 evaluate backGFFF">
             <span class="fl color42 fontSize28 textL borderBottome5e5e5">约会评价</span>
-            <textarea rows="3" cols="20" placeholder="描述一下对对方的印象吧！" v-model="comment">
-            </textarea>
+            <textarea v-if="fromComment" rows="3" cols="20" placeholder="描述一下对对方的印象吧！" v-model="fromComment" disabled></textarea>
+            <textarea v-if="!fromComment" rows="3" cols="20" placeholder="描述一下对对方的印象吧！" v-model="fromComment"></textarea>
         </div>
         <div class="indexButton loginButton textC centertBC fontSize28" @click="save">提交</div>
     </section>
@@ -65,7 +65,7 @@ export default {
                 { label: '约会地点', value: '星巴克咖啡', type: 'datePlace' }, 
                 { label: '约会时间', value: '2017-12-12 17:00', type: 'dateTime' }
             ],
-            comment: ''
+            fromComment: ''
         }
     },
     computed: {
@@ -93,22 +93,23 @@ export default {
                             it.value = res.engageEngageInfo[it.type]
                         }
                     })
+                    self.fromComment = res.engageEngageInfo.fromComment
                     Indicator.close(); // loading组件
                 }
             })
         },
         save () {
-            const { id, comment } = this
-            const msg = comment.replace(/(^\s*)|(\s*$)/g, '')
+            const { id, fromComment } = this
+            const msg = fromComment.replace(/(^\s*)|(\s*$)/g, '')
             if (msg) {
                 let data = {
                     id,
-                    comment: msg
+                    fromComment: msg
                 }
                 this.getData('/engage/engageengageinfo/update', data).then(res => {
                     console.log(res)
                     if(res.code == 0) {
-                        alert('保存成功')
+                        this.$router.push("/recordDate")
                     }
                 })
             } else {

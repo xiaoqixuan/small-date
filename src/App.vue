@@ -15,6 +15,17 @@ export default {
     beforeMount() {
         if (this.token) {
             this.$router.push("/ReleaseDate")
+            this.getUserInfo()
+        }
+    },
+    methods: {
+        getUserInfo () {
+            this.getData(`/fans/wxfansbase/info/`)
+            .then(res => {
+                if (res.code === 0) {
+                    console.log(res)
+                }
+            })
         }
     }
 }
