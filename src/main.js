@@ -9,7 +9,9 @@ import VueResource from 'vue-resource'
 import Request from './utils/request'
 import VueCookie from 'vue-cookie'
 // import VueScroller from 'vue-scroller' // 上拉加载，下拉刷新插件
-
+import 'mescroll.js/mescroll.min.css';
+import MeScroll from 'mescroll.js';
+Vue.prototype.MeScroll=MeScroll;
 router.beforeEach((to,from,next) => {
   window.document.title = to.meta.title
   next()
