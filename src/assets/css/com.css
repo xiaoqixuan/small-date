@@ -146,8 +146,18 @@ select{
 .centertBC{
 	background-color: #fe5c5c;
 }
-.btn-primary {
-	
+.disable {
+    background-color: rgb(187, 187, 187);
+}
+.content {
+    width: 64%;
+    font: 13.3333px Arial;
+    line-height: inherit;
+}
+.tips {
+    padding: .2rem 0;
+    color: #fe5c5c;
+    font-size: .24rem;
 }
 @media screen and (min-width: 320px){html{font-size:41.6667px} body{font-size: 12px}}
 @media screen and (min-width: 360px){html{font-size:46.875px} body{font-size: 12px}}

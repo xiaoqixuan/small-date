@@ -420,7 +420,7 @@ footer .indexS03{
 }
 .moneySpan{
 	border: 0;
-	padding: 0 0 0 .1rem; 
+	padding: 0 0 0 .2rem; 
 	height: .85rem;
 	line-height: .85rem;
 }
@@ -435,6 +435,10 @@ footer .indexS03{
 }
 .basicsDiv{
 	margin-top: .2rem;
+}
+.basicsDiv .fa {
+    font-size: .4rem;
+    line-height: .88rem;
 }
 .basicsInput{
 	padding: 0;

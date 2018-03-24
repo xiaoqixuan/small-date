@@ -5,61 +5,60 @@
     </header>
     <section class="release-wrap">
         <div class="releaseDate"></div>
-        <ul class="basicsDiv backGFFF" @click="msg = ''">
-            <li class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF"
-                :class="{heightAuto: openDateType}">
+        <ul class="basicsDiv backGFFF" @click="tips = ''">
+            <li class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
                 <span class="padL">约会项目</span>
-                <span class="fr height88 padR color888" style="width:64%;"
-                    @click="openDateType = !openDateType">
-                    {{deta.dateType}}
-                    <i class="fa fr" :class="{'fa-angle-down': !openDateType, 'fa-angle-up': openDateType}"></i>
+                <span class="fr height88 padR color888 content" style="width:64%;"
+                    @click="showDateType = true">
+                    {{deta.dateType || '点击选择项目'}}
+                    <i class="fa fr fa-angle-right"></i>
                 </span>
-                <ul v-if="openDateType" class="list-wrap borderTop5e5e5" style="text-align:center;">
-                    <li :class="{active: m.isChecked}"
-                        v-for="(m,index) in dateType"
-                        @click="chooseVal('dateType', m.value)" >{{m.value}}</li>
-                </ul>
             </li>
             <li class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
                 <span class="padL">约会时间</span>
-                <span class="fr height88 padR color888" style="width:64%;"
-                    @click="openPicker">{{deta.dateTime || '点击选择时间'}}</span>
-                <mt-datetime-picker
-                    ref="picker"
-                    type="date"
-                    :startDate="startDate"
-                    v-model="deta.dateTime">
-                </mt-datetime-picker>
-            </li>
-            <li class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF"
-                :class="{heightAuto: openDatePlace}">
-                <span class="padL">约会地点</span>
-                <span class="fr height88 padR color888" style="width:64%;"
-                    @click="openDatePlace = !openDatePlace">
-                    {{deta.datePlace}}
-                    <i class="fa fr" :class="{'fa-angle-down': !openDatePlace, 'fa-angle-up': openDatePlace}"></i>
+                <span class="fr height88 padR color888 content" style="width:64%;"
+                    @click="openPicker">
+                    {{deta.dateTime || '点击选择时间'}}<i class="fa fr fa-angle-right"></i>
                 </span>
-                <ul v-if="openDatePlace" class="list-wrap borderTop5e5e5" style="text-align:center;">
-                    <li :class="{active: m.isChecked}"
-                        v-for="(m,index) in datePlace"
-                        @click="chooseVal('datePlace', m.value)" >{{m.value}}</li>
-                </ul>
+            </li>
+            <li class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
+                <span class="padL">约会地点</span>
+                <span class="fr height88 padR color888 content" style="width:64%;"
+                    @click="showDatePlace = true">
+                    {{deta.datePlace || '点击选择地点'}}
+                    <i class="fa fr fa-angle-right"></i>
+                </span>
             </li>
             <li class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
                 <span class="padL">详细地址</span>
-                <input type="text" class="fr height88 padR color888" style="width:64%;height: calc(.88rem - 1px);" placeholder="请输入详细地址"  v-model="deta.dateDetailAddress">
+                <input type="text" class="fr height88 padR color888" style="width:64%;height: calc(.88rem - 1px);"
+                    placeholder="请输入详细地址"  v-model="deta.dateDetailAddress">
             </li>
         </ul>
-        <p v-if="msg">{{msg}}</p>
+        <p v-if="tips" class="tips">注意：{{tips}}</p>
         <div class="indexButton loginButton textC centertBC fontSize28 marginTop06" @click="save">发布</div>
     </section>
     <my-footer :classStyle="[true,false,false]"></my-footer>
-
+    <mt-datetime-picker
+        ref="picker"
+        type="date"
+        :startDate="startDate"
+        v-model="deta.dateTime">
+    </mt-datetime-picker>
+    <mt-actionsheet  
+        :actions= "options.dateType"
+        v-model="showDateType">  
+    </mt-actionsheet>
+    <mt-actionsheet  
+        :actions= "options.datePlace"
+        v-model="showDatePlace">  
+    </mt-actionsheet>
   </div>
 </template>
 
 <script>
 import footer from './comm/footer.vue'
+import { Indicator } from 'mint-ui'
 export default {
     name:'recordDate',
     data () {
@@ -76,11 +75,15 @@ export default {
                 sidx: 'create_time',
                 order: 'asc'
             },
-            dateType: [],
-            datePlace: [],
-            openDateType: false,
-            openDatePlace: false,
-            msg: ''
+            // action sheet 选项内容 
+            options: {
+                dateType: [],
+                datePlace: []
+            },
+            // action sheet 默认不显示，为false。操作sheetVisible可以控制显示与隐藏  
+            showDateType: false,
+            showDatePlace: false,
+            tips: ''
         }
     },
     components: {
@@ -97,51 +100,46 @@ export default {
     watch: {
         'deta.dateTime' (val, oldVal) {
             this.deta.dateTime = val.toLocaleDateString && val.toLocaleDateString().replace(/\//g, '-') || val
+            console.log(this.deta.dateTime)
         }
-
     },
     methods:{
         getList () {
+            const self = this
             const { limit, page, sidx, order } = this.pager
-            this.getData(`/engage/engagebasedatetype/list?limit=${limit}&page=${page}&sidx=${sidx}&order=${order}`)
-            .then(res => {
-                if (res.code === 0) {
-                    this.dateType = res.page.list.map(it => {
-                        return {
-                            value: it.dateType,
-                            isChecked: false
-                        }
-                    })
-                }
-                console.log(res)
-            })
-            this.getData(`/engage/engagebasedateplace/list?limit=${limit}&page=${page}&sidx=${sidx}&order=${order}`)
-            .then(res => {
-                if (res.code === 0) {
-                    this.datePlace = res.page.list.map(it => {
-                        return {
-                            value: it.datePlace,
-                            isChecked: false
-                        }
-                    })
-                }
-                console.log(res)
-            })
+            Indicator.open(); // loading组件
+            self.getData(`/engage/engagebasedatetype/list?limit=${limit}&page=${page}&sidx=${sidx}&order=${order}`)
+                .then(res => {
+                    if (res.code === 0) {
+                        self.options.dateType = res.page.list.map(it => {
+                            return {
+                                name: it.dateType,
+                                type: 'dateType',
+                                method: self.chooseVal
+                            }
+                        })
+                        Indicator.close(); // loading组件
+                    }
+                })
+            
+            Indicator.open(); // loading组件
+            self.getData(`/engage/engagebasedateplace/list?limit=${limit}&page=${page}&sidx=${sidx}&order=${order}`)
+                .then(res => {
+                    if (res.code === 0) {
+                        self.options.datePlace = res.page.list.map(it => {
+                            return {
+                                name: it.datePlace,
+                                type: 'datePlace',
+                                method: self.chooseVal
+                            }
+                        })
+                        Indicator.close(); // loading组件
+                    }
+                })
         },
-        chooseVal (type, val) {
-            this.deta[type] = val
-            if (type == 'dateType') {
-                this.openDateType = false
-            } else {
-                this.openDatePlace = false
-            }
-            this[type].forEach(it => {
-                if (it.value === val) {
-                    it.isChecked = true
-                } else {
-                    it.isChecked = false
-                }
-            })
+        // 选择项目/地点
+        chooseVal (item) {
+            this.deta[item.type] = item.name
         },
         openPicker() {
             this.$refs.picker.open();
@@ -156,7 +154,7 @@ export default {
             let result = true
             for (let k in errMessage) {
                 if (!obj[k]) {
-                    this.msg = `${errMessage[k]}未填写`
+                    this.tips = `${errMessage[k]}未填写`
                     result = false
                     break
                 }

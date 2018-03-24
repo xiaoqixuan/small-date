@@ -7,7 +7,7 @@
         <div id="mescroll" class="mescroll">
             <!--展示上拉加载的数据列表-->
             <ul v-cloak>
-                <li v-for="n in list">
+                <li id="dataList" v-for="n in list">
                     <router-link :to="{path:'/dateDetails',query: {id: n.id, status: n.status}}" class="recordList borderBottome5e5e5 colorfe5c5c backGFFF">
                         <p style="font-size:bold">
                             <span class="textL fontSize30 fl">{{n.createUser || '-'}}</span>
@@ -58,14 +58,11 @@ export default {
             },
             list: [],
             mescroll: null,
-            totalPage: 0
+            totalPage: 2
         }
     },
     components: {
         'my-footer':footer,
-    },
-    created(){
-        // this.getList()
     },
     computed: {
         currentDate () {
@@ -79,22 +76,22 @@ export default {
       var self = this;
       self.mescroll = new this.MeScroll("mescroll", { 
         up: {
-          callback: self.upCallback, //上拉回调
-          //以下参数可删除,不配置
-          isBounce: false, //此处禁止ios回弹,解析
-          //page:{size:8}, //可配置每页8条数据,默认10
-          toTop: { //配置回到顶部按钮
-            src: require('./mescroll-totop.png'), 
-          },
-          empty: { //配置列表无任何数据的提示
-            warpId: "dataList",
-            icon: require('./mescroll-empty.png'),
-		  	// tip : "亲,暂无相关数据哦~" ,
-		  	// btntext : "去逛逛 >" ,
-		  	// btnClick : function() {
-		  	// 	alert("点击了去逛逛按钮");
-		  	// }
-          },
+            callback: self.upCallback, //上拉回调
+            //以下参数可删除,不配置
+            isBounce: false, //此处禁止ios回弹,解析
+            //page:{size:8}, //可配置每页8条数据,默认10
+            toTop: { //配置回到顶部按钮
+                src: require('./mescroll-totop.png'), 
+            },
+            empty: { //配置列表无任何数据的提示
+                warpId: "dataList",
+                icon: require('./mescroll-empty.png'),
+                // tip : "亲,暂无相关数据哦~" ,
+                // btntext : "去逛逛 >" ,
+                // btnClick : function() {
+                // 	alert("点击了去逛逛按钮");
+                // }
+            },
         }
       });
 
@@ -127,13 +124,13 @@ export default {
             //联网加载数据
             var self = this;
             this.getListDataFromNet(page.num, page.size, function (curPageData) {
-              if (page.num == 1) self.list = [];
-              //更新列表数据
-              self.list = self.list.concat(curPageData);
-              console.log("page.num=" + page.num + ", page.size=" + page.size + ", curPageData.length=" + curPageData.length + ", self.list.length==" + self.list.length);
+                if (page.num == 1) self.list = [];
+                //更新列表数据
+                self.list = self.list.concat(curPageData);
+                console.log("page.num=" + page.num + ", page.size=" + page.size + ", curPageData.length=" + curPageData.length + ", self.list.length==" + self.list.length);
 
-              //方法一(推荐): 后台接口有返回列表的总页数 totalPage
-              self.mescroll.endByPage(curPageData.length, self.totalPage); //必传参数(当前页的数据个数, 总页数)
+                //方法一(推荐): 后台接口有返回列表的总页数 totalPage
+                self.mescroll.endByPage(curPageData.length, self.totalPage); //必传参数(当前页的数据个数, 总页数)
             }, function () {
                 self.mescroll.endErr();
             });
@@ -158,7 +155,9 @@ export default {
                     } else {
                         errorCallback&&errorCallback()//失败回调
                     }
-                })
+                }).catch(function(error) {
+					errorCallback&&errorCallback()//失败回调
+				});
         }
     }
 }

@@ -15,21 +15,30 @@
             <ul class="basicsDiv backGFFF" v-if="baseTab">
                 <li class="height88 fontSize28 textL borderBottome5e5e5 paddingLR"
                     :class="{borderTop5e5e5: index === 0}"
-                    @click="getEditInformation(n)"
                     v-for="(n,index) in base">
                     {{n.label}}
 
                     <input class="fr basicsInput backGFFF"
                         type="text" style="height:.84rem;line-height:.84rem"
-                        v-if="n.type !== 'maritalStatus'"
+                        v-if="n.type !== 'maritalStatus' && n.type !== 'birthday'"
                         v-model="n.value">
-                    <dropdown v-if="n.type === 'maritalStatus'" :options="options.maritalStatus" :default.sync="n.value" @changeVal="changeMaritalStatus"></dropdown>
+
+                    <span class="fr basicsInput backGFFF"
+                        v-if="n.type === 'birthday'"
+                        @click="openPicker">
+                        {{date || '点击选择时间'}}<i class="fa fr fa-angle-right"></i>
+                    </span>
+                    <span class="fr basicsInput backGFFF"
+                        v-if="n.type === 'maritalStatus'"
+                        @click="showMaritalStatus=true">
+                        {{n.value > 1 ? (n.value == 2 ? '离异无孩' : '离异有孩') : '未婚'}}
+                        <i class="fa fr fa-angle-right"></i>
+                    </span>
                 </li>
             </ul>
             <ul class="basicsDiv backGFFF" v-if="workTab">
                 <li class="height88 fontSize28 textL borderBottome5e5e5 paddingLR"
                     :class="{borderTop5e5e5: index === 0, heightAuto: n.type == 'assets'}"
-                    @click="getEditInformation(n)"
                     v-for="(n,index) in work">
                     {{n.label}}
                     <input class="fr basicsInput backGFFF"
@@ -38,21 +47,16 @@
                         v-model="n.value">
 
                     <!-- 资产状况单独处理 -->
-                    <ul v-if="n.type === 'assets'" style="text-align: center;">
-                        <li v-for="(val, key) in n.value">
-                            <label v-for="(k) in [1,2]" :for="key+k" @click="chooseAssets(key, k)">
-                                <input v-if="val == k" :id="key+k" type="radio" :value="k" :name="key" Checked>
-                                <input v-if="val != k" :id="key+k" type="radio" :value="k" :name="key">
-                                {{k === 1 ? '有' : '无'}}{{key === 'hasHouse' ? '房' : '车'}}
-                            </label>
-                        </li>
-                    </ul>
+                    <span class="fr basicsInput backGFFF"
+                        v-if="n.type === 'assets'"
+                        @click="showAssets=true">
+                        {{n.value > 20 ? (n.value == '21' ? '无房有车' : '无房无车') : (n.value == '11' ? '有房有车' : '有房房无车')}}
+                    </span>
                 </li>
             </ul>
             <ul class="basicsDiv backGFFF" v-if="hobbyTab">
                 <li class="height88 fontSize28 textL borderBottome5e5e5 paddingLR"
                     :class="{borderTop5e5e5: index === 0}"
-                    @click="getEditInformation(n)"
                     v-for="(n,index) in hobby">
                     {{n.label}}
                     <input class="fr basicsInput backGFFF"
@@ -61,37 +65,33 @@
                 </li>
             </ul>
             <div class="indexButton loginButton textC centertBC fontSize28" @click="save">保存</div>
+
         </section>
-
         
-        
-
-        <!-- <div class="tmc" v-if="editOpen"></div>
-        <div class="sexTs" v-if="editOpen">
-            <div class="divBasics">
-                <p class="fontSize30 textL p2 trueName borderBottome5e5e5 color888">
-                    {{editObj.label}}
-                </p>
-                <p class="fontSize30 textC borderBottome5e5e5 p1 color42 trueName">性别一旦提交，就不能更改哦</p>
-                <p class="basicsNameDiv">
-                    <input type="text" v-model="editObj.value" class="basicsName color42 borderBottome5e5e5">
-                    <span class="qingkong" @click="clear"></span>
-                </p>
-                <p class="fontSize30 textC p2">
-                    <span class="s1 fl color888" @click="editOpen=false">取消</span>
-                    <span class="s2 fr colorfe5c5c" @click="save">确定</span>
-                </p>
-            </div>
-        </div> -->
+        <mt-datetime-picker
+            ref="picker"
+            type="date"
+            :startDate="startDate"
+            :endDate="endDate"
+            v-model="date">
+        </mt-datetime-picker>
+        <mt-actionsheet  
+            :actions= "options.maritalStatus"
+            v-model="showMaritalStatus">  
+        </mt-actionsheet>
+        <mt-actionsheet  
+            :actions= "options.assets"
+            v-model="showAssets">  
+        </mt-actionsheet>
     </div>
 </template>
 <script>
 import { Indicator } from 'mint-ui'
-import dropdown from './comm/dropdown.vue'
 export default {
     name: 'basics',
     data () {
         return{
+            date: '',
             tab: [
                 { label: '基本资料', isActive: true, type: 'base' }, 
                 { label: '工作学习', isActive: false, type: 'work' }, 
@@ -116,11 +116,7 @@ export default {
                 { label: '职位', value: '开发', type: 'position' }, 
                 { label: '年收入', value: '10', type: 'weight' }, 
                 { label: '毕业院校', value: '家里蹲', type: 'university' },
-                {
-                    label: '资产状况',
-                    value: {hasHouse: '有房', hasCar: '有车'},
-                    type: 'assets'
-                } 
+                { label: '资产状况', value: '12', type: 'assets' }
             ],
             hobby: [ // 兴趣爱好
                 { label: '自我介绍', value: '我是Daisy', type: 'selfIntroduction' }, 
@@ -132,62 +128,71 @@ export default {
                 { label: '喜欢的情话', value: '我在', type: 'favorite_love_words' }, 
                 { label: '喜欢的名人爱情', value: '梁祝', type: 'favorite_love_story' }
             ],
+            currentTab: 'base',
+            // action sheet 选项内容 
             options: {
                 maritalStatus: [
-                    { label: '未婚', value: 1, type: 'maritalStatus' },
-                    { label: '离异无孩', value: 2, type: 'maritalStatus' },
-                    { label: '离异有孩', value: 3, type: 'maritalStatus' }
+                    { name: '未婚', value: 1, type: 'maritalStatus', method : this.changeVal },
+                    { name: '离异无孩', value: 2, type: 'maritalStatus', method : this.changeVal },
+                    { name: '离异有孩', value: 3, type: 'maritalStatus', method : this.changeVal }
                 ],
-                hasHouse: [
-                    { label: '有房', value: 1, type: 'hasHouse' },
-                    { label: '无房', value: 2, type: 'hasHouse' },
+                assets: [
+                    { name: '有房有车', value: '11', type: 'assets', method : this.changeVal },
+                    { name: '有房无车', value: '12', type: 'assets', method : this.changeVal },
+                    { name: '无房有车', value: '21', type: 'assets', method : this.changeVal },
+                    { name: '无房无车', value: '22', type: 'assets', method : this.changeVal }
                 ]
             },
-            
-            // editOpen: false,
-            // editObj: {}
-            currentTab: 'base'
+            // action sheet 默认不显示，为false。操作sheetVisible可以控制显示与隐藏  
+            showMaritalStatus: false,
+            showAssets: false 
         }
-    },
-    components: {
-        dropdown,
     },
     created(){
         this.getDetail()
     },
-    methods:{
-        // 更改婚姻状态
-        changeMaritalStatus (obj) {
-            this.base.forEach(item => {
-                if(obj.type === item.type) { // 找到对应字段
-                    item.value = obj.value
-                }
-            })
+    computed: {
+        endDate () {
+            return new Date()
         },
-        // 选择资产
-        chooseAssets (type, val) {
-            console.log(type, val)
-            this.work.forEach(item => {
-                if(item.type === 'assets') { // 找到对应字段
-                    item.value[type] = val
+        startDate () {
+            return new Date('1970-01-01')
+        }
+    },
+    watch: {
+        date (val, oldVal) {
+            this.date = val.toLocaleDateString && val.toLocaleDateString().replace(/\//g, '-') || val
+        }
+    },
+    methods:{
+        openPicker() {
+            this.$refs.picker.open();
+        },
+        // 更改婚姻/资产状态
+        changeVal (item) {
+            const type = item.type === 'assets' ? 'work' : 'base'
+            this[type].forEach(it => {
+                if(it.type === item.type) { // 婚姻状况
+                    it.value = item.value
                 }
             })
+            console.log(item.name, item.value)
         },
         getDetail () {
-            let self = this
+            const self = this
             Indicator.open(); // loading组件
             this.getData(`/member/memberbaseinfo/info`)
             .then(_data => {
                 const { memberBaseInfo } = _data
                 self.base.forEach(it => {
                     it.value = memberBaseInfo[it.type]
+                    if (it.type === 'birthday') { // 出生年月
+                        self.date = memberBaseInfo[it.type]
+                    }
                 })
                 self.work.forEach(it => {
                     if (it.type === 'assets') { // 资产状况
-                        it.value = {
-                            hasHouse: memberBaseInfo.hasHouse, 
-                            hasCar: memberBaseInfo.hasCar
-                        }
+                        it.value = [memberBaseInfo.hasHouse, memberBaseInfo.hasCar].join('')
                     } else {
                         it.value = memberBaseInfo[it.type]
                     }
@@ -196,7 +201,6 @@ export default {
                     it.value = memberBaseInfo[it.type]
                 })
                 Indicator.close(); // loading组件
-
             })
         },
         changeTab (type) {
@@ -213,17 +217,20 @@ export default {
         },
         save () {
             const param = {}
-            this[this.currentTab].forEach(item => {
+            const self = this
+            self[self.currentTab].forEach(item => {
                 if (item.type === 'assets') { // 资产状况
-                    param.hasHouse = item.value.hasHouse
-                    param.hasCar = item.value.hasCar
+                    param.hasHouse = item.value[0]
+                    param.hasCar = item.value[1]
+                } else if (item.type === 'birthday') { // 出生年月
+                    param['birthday'] = self.date
                 } else {
                     param[item.type] = item.value
                 }
                 
             })
             console.log(param)
-            this.getData('/member/memberbaseinfo/update', param).then(res => {
+            self.getData('/member/memberbaseinfo/update', param).then(res => {
                 console.log(res)
                 if(res.code == 0) {
                     self.editOpen = false

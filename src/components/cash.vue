@@ -8,11 +8,29 @@
               我的押金
           </div>
           <div class="cashMoney textC colorfe5c5c fontSize36">
-              <span class="spanMoney">88</span>
+              <span class="spanMoney">{{depositBalance}}</span>
               <span>元</span>
           </div>
           <div class="loginButton textC centertBC fontSize28">退回押金</div>
-          <div class="loginButton textC centertBC fontSize28" style="margin-top:.3rem; background-color:#bbbbbb;">退回押金</div>
+          <!-- <div class="loginButton textC centertBC fontSize28" style="margin-top:.3rem; background-color:#bbbbbb;">退回押金</div> -->
       </section>
   </div>
 </template>
+<script>
+export default {
+    name:'balance',
+    data () {
+        return{
+            memberProperty: {}
+        }
+    },
+    computed: {
+        depositBalance () {
+            return this.$route.query.depositBalance
+        }
+    },
+    methods: {
+        
+    }
+}
+</script>

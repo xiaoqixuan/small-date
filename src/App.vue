@@ -14,7 +14,7 @@ export default {
     },
     beforeMount() {
         if (this.token) {
-            this.$router.push("/ReleaseDate")
+            // this.$router.push("/ReleaseDate")
             this.getUserInfo()
         }
     },
@@ -23,7 +23,14 @@ export default {
             this.getData(`/fans/wxfansbase/info/`)
             .then(res => {
                 if (res.code === 0) {
-                    console.log(res)
+                    const { userInfo } = res
+                    const info = {
+                        id: userInfo.id,
+                        nickname: userInfo.nickname,
+                        headImgUrl: userInfo.headImgUrl
+                    }
+					sessionStorage.setItem("userInfo", JSON.stringify(info))
+                    console.log(res, info)
                 }
             })
         }
