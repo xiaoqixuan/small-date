@@ -92,6 +92,9 @@ export default {
     computed: {
         startDate () {
             return new Date()
+        },
+        userInfo () {
+            return JSON.parse(sessionStorage.getItem("userInfo" || ''))
         }
     },
     created(){
@@ -162,9 +165,10 @@ export default {
             return result
         },
         save () {
-            let param = {
-                // createUserId: 1,
-                // createUser: 'Daisy',
+            const { id, nickname } = this.userInfo
+            const param = {
+                createUserId: id,
+                createUser: nickname,
                 ...this.deta
             }
             const result = this.checkVal(param)

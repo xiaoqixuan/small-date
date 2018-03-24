@@ -256,8 +256,9 @@ footer .indexS03{
 	background-color: #FFFFFF;
 }
 .centerDivTop img{
-	width: 1.6rem;
 	margin-top: 1rem;
+    width: 1.6rem;
+    border-radius: 50%;
 }
 .centerDivTop span{
 	display: block;

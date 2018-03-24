@@ -15,6 +15,7 @@ import Balance from '@/components/balance'
 import Cash from '@/components/cash'
 import Recharge from '@/components/recharge'
 import Basics from '@/components/basics'
+import Edit from '@/components/edit'
 import Identity from '@/components/identity'
 import RealName from '@/components/realName'
 import Education from '@/components/education'
@@ -147,6 +148,14 @@ export default new Router({
         title: '基本资料'
       },
       component: Basics
+    },
+    {
+      path: '/Edit',
+      name: 'Edit',
+      meta: {
+        title: '编辑资料'
+      },
+      component: Edit
     },
     {
       path: '/Identity',

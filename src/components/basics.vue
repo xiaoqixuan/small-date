@@ -1,7 +1,8 @@
 <template>
     <div>
         <header class="centertBC textC fontSize36">
-            <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>基本资料
+            <router-link :to="{path:'/center'}"  class="historyGo fontSize36"></router-link>
+            基本资料
         </header>
         <section class="basics">
             <ul class="height88 backGFFF fontSize28 borderBottome5e5e5">
@@ -18,17 +19,17 @@
                     v-for="(n,index) in base">
                     {{n.label}}
 
-                    <input class="fr basicsInput backGFFF"
+                    <input class="fr basicsInput backGFFF color888"
                         type="text" style="height:.84rem;line-height:.84rem"
                         v-if="n.type !== 'maritalStatus' && n.type !== 'birthday'"
                         v-model="n.value">
 
-                    <span class="fr basicsInput backGFFF"
+                    <span class="fr basicsInput backGFFF color888"
                         v-if="n.type === 'birthday'"
                         @click="openPicker">
                         {{date || '点击选择时间'}}<i class="fa fr fa-angle-right"></i>
                     </span>
-                    <span class="fr basicsInput backGFFF"
+                    <span class="fr basicsInput backGFFF color888"
                         v-if="n.type === 'maritalStatus'"
                         @click="showMaritalStatus=true">
                         {{n.value > 1 ? (n.value == 2 ? '离异无孩' : '离异有孩') : '未婚'}}
@@ -41,13 +42,13 @@
                     :class="{borderTop5e5e5: index === 0, heightAuto: n.type == 'assets'}"
                     v-for="(n,index) in work">
                     {{n.label}}
-                    <input class="fr basicsInput backGFFF"
+                    <input class="fr basicsInput backGFFF color888"
                         type="text" style="height:.84rem;line-height:.84rem"
                         v-if="n.type !== 'assets'"
                         v-model="n.value">
 
                     <!-- 资产状况单独处理 -->
-                    <span class="fr basicsInput backGFFF"
+                    <span class="fr basicsInput backGFFF color888"
                         v-if="n.type === 'assets'"
                         @click="showAssets=true">
                         {{n.value > 20 ? (n.value == '21' ? '无房有车' : '无房无车') : (n.value == '11' ? '有房有车' : '有房房无车')}}
@@ -59,13 +60,23 @@
                     :class="{borderTop5e5e5: index === 0}"
                     v-for="(n,index) in hobby">
                     {{n.label}}
-                    <input class="fr basicsInput backGFFF"
+                    
+                    <!-- <router-link class="fr basicsInput backGFFF color888"
+                        :to="{path:'/edit', query: { type: n.type }}">
+                        {{n.value || '点击编辑' + n.label}}<i class="fa fr fa-angle-right"></i>
+                    </router-link> -->
+                    <span class="fr basicsInput backGFFF color888 ellipsis" style="padding-right: .6rem;"
+                        @click="goEdit(n)">
+                        {{n.value || '点击编辑' + n.label}}
+                        <i class="fa fr fa-angle-right" style="position: absolute;right: .3rem;"></i>
+                    </span>
+                    <!-- <input class="fr basicsInput backGFFF"
                         type="text" style="height:.84rem;line-height:.84rem"
-                        v-model="n.value" disabled>
+                        v-model="n.value" disabled> -->
                 </li>
             </ul>
             <div class="indexButton loginButton textC centertBC fontSize28" @click="save">保存</div>
-
+            
         </section>
         
         <mt-datetime-picker
@@ -86,7 +97,7 @@
     </div>
 </template>
 <script>
-import { Indicator } from 'mint-ui'
+import { Indicator, Toast  } from 'mint-ui'
 export default {
     name: 'basics',
     data () {
@@ -215,6 +226,10 @@ export default {
                 self[it.type + 'Tab'] = it.isActive
             })
         },
+        goEdit (n) {
+            this.$router.push({path:'/edit'})
+            sessionStorage.setItem('information', JSON.stringify(n))
+        },
         save () {
             const param = {}
             const self = this
@@ -233,8 +248,8 @@ export default {
             self.getData('/member/memberbaseinfo/update', param).then(res => {
                 console.log(res)
                 if(res.code == 0) {
-                    self.editOpen = false
-                    self.getDetail()
+                    // self.getDetail()
+                    Toast('保存成功');
                 }
             })
         }

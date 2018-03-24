@@ -2,8 +2,8 @@
   <div class="divBox">
       <section>
         <div class="centerDivTop">
-            <img src="../assets/img/head.png" alt="">
-            <span class="fontSize28">晴天</span>
+            <img :src="userInfo.headImgUrl" alt="">
+            <span class="fontSize28">{{userInfo.nickname}}</span>
         </div>
         <div class="centerdiv1 borderBottome5e5e5">
             <router-link :to="{path:'/basics'}" class="personal fl textC fontSize28 color42"><i></i>个人资料</router-link>
@@ -32,7 +32,14 @@ import footer from './comm/footer.vue'
 export default {
     name: 'center',
     data () {
-        return {}
+        return {
+
+        }
+    },
+    computed: {
+        userInfo () {
+            return JSON.parse(sessionStorage.getItem("userInfo" || ''))
+        }
     },
     components: {
         'my-footer':footer,
