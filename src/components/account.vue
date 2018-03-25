@@ -29,7 +29,8 @@
         </section>
     </div>
 </template>
-<script>
+<script> 
+import { Indicator } from 'mint-ui'
 export default {
     name:'balance',
     data () {
@@ -38,18 +39,20 @@ export default {
         }
     },
     created(){
-        this.getList()
+        this.getDetail()
     },
     methods: {
-        getList () {
+        getDetail () {
             let self = this
+            Indicator.open(); // loading组件
             this.getData(`/member/memberproperty/info`)
-            .then(res => {
-                if (res.code === 0) {
-                    console.log(res)
-                    self.memberProperty = res.memberProperty
-                }
-            })
+                .then(res => {
+                    if (res.code === 0) {
+                        console.log(res)
+                        self.memberProperty = res.memberProperty
+                        Indicator.close(); // loading组件
+                    }
+                })
         },
         goCash () {
             const { depositBalance } = this.memberProperty

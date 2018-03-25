@@ -38,7 +38,8 @@ export default {
     },
     computed: {
         userInfo () {
-            return JSON.parse(sessionStorage.getItem("userInfo" || ''))
+            console.log()
+            return JSON.parse(sessionStorage.getItem("userInfo") || '')
         }
     },
     components: {

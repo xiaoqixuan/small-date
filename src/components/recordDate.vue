@@ -81,11 +81,11 @@ export default {
             isBounce: false, //此处禁止ios回弹,解析
             //page:{size:8}, //可配置每页8条数据,默认10
             toTop: { //配置回到顶部按钮
-                src: require('./mescroll-totop.png'), 
+                src: require('../assets/img/mescroll-totop.png'), 
             },
             empty: { //配置列表无任何数据的提示
                 warpId: "dataList",
-                icon: require('./mescroll-empty.png'),
+                icon: require('../assets/img/mescroll-empty.png'),
                 // tip : "亲,暂无相关数据哦~" ,
                 // btntext : "去逛逛 >" ,
                 // btnClick : function() {
