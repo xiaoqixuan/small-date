@@ -24,8 +24,13 @@ export default {
     },
 	methods:{
 		getCertification () {
+            const param = {
+                appId: 'wx5f9e2248022a47b8',
+                secret: '41c0fd9cef8c284f5dfbdc25e19ace02',
+                url: window.location.origin
+            }
 			const url = window.location.origin
-			this.getData(`/wechatmp/jssdk/wxconfig`, {url})
+			this.getData(`/wechatmp/jssdk/wxconfig`, param)
                 .then(res => {
                     console.log(res)
                 })

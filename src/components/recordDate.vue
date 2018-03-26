@@ -21,23 +21,6 @@
                 </li>
             </ul>
         </div>
-        <!-- <div id="mescroll" class="mescroll">
-            展示上拉加载的数据列表
-            <ul id="dataList" class="data-list" v-cloak>
-                <div v-for="(n,index) in list">
-                    <router-link :to="{path:'/dateDetails',query: {id: n.id, status: n.status}}" class="recordList borderBottome5e5e5 colorfe5c5c backGFFF">
-                      <p style="font-size:bold">
-                        <span class="textL fontSize30 fl">{{n.createUser || '-'}}</span>
-                        <span class="textR fontSize30 fl">{{n.dateTime ? ['未开始', '约会中', '约会结束'][n.status-1] : '-'}}</span>
-                      </p>
-                      <p>
-                        <span class="textL fontSize18 fl">发起人</span>
-                        <span class="textR fontSize18 fl">{{n.dateTime || '-'}}</span>
-                      </p>
-                    </router-link>
-                </div>
-            </ul>
-        </div> -->
     </section>
     <my-footer :classStyle="[false,true,false]"></my-footer>
   </div>

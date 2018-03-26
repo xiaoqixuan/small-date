@@ -23,6 +23,8 @@ import Company from '@/components/company'
 import RzDetails from '@/components/rzDetails'
 import RzSuccess from '@/components/rzSuccess'
 import ReleaseDate from '@/components/releaseDate'
+import ReleaseDetail from '@/components/releaseDetail'
+import ReleaseInfo from '@/components/releaseInfo'
 
 Vue.use(Router)
 
@@ -201,7 +203,7 @@ export default new Router({
       path: '/RzSuccess',
       name: 'RzSuccess',
       meta: {
-        title: '认证详情'
+        title: '认证成功'
       },
       component: RzSuccess
     },
@@ -212,6 +214,22 @@ export default new Router({
         title: '发布约会'
       },
       component: ReleaseDate
+    },
+    {
+      path: '/ReleaseDetail',
+      name: 'ReleaseDetail',
+      meta: {
+        title: '约会详情'
+      },
+      component: ReleaseDetail
+    },
+    {
+      path: '/ReleaseInfo',
+      name: 'ReleaseInfo',
+      meta: {
+        title: '报名'
+      },
+      component: ReleaseInfo
     }
   ]
 })

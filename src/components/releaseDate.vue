@@ -4,7 +4,7 @@
         <!-- <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a> -->发布约会
     </header>
     <section class="release-wrap">
-        <div class="releaseDate"></div>
+        <div class="releaseDate"><img src="../assets/banner.jpg" alt=""></div>
         <ul class="basicsDiv backGFFF" @click="tips = ''">
             <li class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
                 <span class="padL">约会项目</span>

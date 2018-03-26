@@ -4,181 +4,168 @@
         <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>晴天
     </header>
     <section>  
-        <div>
-            <router-link :to="{path:'/releaseDetail'}" tag="div" class="datumListBox  textL borderBottome5e5e5 color42">
-                <div class="info-detail">
-                    <img class="logo" src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg">
-                    <div class="wrap">
-                        <div class="personinfo">
-                            <span class="name">晴天</span>
-                            <img class="icon" style="heigth:15px;width:15px;" src="http://img.zcool.cn/community/0192865798cd8a0000018c1b8dad1b.jpg">
-                        </div>
-                        <div class="authen">
-                            <div>
-                                <img class="icon" style="heigth:15px;width:15px;" src="http://img.zcool.cn/community/0192865798cd8a0000018c1b8dad1b.jpg"><span>实名认证</span>  
-                            </div>
-                            <div>
-                                <img class="icon" style="heigth:15px;width:15px;" src="http://img.zcool.cn/community/0192865798cd8a0000018c1b8dad1b.jpg"><span>学历认证</span>  
-                            </div>
-                            <div>
-                                <img class="icon" style="heigth:15px;width:15px;" src="http://img.zcool.cn/community/0192865798cd8a0000018c1b8dad1b.jpg"><span>单位认证</span>  
-                            </div>
-                        </div>
-                    </div>
+        <div class="customer backGFFF">
+            <div class="avatar">
+                <img src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg">
+            </div>
+            <div class="info-detail">
+                <div class="personinfo">
+                    <span class="name">晴天</span>
+                    <i class="fa fa-venus"></i> <i class="fa fa-mars"></i>
                 </div>
-            </router-link>
+                <div class="authen">
+                    <span><i class="fa fa-user"></i>实名认证</span>
+                    <span><i class="fa fa-mortar-board"></i>学历认证</span>  
+                    <span><i class="fa fa-home"></i>单位认证</span>
+                </div>
+            </div>
         </div>
+        <div class="photos">
+            <img class="logo" src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg">
+            <img class="logo" src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg">
+            <img class="logo" src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg">
+        </div>
+        <ul class="content-msg">
+            <li>
+                <p class="title borderBottome5e5e5">基本资料</p>
+                <ul class="basicsDiv backGFFF" style="margin:0;">
+                    <li class="height88 fontSize28 textL borderBottome5e5e5 paddingLR"
+                        v-for="(n,index) in base">
+                        <span class="color888">{{n.label}}</span>
+                        <span class="fr basicsInput backGFFF">{{n.value}}</span>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p class="title borderBottome5e5e5">工作学习</p>
+                <ul class="basicsDiv backGFFF" style="margin:0;">
+                    <li class="height88 fontSize28 textL borderBottome5e5e5 paddingLR"
+                        v-for="(n,index) in work">
+                        <span class="color888">{{n.label}}</span>
+                        <span class="fr basicsInput backGFFF">{{n.value}}</span>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p class="title borderBottome5e5e5">兴趣爱好</p>
+                <ul class="basicsDiv backGFFF" style="margin:0;">
+                    <li class="height88 fontSize28 textL borderBottome5e5e5 paddingLR"
+                        v-for="(n,index) in hobby">
+                        <span class="color888">{{n.label}}</span>
+                        <span class="fr basicsInput backGFFF">{{n.value}}</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </section>
-    <div style="padding-bottom:60px;">
-        <section class="img-wrap">
-            <img class="logo" src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg">
-            <img class="logo" src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg">
-            <img class="logo" src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg">
-        </section>
-        <section>
-        <h3 class="title">基本资料</h3>
-        <mt-field label="昵称" v-model="nickname" readonly></mt-field>
-        <mt-field label="出生年月" v-model="birth" readonly></mt-field>
-        <mt-field label="身高" v-model="height" readonly></mt-field>
-        <mt-field label="体重" v-model="weight" readonly></mt-field>
-        <mt-field label="最高学历" v-model="education" readonly></mt-field>
-        <mt-field label="婚姻状况" v-model="marriage" readonly></mt-field>
-        <mt-field label="籍贯" v-model="origin" readonly></mt-field>
-        </section>
-        <section>
-            <h3 class="title">工作学习</h3>
-            <mt-field label="工作单位" v-model="work" readonly></mt-field>
-            <mt-field label="职位" v-model="position" readonly></mt-field>
-        </section>
-        <section>
-            <h3 class="title">兴趣爱好</h3>
-            <mt-field label="喜欢的电影" v-model="movie" readonly></mt-field>
-            <mt-field label="喜欢的书" v-model="book" readonly></mt-field>
-            <mt-field label="喜欢的名人爱情" v-model="like" readonly></mt-field>
-        </section>
-    </div>
+        
+        
   </div>
 </template>
-
 <script>
+import { Indicator  } from 'mint-ui'
 export default {
-  data () {
-      return {
-          nickname:"晴天",
-          birth:"1992-01-01",
-          height: "165",
-          weight: "60kg",
-          education: "本科",
-          marriage:"未婚",
-          position: "销售",
-          movie: "阿甘正川",
-          book: "爱情",
-          like: "张杰 谢娜",
-          work: "阿里巴巴集团",
-          origin:"上海"
-      }
-  }
+    data () {
+        return {
+            base: [ // 基本资料'
+                { label: '昵称', value: '晴天', type: 'nickname' }, 
+                { label: '出生年月', value: '1991-11-20', type: 'birthday' }, 
+                { label: '身高', value: '165', type: 'height' }, 
+                { label: '体重', value: '60', type: 'weight' }, 
+                { label: '最高学历', value: '本科', type: 'highestEducation' }, 
+                { label: '婚姻状况', value: '未婚', type: 'maritalStatus' }, 
+                { label: '籍贯', value: '四川', type: 'nativePlace' }
+            ],
+            work: [ // 工作学习
+                { label: '工作单位', value: '阿里巴巴集团', type: 'workUnit' }, 
+                { label: '职位', value: '开发', type: 'position' }
+            ],
+            hobby: [ // 兴趣爱好
+                { label: '喜欢的电影', value: '雏菊', type: 'favoriteMovie' }, 
+                { label: '喜欢的书', value: '人类简史', type: 'favoriteBook' }, 
+                { label: '喜欢的名人爱情', value: '梁祝', type: 'favorite_love_story' }
+            ],
+
+        }
+    },
+    created(){
+        // this.getDetail()
+    },
+    computed: {
+        
+    },
+    methods: {
+        getDetail () {
+            const self = this
+            Indicator.open(); // loading组件
+            this.getData(`/member/memberbaseinfo/info`)
+                .then(res => {
+                    console.log(res)
+                    Indicator.close(); // loading组件
+                })
+        }
+    }
 }
 </script>
-
-<style>
-    .detail img{
-        width: 80px;
-        height: 80px;
+<style lang="css" rel="stylesheet/css" scoped>
+    /* 头像及认证 */
+    .customer {
+        display: flex;
+        padding: .3rem 0 .3rem .3rem;
+        height: 2.5rem;
+    }
+    .avatar {
+        flex: 1;
+    }
+    .avatar img {
+        width: 1.8rem;
+        height: 1.8rem;
         border-radius: 50%;
-        overflow: hidden;
     }
-    .detail .wrap{
-        display: flex;
-        flex-direction:column;
+    .info-detail {
+        flex: 6;
+        padding: 0 .2rem;
+        font-size: .2rem;
+        text-align: left;
     }
-    .detail .authen{
-        display: flex;
-        flex-direction: row;
+    .info-detail .fa {
+        color: #fe5c5c;
+        margin: 0 .1rem;
     }
-    .detail .authen div{
-         display: flex;
-         align-items:center;
-         margin-right: 10px;
-         font-size: 12px;
+    .personinfo {
+        padding: .4rem 0 .1rem;
+        /* height: 50%; */
     }
-    .detail .personinfo{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        margin-bottom: 5px;
+    .personinfo .name {
+        font-size: .35rem;
     }
-    .detail .img-wrap{
-        display: flex;
-        flex-direction: row;
-        margin: 15px 0 20px 0px;
+    .authen {
+        color: #fe5c5c;
     }
-    .detail .img-wrap img{
-        width: 80px;
-        height: 80px;
-        border-radius: 5px;
-        margin:  0 0 0 15px ;
+    /* 照片 */
+    .photos {
+        padding: .2rem;
+        text-align: left;
+        font-size: 0;
     }
-    .detail .personinfo .name {
-        font-size: 14px;
-        color:#424242;
-        margin-right: 10px;
+    .photos img {
+        margin-right: 2.5%;
+        margin-bottom: 2.5%;
+        width: 18%;
+        border-radius: .1rem .1rem;
     }
-   .detail .mint-cell-title{
+    .photos img:last-child {
+        margin-right: 0;
+    }
+    /* 文字部分内容 */
+    .content-msg {
+        padding-bottom: 2rem;
+    }
+    .content-msg .title {
        text-align: left;
-       color:#888;
-       font-size: 12px;
-       padding-left: 15px;
-   }
-   .detail .mint-cell-value{
-       padding-left: 25px;
-       font-size: 14px;
-       color:#424242;
-   }
-   .detail .datumListBox{
-       display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding:20px 15px;
-        background: white;
-   }
-   .detail .info-detail{
-       display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-   }
-   .detail .title{
-       text-align: left;
-       padding-left:15px;
-       line-height: 45px;
-       font-size: 16px;
+       padding: .4rem 0 .2rem .3rem;
+       font-size: .35rem;
+       font-weight: bold;
        color: #424242;
-   }
-   .detail .logo{
-       margin-right: 10px;
-   }
-   .detail .icon{
-       width:15;
-       height: 15px;
-       margin-right: 5px;
-   }
-   .detail .margintop03{
-       margin-top: 15px;
-   }
-   .detail .surplus .mint-field-core{
-       color:#fe5c5c;
-       font-size: 14px;
-   }
-   .detail .mint-cell-wrapper{
-       padding:0;
-   }
-   .datumListBox label{
-       margin-top: 0;
-   }
-   .detail .mintui-field-error{
-       display: none;
-   }
-   
+    }
 </style>
