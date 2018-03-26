@@ -128,22 +128,22 @@ export default {
     name: 'ideal',
     data () {
         return{
-            msgData: {
-                loverBirthMin: '',
-                loverBirthMax: '',
-                loverHeightMin: '',
-                loverHeightMax: '',
-                loverWeightMin: '',
-                loverWeightMax: '',
-                loverEducation: '',
-                loverNativePlace: '',
-                loverUnmarried: '',
-                loverDivorcedNoChild: '',
-                loverDivorcedChild: '',
-                loverMinIncome: '',
-                loverHasHouse: '',
-                loverHasCar: ''
-            },
+            // msgData: {
+            //     loverBirthMin: '',
+            //     loverBirthMax: '',
+            //     loverHeightMin: '',
+            //     loverHeightMax: '',
+            //     loverWeightMin: '',
+            //     loverWeightMax: '',
+            //     loverEducation: '',
+            //     loverNativePlace: '',
+            //     loverUnmarried: '',
+            //     loverDivorcedNoChild: '',
+            //     loverDivorcedChild: '',
+            //     loverMinIncome: '',
+            //     loverHasHouse: '',
+            //     loverHasCar: ''
+            // },
             msgList: [
                 { label: '年龄', value: '25-30', type: 'Birth' }, 
                 { label: '身高', value: '175-185', type: 'Height' }, 

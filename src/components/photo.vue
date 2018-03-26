@@ -9,4 +9,30 @@
     </section>
   </div>
 </template>
+<script>
+import footer from './comm/footer.vue'
+const wx = require('weixin-js-sdk')
+export default {
+    name: 'photo',
+    data () {
+        return {
+        	msg: {}
+        }
+    },
+    created(){
+        this.getCertification()
+    },
+	methods:{
+		getCertification () {
+			const url = window.location.origin
+			this.getData(`/wechatmp/jssdk/wxconfig`, {url})
+                .then(res => {
+                    console.log(res)
+                })
+		},
+	    addPhoto () {
 
+	    }
+	}
+}
+</script>

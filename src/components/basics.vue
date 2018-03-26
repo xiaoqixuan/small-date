@@ -193,26 +193,26 @@ export default {
             const self = this
             Indicator.open(); // loading组件
             this.getData(`/member/memberbaseinfo/info`)
-            .then(_data => {
-                const { memberBaseInfo } = _data
-                self.base.forEach(it => {
-                    it.value = memberBaseInfo[it.type]
-                    if (it.type === 'birthday') { // 出生年月
-                        self.date = memberBaseInfo[it.type]
-                    }
-                })
-                self.work.forEach(it => {
-                    if (it.type === 'assets') { // 资产状况
-                        it.value = [memberBaseInfo.hasHouse, memberBaseInfo.hasCar].join('')
-                    } else {
+                .then(_data => {
+                    const { memberBaseInfo } = _data
+                    self.base.forEach(it => {
                         it.value = memberBaseInfo[it.type]
-                    }
+                        if (it.type === 'birthday') { // 出生年月
+                            self.date = memberBaseInfo[it.type]
+                        }
+                    })
+                    self.work.forEach(it => {
+                        if (it.type === 'assets') { // 资产状况
+                            it.value = [memberBaseInfo.hasHouse, memberBaseInfo.hasCar].join('')
+                        } else {
+                            it.value = memberBaseInfo[it.type]
+                        }
+                    })
+                    self.hobby.forEach(it => {
+                        it.value = memberBaseInfo[it.type]
+                    })
+                    Indicator.close(); // loading组件
                 })
-                self.hobby.forEach(it => {
-                    it.value = memberBaseInfo[it.type]
-                })
-                Indicator.close(); // loading组件
-            })
         },
         changeTab (type) {
             const self = this

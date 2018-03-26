@@ -1,6 +1,6 @@
 <template>
-  <div>
-      <header class="centertBC textC fontSize36">
+    <div>
+        <header class="centertBC textC fontSize36">
 			<a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>免费注册
 		</header>
 		<section>
@@ -41,7 +41,7 @@
 			</div>
 			
 		</div>
-  </div>
+    </div>
 </template>
 <script>
 export default {
