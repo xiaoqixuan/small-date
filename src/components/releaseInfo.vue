@@ -51,7 +51,9 @@ export default {
         // this.getDetail()
     },
     computed: {
-        
+        id () {
+            return this.$route.params.id
+        }
     },
     methods: {
         getDetail () {
@@ -97,6 +99,7 @@ export default {
     }
     .personinfo {
         display: inline;
+        font-size: .28rem;
         color: #555;
     }
    /* 文字部分内容 */

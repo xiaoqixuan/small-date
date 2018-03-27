@@ -224,7 +224,7 @@ export default new Router({
       component: ReleaseDetail
     },
     {
-      path: '/ReleaseInfo',
+      path: '/ReleaseInfo/:id',
       name: 'ReleaseInfo',
       meta: {
         title: '报名'

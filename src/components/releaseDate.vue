@@ -90,6 +90,9 @@ export default {
         'my-footer':footer,
     },
     computed: {
+        token () {
+            return window.sessionStorage.samllLogin || ''
+        },
         startDate () {
             return new Date()
         },
@@ -98,6 +101,9 @@ export default {
         }
     },
     created(){
+        if (this.token) { // 若是无userInfo
+            this.getUserInfo()
+        }
         this.getList()
     },
     watch: {
@@ -107,6 +113,21 @@ export default {
         }
     },
     methods:{
+        getUserInfo () {
+            this.getData(`/fans/wxfansbase/info/`)
+            .then(res => {
+                if (res.code === 0) {
+                    const { userInfo } = res
+                    const info = {
+                        id: userInfo.id,
+                        nickname: userInfo.nickname,
+                        headImgUrl: userInfo.headImgUrl
+                    }
+					sessionStorage.setItem("userInfo", JSON.stringify(info))
+                    console.log(res, info)
+                }
+            })
+        },
         getList () {
             const self = this
             const { limit, page, sidx, order } = this.pager
