@@ -165,6 +165,7 @@ export default {
                     { label: '有车', value: 'loverHasCar', type: 'assets' }
                 ],
                 loverEducation: [
+                    { name: '不限', value: 0, type: 'loverEducation', method : this.changeVal },
                     { name: '初中以上', value: 1, type: 'loverEducation', method : this.changeVal },
                     { name: '高中以上', value: 2, type: 'loverEducation', method : this.changeVal },
                     { name: '大专以上', value: 3, type: 'loverEducation', method : this.changeVal },
@@ -229,7 +230,7 @@ export default {
                             if (memberBaseInfo.loverUnmarried == 1) it.value.push('loverUnmarried')
                             if (memberBaseInfo.loverDivorcedNoChild == 1) it.value.push('loverDivorcedNoChild')
                             if (memberBaseInfo.loverDivorcedChild == 1) it.value.push('loverDivorcedChild')
-                        } else if (['Birth', 'Height', 'Weight'].indexOf(it.type) > -1) { // 年龄/身高/体重/学历
+                        } else if (['Birth', 'Height', 'Weight'].indexOf(it.type) > -1) { // 年龄/身高/体重
                             const min = memberBaseInfo[`lover${it.type}Min`]
                             const max = memberBaseInfo[`lover${it.type}Max`]
                             it.value = [min, max].join('-')
@@ -253,7 +254,7 @@ export default {
             }
         },
         getSlots (type, defaultVal) {
-            const list = []
+            const list = ['不限']
             const { range, gap } = this.slotsObj[type]
             for (let i=range[0];i<range[1];i+=gap) {
                 list.push(`${i+1}-${i+5}`)
@@ -294,9 +295,14 @@ export default {
                     param.loverDivorcedNoChild = item.value.indexOf('loverDivorcedNoChild') > -1 ? 1 : 0
                     param.loverDivorcedChild = item.value.indexOf('loverDivorcedChild') > -1 ? 1 : 0
                 } else if (['Birth', 'Height', 'Weight'].indexOf(item.type) > -1) { // 年龄/身高/体重/学历
-                    const list = item.value.split('-')
-                    param[`lover${item.type}Min`] = list[0]
-                    param[`lover${item.type}Max`] = list[1]
+                    if (item.value.indexOf('-') > 1) {
+                        const list = item.value.split('-')
+                        param[`lover${item.type}Min`] = list[0]
+                        param[`lover${item.type}Max`] = list[1]
+                    } else {
+                        param[`lover${item.type}Min`] = ''
+                        param[`lover${item.type}Max`] = ''
+                    }
                 } else {
                     param[item.type] = item.value
                 }

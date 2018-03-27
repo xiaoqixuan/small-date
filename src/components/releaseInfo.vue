@@ -26,8 +26,8 @@
                     </li>
                 </ul>
             </div>
-            <router-link tag="div" to="/releaseDetail" class="indexButton loginButton textC centertBC fontSize28 marginTop06">报名</router-link> 
-            <router-link tag="div" to="/releaseDetail" class="indexButton loginButton textC centertBC fontSize28 marginTop06 margintop03">不在接收此人信息</router-link> 
+            <router-link tag="div" to="/releaseDetail" class="saveButton loginButton textC centertBC fontSize28 marginTop06">报名</router-link> 
+            <router-link tag="div" to="/releaseDetail" class="saveButton loginButton textC centertBC fontSize28 marginTop06 margintop03">不在接收此人信息</router-link> 
             <div class="textC colorfe5c5c wathYh">什么是小约会？</div>
         </section>
     </div>
@@ -100,11 +100,19 @@ export default {
         color: #555;
     }
    /* 文字部分内容 */
+    .content-msg {
+        padding-bottom: 1rem;
+    }
     .content-msg .title {
        text-align: left;
        padding: .3rem;
        font-size: .35rem;
        font-weight: bold;
        color: #424242;
+    }
+    /* 按钮 */
+    .saveButton {
+        display: block;
+        margin: .2rem auto;
     }
 </style>
