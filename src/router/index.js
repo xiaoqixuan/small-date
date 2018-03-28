@@ -136,10 +136,10 @@ export default new Router({
       component: Cash
     },
     {
-      path: '/Recharge',
+      path: '/Recharge/:type',
       name: 'Recharge',
       meta: {
-        title: '余额充值'
+        title: '充值'
       },
       component: Recharge
     },

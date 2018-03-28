@@ -1,7 +1,7 @@
 <template>
     <div>
         <header class="centertBC textC fontSize36">
-            <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>余额充值
+            <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>{{type ==1 ? '余额' : '押金'}}充值
         </header>
         <section>
             <div class="yueDiv height88 paddingLR backGFFF fontSize28 borderBottome5e5e5">
@@ -20,6 +20,11 @@ export default {
     data () {
         return{
             amount: ''
+        }
+    },
+    computed: {
+        type () { // 1:余额/2:押金
+            return this.$route.params.type
         }
     },
     methods: {
