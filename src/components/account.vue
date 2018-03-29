@@ -7,8 +7,8 @@
             <router-link :to="{path:'/balance'}" class="accountBanner" style="display: block;"></router-link>
             
             <div class="borderBottome5e5e5 accountList textL fontSize28 color42">
-            开通会员
-            <router-link :to="{path:'/balance'}" tag="span" class="kaitong fr fontSize28">开通</router-link>
+                开通会员
+                <router-link :to="{path:'/balance'}" tag="span" class="kaitong fr fontSize28">开通</router-link>
             </div>
             <div class="borderBottome5e5e5 accountList textL fontSize30 color42 accountListCz">
             <span class="fontSize28 color42 yue">余额</span>
