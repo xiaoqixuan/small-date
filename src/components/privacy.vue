@@ -14,9 +14,9 @@
             </div>
             <div class="privacyList height88 color42 textL fontSize30 backGFFF borderBottome5e5e5">
                 隐藏微信号
-                <!-- <i-switch v-model="switch2" @on-change="change"></i-switch> -->
-                <mt-switch v-model="param.switch2"
-                    class="fr basicsInput backGFFF color888" :class="{active: param.switch2}"
+                <!-- <i-switch v-model="isHiddenWeixin" @on-change="change"></i-switch> -->
+                <mt-switch v-model="param.isHiddenWeixin"
+                    class="fr basicsInput backGFFF color888" :class="{active: param.isHiddenWeixin}"
                     style="width: inherit;paading:0;"></mt-switch>
             </div>
             <div class="privacyList height88 color888 textL fontSize24 borderBottome5e5e5">
@@ -54,9 +54,9 @@ export default {
         return{
             param: {
                 isHiddenWorkingunit: false,
-                switch2: false,
+                isHiddenWeixin: false,
                 isRefuseMsgPush: false,
-                isRefuseRecommended: false,
+                isRefuseRecommended: false
             }
         }
     },
@@ -70,6 +70,12 @@ export default {
             this.getData(`/member/memberbaseinfo/info`)
                 .then(_data => {
                     const { memberBaseInfo } = _data
+                    this.param = {
+                        isHiddenWorkingunit: memberBaseInfo.isHiddenWorkingunit ? true : false,
+                        isHiddenWeixin: memberBaseInfo.isHiddenWeixin ? true : false,
+                        isRefuseMsgPush: memberBaseInfo.isRefuseMsgPush ? true : false,
+                        isRefuseRecommended: memberBaseInfo.isRefuseRecommended ? true : false
+                    }
                     Indicator.close(); // loading组件
                 })
         },
@@ -81,6 +87,7 @@ export default {
             }
             console.log(param)
             self.getData('/member/memberbaseinfo/update', param).then(res => {
+                debugger
                 console.log(res)
                 if(res.code == 0) {
                     self.getDetail()

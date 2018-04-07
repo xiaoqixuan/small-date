@@ -4,7 +4,7 @@
         <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>我的相册
     </header>
     <section>
-        <div class="photoDiv"></div>
+        <div class="photoDiv" @click="addPhoto"></div>
         <!-- <div id="easyContainer"></div> -->
     </section>
   </div>
@@ -25,18 +25,66 @@ export default {
 	methods:{
 		getCertification () {
             const param = {
-                appId: 'wx5f9e2248022a47b8',
-                secret: '41c0fd9cef8c284f5dfbdc25e19ace02',
-                url: window.location.origin
+                appId: 'wxbc238120799ab05e',
+                secret: '449e021b5132f64eaa08b142895ac541',
+                url: window.location.host
             }
-			const url = window.location.origin
-			this.getData(`/wechatmp/jssdk/wxconfig`, param)
+			const url = window.location.host
+			this.getData(`/wechatmp/jssdk/wxconfig`, param, 'Form')
                 .then(res => {
+                    this.wxConfig(res.result)
                     console.log(res)
                 })
-		},
+        },
+        wxConfig (param) {
+            wx.config({  
+                debug: true, 
+                ...param,
+                jsApiList: [  
+                    // 所有要调用的 API 都要加到这个列表中  
+                    'chooseImage',  
+                    // 'previewImage',  
+                    'uploadImage',  
+                    'downloadImage'  
+                ]  
+            })
+            wx.ready(function () {  
+                wx.checkJsApi({  
+                    jsApiList: [  
+                        'chooseImage',  
+                        // 'previewImage',  
+                        'uploadImage',  
+                        'downloadImage'  
+                    ],  
+                    success: function (res) {  
+                        //alert(JSON.stringify(res));  
+                        //alert(JSON.stringify(res.checkResult.getLocation));  
+                        if (res.checkResult.getLocation == false) {  
+                            alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');  
+                            return;  
+                        }else{  
+                            // wxChooseImage();  
+                            console.log(res)
+                        }  
+                    }  
+                });  
+            });  
+            wx.error(function(res){  
+                // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。  
+                console.log("验证失败，请重试！",res);  
+                // wx.closeWindow();  
+            }); 
+        },
 	    addPhoto () {
-
+            wx.chooseImage({
+                count: 1, // 默认9
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    alert('照片选择:',localIds)
+                }
+            });
 	    }
 	}
 }

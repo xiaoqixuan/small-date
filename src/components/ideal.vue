@@ -128,31 +128,15 @@ export default {
     name: 'ideal',
     data () {
         return{
-            // msgData: {
-            //     loverBirthMin: '',
-            //     loverBirthMax: '',
-            //     loverHeightMin: '',
-            //     loverHeightMax: '',
-            //     loverWeightMin: '',
-            //     loverWeightMax: '',
-            //     loverEducation: '',
-            //     loverNativePlace: '',
-            //     loverUnmarried: '',
-            //     loverDivorcedNoChild: '',
-            //     loverDivorcedChild: '',
-            //     loverMinIncome: '',
-            //     loverHasHouse: '',
-            //     loverHasCar: ''
-            // },
             msgList: [
-                { label: '年龄', value: '25-30', type: 'Birth' }, 
-                { label: '身高', value: '175-185', type: 'Height' }, 
-                { label: '体重', value: '70-90', type: 'Weight' }, 
-                { label: '学历', value: 2, type: 'loverEducation' },
-                { label: '籍贯', value: '四川 成都', type: 'loverNativePlace' },
-                { label: '婚姻状况', value: ['loverDivorcedNoChild'], type: 'maritalStatus' },
-                { label: '最低收入', value: '20', type: 'loverMinIncome' },
-                { label: '有无车房', value: ['loverHasCar'], type: 'assets' }
+                { label: '年龄', value: '', type: 'Birth' }, 
+                { label: '身高', value: '', type: 'Height' }, 
+                { label: '体重', value: '', type: 'Weight' }, 
+                { label: '学历', value: 0, type: 'loverEducation' },
+                { label: '籍贯', value: '', type: 'loverNativePlace' },
+                { label: '婚姻状况', value: [], type: 'maritalStatus' },
+                { label: '最低收入', value: '', type: 'loverMinIncome' },
+                { label: '有无车房', value: [], type: 'assets' }
             ],
             options: {
                 maritalStatus: [
@@ -233,9 +217,9 @@ export default {
                         } else if (['Birth', 'Height', 'Weight'].indexOf(it.type) > -1) { // 年龄/身高/体重
                             const min = memberBaseInfo[`lover${it.type}Min`]
                             const max = memberBaseInfo[`lover${it.type}Max`]
-                            it.value = [min, max].join('-')
+                            it.value = min && max ? [min, max].join('-') : '不限'
                         } else {
-                            it.value = memberBaseInfo[it.type]
+                            it.value = memberBaseInfo[it.type] == 0 ? '' : memberBaseInfo[it.type]
                         }
                     })
                 })
@@ -262,6 +246,7 @@ export default {
             this.slots = [
                 { values: list, value: defaultVal, defaultIndex: list.indexOf(defaultVal) }
             ]
+            console.log(this.slots)
         },
         // 更改年龄/身高/体重状态
         onValuesChange(picker, values) {  
@@ -300,11 +285,11 @@ export default {
                         param[`lover${item.type}Min`] = list[0]
                         param[`lover${item.type}Max`] = list[1]
                     } else {
-                        param[`lover${item.type}Min`] = ''
-                        param[`lover${item.type}Max`] = ''
+                        param[`lover${item.type}Min`] = 0
+                        param[`lover${item.type}Max`] = 0
                     }
                 } else {
-                    param[item.type] = item.value
+                    param[item.type] = item.value || 0
                 }
                 
             })

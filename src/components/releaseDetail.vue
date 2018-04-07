@@ -88,17 +88,19 @@ export default {
 
         }
     },
-    created(){
-        // this.getDetail()
+    created () {
+        this.getDetail()
     },
     computed: {
-        
+        id () {
+            return this.$route.query.id
+        }
     },
     methods: {
         getDetail () {
             const self = this
             Indicator.open(); // loading组件
-            this.getData(`/member/memberbaseinfo/info`)
+            this.getData(`/engage/engageengageinfo/info/${this.id}`)
                 .then(res => {
                     console.log(res)
                     Indicator.close(); // loading组件

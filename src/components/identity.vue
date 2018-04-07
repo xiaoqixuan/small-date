@@ -5,34 +5,34 @@
         </header>
         <section>
             <ul>
-                <li @click="goLink" class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
+                <li @click="goLink({path:'/RealName'})" class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
                     <span class="fl textL">实名认证</span>
                     <span  class="fr height88 textR inputColor">
-                        {{identityData.realName ? '已认证' : '未认证'}} <i class="fa fr fa-angle-right"></i>
+                        {{identityData.isRealNameCertified ? '已认证' : '未认证'}} <i v-if="!identityData.isRealNameCertified" class="fa fr fa-angle-right"></i>
                     </span>
                 </li>
-                <li @click="goLink" class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
+                <li @click="goLink({path:'/Education'})" class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
                     <span class="fl textL">学历认证</span>
                     <span  class="fr height88 textR inputColor">
-                        {{identityData.education ? '已认证' : '未认证'}} <i class="fa fr fa-angle-right"></i>
+                        {{identityData.isEducationCertified ? '已认证' : '未认证'}} <i v-if="!identityData.isEducationCertified" class="fa fr fa-angle-right"></i>
                     </span>
                 </li>
-                <li @click="goLink" class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
+                <li @click="goLink({path:'/Company'})" class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
                     <span class="fl textL">单位认证</span>
                     <span  class="fr height88 textR inputColor">
-                        {{identityData.company ? '已认证' : '未认证'}} <i class="fa fr fa-angle-right"></i>
+                        {{identityData.isCompanyCertified ? '已认证' : '未认证'}} <i v-if="!identityData.isCompanyCertified" class="fa fr fa-angle-right"></i>
                     </span>
                 </li>
             </ul>
-            <!-- <router-link :to="{path:'/realName'}" tag="div" class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
+            <!-- <router-link :to="{path:'/RealName'}" tag="div" class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
                 <span class="fl textL">实名认证</span>
                 <input type="text" class="fr height88 textR inputColor" style="height:.87rem;line-height:.87rem" placeholder="未认证" readonly="value" />
             </router-link>
-            <router-link :to="{path:'/education'}" tag="div" class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
+            <router-link :to="{path:'/Education'}" tag="div" class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
                 <span class="fl textL">学历认证</span>
                 <input type="text" class="fr height88 textR inputColor" style="height:.86rem;line-height:.86rem" placeholder="未认证" readonly="value" />
             </router-link>
-            <router-link :to="{path:'/company'}" tag="div" class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
+            <router-link :to="{path:'/Company'}" tag="div" class="fontSize28 height88 borderBottome5e5e5 registerDiv color42 backGFFF">
                 <span class="fl textL">单位认证</span>
                 <input type="text" class="fr height88 textR inputColor" style="height:.86rem;line-height:.86rem" placeholder="未认证" readonly="value" />
             </router-link> -->
@@ -47,35 +47,37 @@ export default {
     data () {
         return{
             identityData: {
-                realName: false,
-                education: false,
-                company: true
+                isRealNameCertified: false,
+                isEducationCertified: false,
+                isCompanyCertified: false
             }
         }
     },
     created(){
-        // this.getDetail()
+        this.getDetail()
     },
     methods: {
         getDetail () {
             let self = this
             Indicator.open(); // loading组件
-            this.getData(`/member/memberproperty/info`)
+            this.getData(`/member/memberbaseinfo/info`)
                 .then(res => {
                     if (res.code === 0) {
-                        console.log(res)
+                        const { memberBaseInfo } = res
+                        this.identityData =  {
+                            isRealNameCertified: memberBaseInfo.isRealNameCertified ? true :false,
+                            isEducationCertified: memberBaseInfo.isEducationCertified ? true :false,
+                            isCompanyCertified: memberBaseInfo.isCompanyCertified ? true :false
+                        }
+                        // console.log(res)
                         Indicator.close(); // loading组件
                     }
+                }).catch(err => {
+                    Indicator.close(); // loading组件
                 })
         },
-        goLink () {
-            const { depositBalance } = this.memberProperty
-            // const depositBalance = false
-            if (depositBalance) {
-                this.$router.push({path:'/cash', query: { depositBalance } })
-            } else {
-                this.$router.push({path:'/recharge/2'})
-            }
+        goLink (obj) {
+            this.$router.push(obj)
         }
     }
 }

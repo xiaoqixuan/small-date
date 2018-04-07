@@ -4,7 +4,7 @@
             <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>晴天
         </header>
         <section>
-            <router-link :to="{path:'/releaseDetail'}" class="customer backGFFF">
+            <router-link :to="{path:'/releaseDetail',query: {id}}" class="customer backGFFF">
                 <div class="avatar">
                     <img src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg">
                 </div>
@@ -48,7 +48,7 @@ export default {
         }
     },
     created(){
-        // this.getDetail()
+        this.getDetail()
     },
     computed: {
         id () {
@@ -59,9 +59,13 @@ export default {
         getDetail () {
             const self = this
             Indicator.open(); // loading组件
-            this.getData(`/member/memberbaseinfo/info`)
+            self.getData(`/engage/engageengageinfo/info/${this.id}`)
                 .then(res => {
                     console.log(res)
+                    const { engageEngageInfo } = res
+                    self.detail.forEach(it => {
+                        it.value = engageEngageInfo[it.type]
+                    })
                     Indicator.close(); // loading组件
                 })
         }
