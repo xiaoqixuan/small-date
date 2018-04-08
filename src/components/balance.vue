@@ -71,6 +71,9 @@ export default {
                         Indicator.close(); // loading组件
                         console.log(self.cardList)
                     }
+                }).catch(err => {
+                    console.log(err)
+                    Indicator.close(); // loading组件
                 })
         },
         chooseVal (id) {

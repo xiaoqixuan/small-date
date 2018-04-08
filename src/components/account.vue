@@ -52,6 +52,9 @@ export default {
                         self.memberProperty = res.memberProperty
                         Indicator.close(); // loading组件
                     }
+                }).catch(err => {
+                    console.log(err)
+                    Indicator.close(); // loading组件
                 })
         },
         goCash () {

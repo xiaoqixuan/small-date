@@ -85,22 +85,25 @@ export default {
             const { limit, page, sidx, order } = this.pager
             Indicator.open(); // loading组件
             this.getData(`/engage/engageengageinfo/list?limit=${limit}&page=${page}&sidx=${sidx}&order=${order}`)
-            .then(res => {
-                if (res.code === 0) {
-                    self.list = res.page.list.map(it => {
-                        const date = new Date(it.dateTime && it.dateTime.replace(/-/g,'/'))
-                        const status = self.currentDate > date ? 3 : (self.currentDate < date ? 1 : 2)
-                        return {
-                            id: it.id,
-                            createUser: it.createUser,
-                            dateTime: it.dateTime,
-                            status
-                        }
-                    })
-                }
-                console.log(self.list)
-                Indicator.close(); // loading组件
-            })
+                .then(res => {
+                    if (res.code === 0) {
+                        self.list = res.page.list.map(it => {
+                            const date = new Date(it.dateTime && it.dateTime.replace(/-/g,'/'))
+                            const status = self.currentDate > date ? 3 : (self.currentDate < date ? 1 : 2)
+                            return {
+                                id: it.id,
+                                createUser: it.createUser,
+                                dateTime: it.dateTime,
+                                status
+                            }
+                        })
+                    }
+                    console.log(self.list)
+                    Indicator.close(); // loading组件
+                }).catch(err => {
+                    console.log(err)
+                    Indicator.close(); // loading组件
+                })
         },
         //上拉回调 page = {num:1, size:10}; num:当前页 ,默认从1开始; size:每页数据条数,默认10
         upCallback (page) {

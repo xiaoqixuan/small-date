@@ -144,6 +144,9 @@ export default {
                         })
                         Indicator.close(); // loading组件
                     }
+                }).catch(err => {
+                    console.log(err)
+                    Indicator.close(); // loading组件
                 })
             
             Indicator.open(); // loading组件
@@ -159,6 +162,9 @@ export default {
                         })
                         Indicator.close(); // loading组件
                     }
+                }).catch(err => {
+                    console.log(err)
+                    Indicator.close(); // loading组件
                 })
         },
         // 选择项目/地点

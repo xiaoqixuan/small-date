@@ -96,6 +96,9 @@ export default {
                     self.fromComment = res.engageEngageInfo.fromComment
                     Indicator.close(); // loading组件
                 }
+            }).catch(err => {
+                console.log(err)
+                Indicator.close(); // loading组件
             })
         },
         save () {

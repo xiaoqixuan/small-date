@@ -222,6 +222,9 @@ export default {
                             it.value = memberBaseInfo[it.type] == 0 ? '' : memberBaseInfo[it.type]
                         }
                     })
+                }).catch(err => {
+                    console.log(err)
+                    Indicator.close(); // loading组件
                 })
         },
         openChecklist (item) {
@@ -294,7 +297,7 @@ export default {
                 
             })
             console.log(param)
-             self.getData('/member/memberbaseinfo/update', param).then(res => {
+            self.getData('/member/memberbaseinfo/update', param).then(res => {
                 console.log(res)
                 if(res.code == 0) {
                     self.getDetail()

@@ -77,6 +77,9 @@ export default {
                         isRefuseRecommended: memberBaseInfo.isRefuseRecommended ? true : false
                     }
                     Indicator.close(); // loading组件
+                }).catch(err => {
+                    console.log(err)
+                    Indicator.close(); // loading组件
                 })
         },
         save () {
@@ -87,7 +90,6 @@ export default {
             }
             console.log(param)
             self.getData('/member/memberbaseinfo/update', param).then(res => {
-                debugger
                 console.log(res)
                 if(res.code == 0) {
                     self.getDetail()

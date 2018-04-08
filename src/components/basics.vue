@@ -212,6 +212,9 @@ export default {
                         it.value = memberBaseInfo[it.type]
                     })
                     Indicator.close(); // loading组件
+                }).catch(err => {
+                    console.log(err)
+                    Indicator.close(); // loading组件
                 })
         },
         changeTab (type) {

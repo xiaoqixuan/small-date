@@ -104,6 +104,9 @@ export default {
                 .then(res => {
                     console.log(res)
                     Indicator.close(); // loading组件
+                }).catch(err => {
+                    console.log(err)
+                    Indicator.close(); // loading组件
                 })
         }
     }

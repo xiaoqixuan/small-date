@@ -26,7 +26,7 @@
                     </li>
                 </ul>
             </div>
-            <router-link tag="div" to="/releaseDetail" class="saveButton loginButton textC centertBC fontSize28 marginTop06">报名</router-link> 
+            <span @click="signUp" class="saveButton loginButton textC centertBC fontSize28 marginTop06">报名</span> 
             <router-link tag="div" to="/releaseDetail" class="saveButton loginButton textC centertBC fontSize28 marginTop06 margintop03">不在接收此人信息</router-link> 
             <div class="textC colorfe5c5c wathYh">什么是小约会？</div>
         </section>
@@ -53,6 +53,10 @@ export default {
     computed: {
         id () {
             return this.$route.params.id
+        },
+        userInfo () {
+            console.log()
+            return JSON.parse(sessionStorage.getItem("userInfo") || '')
         }
     },
     methods: {
@@ -67,7 +71,25 @@ export default {
                         it.value = engageEngageInfo[it.type]
                     })
                     Indicator.close(); // loading组件
+                }).catch(err => {
+                    console.log(err)
+                    Indicator.close(); // loading组件
                 })
+        },
+        signUp () {
+            const { id, userInfo } = this
+            const param = {
+                id,
+                joinUserId: userInfo.id,
+                joinUser: userInfo.nickname,
+                joinTime: new Date().toLocaleDateString().replace(/\//g, '-')
+            }
+            console.log(param)
+            this.getData('/engage/engageengageinfo/update', param).then(res => {
+                if(res.code == 0) {
+                    // Toast('保存成功')
+                }
+            })
         }
     }
 }
