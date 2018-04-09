@@ -16,7 +16,11 @@ export default {
     name: 'photo',
     data () {
         return {
-        	msg: {}
+        	images: {
+                localId: [],  
+                serverId: [] 
+            },
+            num: 0
         }
     },
     created(){
@@ -25,8 +29,8 @@ export default {
 	methods:{
 		getCertification () {
             const param = {
-                appId: 'wxbc238120799ab05e',
-                secret: '449e021b5132f64eaa08b142895ac541',
+                appId: 'wx34a8632f0f8f508c',
+                secret: 'cfd47d86e739535cb980cb4544e1cf87',
                 url: window.location.host
             }
 			const url = window.location.host
@@ -76,16 +80,40 @@ export default {
             }); 
         },
 	    addPhoto () {
+            const self = this
+            let { localId } = this.images
             wx.chooseImage({
                 count: 1, // 默认9
                 sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                 sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                 success: function (res) {
-                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                    alert('照片选择:',localIds)
+                    localId = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    alert('照片选择:', localId)
+                    self.num = 0
+                    self.upPhoto()
                 }
             });
-	    }
+	    },
+        upPhoto () {
+            const self = this
+            const { localId, serverId } = this.images
+            const { length } = localId
+            wx.uploadImage({
+                localId: localId[self.num],
+                success: function (res) {
+                    self.num++
+                    alert('已上传：' + self.num + '/' + length)
+                    serverId.push(res.serverId);
+                    if (self.num < length) {
+                        self.upPhoto()
+                    }
+                },
+                fail: function (res) {
+                    alert("上传失败，请稍候重试");
+                }
+            });
+
+        }
 	}
 }
 </script>

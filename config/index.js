@@ -11,22 +11,26 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api/**': {
-        target: 'https://www.tanxiaojian.cn/scrm-web', //表示你跨域请求的接口的域名
-        secure: true, //如果是https接口，需要配置这个参数
-        changeOrigin: true, //如果接口跨域，需要进行这个参数配置
-        pathRewrite: {
-          '^/api': 'api'
+        '/api/**': {
+            // target: 'https://www.tanxiaojian.cn/scrm-web', //表示你跨域请求的接口的域名
+            // target: 'http://guaiyun.com.cn/scrm-web/', //表示你跨域请求的接口的域名
+            target: 'http://test.shuiyifang.org/scrm-web/', //表示你跨域请求的接口的域名
+            secure: true, //如果是https接口，需要配置这个参数
+            changeOrigin: true, //如果接口跨域，需要进行这个参数配置
+            pathRewrite: {
+            '^/api': 'api'
+            }
+        },
+        '/wechatmp/**': {
+            // target: 'https://www.tanxiaojian.cn/scrm-web', //表示你跨域请求的接口的域名
+            // target: 'http://guaiyun.com.cn/scrm-web/', //表示你跨域请求的接口的域名
+            target: 'http://test.shuiyifang.org/scrm-web/', //表示你跨域请求的接口的域名
+            secure: true, //如果是https接口，需要配置这个参数
+            changeOrigin: true, //如果接口跨域，需要进行这个参数配置
+            pathRewrite: {
+            '^/wechatmp': 'wechatmp'
+            }
         }
-      },
-      '/wechatmp/**': {
-        target: 'https://www.tanxiaojian.cn/scrm-web', //表示你跨域请求的接口的域名
-        secure: true, //如果是https接口，需要配置这个参数
-        changeOrigin: true, //如果接口跨域，需要进行这个参数配置
-        pathRewrite: {
-          '^/wechatmp': 'wechatmp'
-        }
-      }
     },
 
     // Various Dev Server settings
@@ -59,9 +63,9 @@ module.exports = {
     index: path.resolve(__dirname, '../dist/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsRoot: path.resolve(__dirname, '../dist/xyh/'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './xyh/',
 
     /**
      * Source Maps
