@@ -100,7 +100,8 @@ export default {
         getDetail () {
             const self = this
             Indicator.open(); // loading组件
-            this.getData(`/engage/engageengageinfo/info/${this.id}`)
+            // self.getData(`/engage/engageengageinfo/detail/${this.id}`)
+            self.getData(`/member/memberbaseinfo/publisher/${this.id}`)
                 .then(res => {
                     console.log(res)
                     Indicator.close(); // loading组件

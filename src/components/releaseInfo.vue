@@ -1,17 +1,17 @@
 <template>
     <div class="info">
         <header class="centertBC textC fontSize36">
-            <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>晴天
+            <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>{{userInfo.realname}}
         </header>
         <section>
             <router-link :to="{path:'/releaseDetail',query: {id}}" class="customer backGFFF">
                 <div class="avatar">
-                    <img src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg">
+                    <img :src="userInfo.headImgUrl">
                 </div>
                 <div class="info-detail">
                     <div class="personinfo">
-                        <span class="name">晴天</span>
-                        <i class="fa fa-venus"></i> <i class="fa fa-mars"></i>
+                        <span class="name">{{userInfo.realname}}</span>
+                        <i class="fa" :class="userInfo.sex == '女' ? ' fa-venus' : ' fa-mars'"></i>
                     </div>
                     <i class="fa fr fa-angle-right"></i>
                 </div>
@@ -26,8 +26,8 @@
                     </li>
                 </ul>
             </div>
-            <span @click="signUp" class="saveButton loginButton textC centertBC fontSize28 marginTop06">报名</span> 
-            <router-link tag="div" to="/releaseDetail" class="saveButton loginButton textC centertBC fontSize28 marginTop06 margintop03">不在接收此人信息</router-link> 
+            <span @click="signUp" class="saveButton loginButton textC centertBC fontSize28 marginTop06" :class="{disable: userInfo.status == 2}">报名</span> 
+            <span @click="rejectedMsg" class="saveButton loginButton textC centertBC fontSize28 marginTop06 margintop03">不在接收此人信息</span> 
             <div class="textC colorfe5c5c wathYh">什么是小约会？</div>
         </section>
     </div>
@@ -37,6 +37,7 @@ import { Indicator  } from 'mint-ui'
 export default {
     data () {
         return {
+            userInfo: {},
             detail: [
                 { label: '约会项目', value: '喝咖啡', type: 'dateType' }, 
                 { label: '约会时间', value: '2017-12-12 17:00', type: 'dateTime' },
@@ -63,13 +64,25 @@ export default {
         getDetail () {
             const self = this
             Indicator.open(); // loading组件
-            self.getData(`/engage/engageengageinfo/info/${this.id}`)
+            self.getData(`/engage/engageengageinfo/detail/${this.id}`)
                 .then(res => {
                     console.log(res)
                     const { engageEngageInfo } = res
                     self.detail.forEach(it => {
-                        it.value = engageEngageInfo[it.type]
+                        if (it.type == 'status') { // 0-未报名，1-已报名,2-已结束
+                            const val = engageEngageInfo[it.type]
+                            it.value = val ? (val == 1 ? '已报名' : '已结束') : '未报名'
+                        } else {
+                            it.value = engageEngageInfo[it.type]
+                        }
                     })
+                    self.userInfo = {
+                        // status: engageEngageInfo.status,
+                        status: 2,
+                        realname: engageEngageInfo.realname || '晴天',
+                        sex: engageEngageInfo.sex || '女',
+                        headImgUrl: engageEngageInfo.headImgUrl || 'http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg'
+                    }
                     Indicator.close(); // loading组件
                 }).catch(err => {
                     console.log(err)
@@ -79,13 +92,20 @@ export default {
         signUp () {
             const { id, userInfo } = this
             const param = {
-                id,
+                // id,
                 joinUserId: userInfo.id,
                 joinUser: userInfo.nickname,
                 joinTime: new Date().toLocaleDateString().replace(/\//g, '-')
             }
             console.log(param)
-            this.getData('/engage/engageengageinfo/update', param).then(res => {
+            this.getData(`/engage/engageengageinfo/join/${this.id}`, param, 'Form').then(res => {
+                if(res.code == 0) {
+                    // Toast('保存成功')
+                }
+            })
+        },
+        rejectedMsg () {
+            this.getData(`/member/rejectperson/save/${this.id}`).then(res => {
                 if(res.code == 0) {
                     // Toast('保存成功')
                 }
