@@ -10,20 +10,21 @@
             </div>
             <div class="info-detail">
                 <div class="personinfo">
-                    <span class="name">晴天</span>
-                    <i class="fa fa-venus"></i> <i class="fa fa-mars"></i>
+                    <span class="name">{{loverInfo.realname}}</span>
+                    <i class="fa" :class="loverInfo.sex == '女' ? ' fa-venus' : ' fa-mars'"></i>
                 </div>
                 <div class="authen">
-                    <span><i class="fa fa-user"></i>实名认证</span>
-                    <span><i class="fa fa-mortar-board"></i>学历认证</span>  
-                    <span><i class="fa fa-home"></i>单位认证</span>
+                    <span :class="!loverInfo.isRealNameCertified ? 'certified' : null"><i class="fa fa-user"></i>实名认证</span>
+                    <span :class="!loverInfo.isEducationCertified ? 'certified' : null"><i class="fa fa-mortar-board"></i>学历认证</span>  
+                    <span :class="!loverInfo.isCompanyCertified ? 'certified' : null"><i class="fa fa-home"></i>单位认证</span>
                 </div>
             </div>
         </div>
-        <div class="photos">
+        <div v-if="loverInfo.photos && loverInfo.photos.length" class="photos">
+            <img v-for="(n,index) in loverInfo.photos" :src="n">
+            <!-- <img class="logo" src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg">
             <img class="logo" src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg">
-            <img class="logo" src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg">
-            <img class="logo" src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg">
+            <img class="logo" src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg"> -->
         </div>
         <ul class="content-msg">
             <li>
@@ -67,6 +68,7 @@ import { Indicator  } from 'mint-ui'
 export default {
     data () {
         return {
+            loverInfo: {},
             base: [ // 基本资料'
                 { label: '昵称', value: '晴天', type: 'nickname' }, 
                 { label: '出生年月', value: '1991-11-20', type: 'birthday' }, 
@@ -100,10 +102,28 @@ export default {
         getDetail () {
             const self = this
             Indicator.open(); // loading组件
-            // self.getData(`/engage/engageengageinfo/detail/${this.id}`)
             self.getData(`/member/memberbaseinfo/publisher/${this.id}`)
                 .then(res => {
-                    console.log(res)
+                    const { memberBaseInfo, photos } = res.result
+                    self.loverInfo = {
+                        realname: memberBaseInfo.realname || '晴天',
+                        sex: memberBaseInfo.sex || '女',
+                        headImgUrl: memberBaseInfo.headImgUrl || 'http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg',
+                        isRealNameCertified: memberBaseInfo.isRealNameCertified ? true :false,
+                        isEducationCertified: memberBaseInfo.isEducationCertified || true ? true :false,
+                        isCompanyCertified: memberBaseInfo.isCompanyCertified ? true :false,
+                        photos
+                        // photos: ['http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg']
+                    }
+                    self.base.forEach(it => {
+                        it.value = memberBaseInfo[it.type]
+                    })
+                    self.work.forEach(it => {
+                        it.value = memberBaseInfo[it.type]
+                    })
+                    self.hobby.forEach(it => {
+                        it.value = memberBaseInfo[it.type]
+                    })
                     Indicator.close(); // loading组件
                 }).catch(err => {
                     console.log(err)
@@ -134,8 +154,13 @@ export default {
         font-size: .2rem;
         text-align: left;
     }
-    .info-detail .fa {
+    .authen, .personinfo .fa {
         color: #fe5c5c;
+    }
+    .certified {
+        color: #999;
+    }
+    .info-detail .fa {
         margin: 0 .1rem;
     }
     .personinfo {
@@ -145,12 +170,10 @@ export default {
     .personinfo .name {
         font-size: .35rem;
     }
-    .authen {
-        color: #fe5c5c;
-    }
     /* 照片 */
     .photos {
         padding: .2rem;
+        padding-bottom: 0;
         text-align: left;
         font-size: 0;
     }
@@ -160,7 +183,7 @@ export default {
         width: 18%;
         border-radius: .1rem .1rem;
     }
-    .photos img:last-child {
+    .photos img:nth-child(5n) {
         margin-right: 0;
     }
     /* 文字部分内容 */

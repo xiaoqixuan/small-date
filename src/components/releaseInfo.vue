@@ -1,17 +1,17 @@
 <template>
     <div class="info">
         <header class="centertBC textC fontSize36">
-            <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>{{userInfo.realname}}
+            <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>{{loverInfo.realname}}
         </header>
         <section>
             <router-link :to="{path:'/releaseDetail',query: {id}}" class="customer backGFFF">
                 <div class="avatar">
-                    <img :src="userInfo.headImgUrl">
+                    <img :src="loverInfo.headImgUrl">
                 </div>
                 <div class="info-detail">
                     <div class="personinfo">
-                        <span class="name">{{userInfo.realname}}</span>
-                        <i class="fa" :class="userInfo.sex == '女' ? ' fa-venus' : ' fa-mars'"></i>
+                        <span class="name">{{loverInfo.realname}}</span>
+                        <i class="fa" :class="loverInfo.sex == '女' ? ' fa-venus' : ' fa-mars'"></i>
                     </div>
                     <i class="fa fr fa-angle-right"></i>
                 </div>
@@ -26,7 +26,7 @@
                     </li>
                 </ul>
             </div>
-            <span @click="signUp" class="saveButton loginButton textC centertBC fontSize28 marginTop06" :class="{disable: userInfo.status == 2}">报名</span> 
+            <span @click="signUp" class="saveButton loginButton textC centertBC fontSize28 marginTop06" :class="{disable: loverInfo.status == 2}">报名</span> 
             <span @click="rejectedMsg" class="saveButton loginButton textC centertBC fontSize28 marginTop06 margintop03">不在接收此人信息</span> 
             <div class="textC colorfe5c5c wathYh">什么是小约会？</div>
         </section>
@@ -37,7 +37,7 @@ import { Indicator  } from 'mint-ui'
 export default {
     data () {
         return {
-            userInfo: {},
+            loverInfo: {},
             detail: [
                 { label: '约会项目', value: '喝咖啡', type: 'dateType' }, 
                 { label: '约会时间', value: '2017-12-12 17:00', type: 'dateTime' },
@@ -76,9 +76,9 @@ export default {
                             it.value = engageEngageInfo[it.type]
                         }
                     })
-                    self.userInfo = {
-                        // status: engageEngageInfo.status,
-                        status: 2,
+                    self.loverInfo = {
+                        status: engageEngageInfo.status,
+                        // status: 2,
                         realname: engageEngageInfo.realname || '晴天',
                         sex: engageEngageInfo.sex || '女',
                         headImgUrl: engageEngageInfo.headImgUrl || 'http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg'
@@ -92,9 +92,8 @@ export default {
         signUp () {
             const { id, userInfo } = this
             const param = {
-                // id,
                 joinUserId: userInfo.id,
-                joinUser: userInfo.nickname,
+                joinUser: userInfo.nickname || 'XX',
                 joinTime: new Date().toLocaleDateString().replace(/\//g, '-')
             }
             console.log(param)
