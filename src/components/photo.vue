@@ -142,8 +142,8 @@ export default {
                 sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                 sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                 success: function (res) {
-                    this.images.localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                    alert('照片选择:', this.images.localIds)
+                    self.images.localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    alert('照片选择:', res.localIds)
                     self.num = 0
                     self.upPhoto()
                 }
@@ -158,7 +158,7 @@ export default {
                     self.num++
                     alert('已上传：' + self.num + '/' + length)
                     
-                    this.images.serverIds.push(res.serverId);
+                    self.images.serverIds.push(res.serverId);
                     if (self.num < length) {
                         self.upPhoto()
                     }
@@ -176,11 +176,14 @@ export default {
                 type: 1
             }
             Indicator.open(); // loading组件
-			this.getData(`/member/memberbasephotos/save`, param, 'Form')
+			this.getData(`/member/memberbasephotos/save`, param)
                 .then(res => {
                     console.log(res)
                     this.clearData() // 清空现有数据
                     this.getPhotos() // 拉取最新数据
+                    Indicator.close(); // loading组件
+                }).catch(err => {
+                    console.log(err)
                     Indicator.close(); // loading组件
                 })
         },
