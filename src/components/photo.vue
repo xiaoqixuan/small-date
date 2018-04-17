@@ -6,8 +6,8 @@
     </header>
     <section>
         <div v-if="images.showlist.length" class="photos">
-            <li v-for="(n,index) in images.showlist" @click="deletePhoto(n.imgId, false)" class="img-wrap">
-                <div class="shaow">{{n.imgId}}<i class="fa fa-trash-o"></i></div>
+            <li v-for="(n,index) in images.showlist" @click="deletePhoto(n.id, false)" class="img-wrap">
+                <div class="shaow"><i class="fa fa-trash-o"></i></div>
                 <img :src="n.imgUrl">
             </li>
         </div>
@@ -15,7 +15,7 @@
         <p v-if="images.localIds.length" class="photos-tip">已添加</p>
         <div v-if="images.localIds.length" class="photos">
             <li v-for="(n,index) in images.localIds" @click="deletePhoto(index, true)" class="img-wrap">
-                <div class="shaow">{{n.imgId}}<i class="fa fa-trash-o"></i></div>
+                <div class="shaow"><i class="fa fa-trash-o"></i></div>
                 <img :src="n">
                 <!-- <img v-for="(n,index) in images.localIds" :src="n"> -->
                 <!-- <img src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg"> -->
@@ -29,12 +29,17 @@
 <script>
 import footer from './comm/footer.vue'
 import { Indicator } from 'mint-ui'
-import index from '../../node_modules/.2.5.16@vue';
 const wx = require('weixin-js-sdk')
 export default {
     name: 'photo',
     data () {
         return {
+            pager: {
+                limit: 30,
+                page: 1,
+                sidx: 'create_time',
+                order: 'asc'
+            },
         	images: {
                 localIds: [],
                 serverIds: [],
@@ -54,34 +59,20 @@ export default {
                 serverIds: [],
                 showlist: []
             }
+            this.num = 0
         },
         getPhotos () {
             const self = this
+            const { limit, page, sidx, order } = this.pager
             Indicator.open(); // loading组件
-            this.getData(`/member/memberbasephotos/list?type=1`)
+            this.getData(`/member/memberbasephotos/list?type=1&limit=${limit}&page=${page}&sidx=${sidx}&order=${order}`)
                 .then(res => {
-                    let { showlist } = this.images
-                    showlist = res.result
-                    console.log(showlist)
+                    self.images.showlist = res.page.list
                     Indicator.close(); // loading组件
                 }).catch(err => {
                     console.log(err)
                     Indicator.close(); // loading组件
                 })
-            // setTimeout(()=>{
-            //     self.images.showlist = [
-            //         {
-            //             imgId: 1,
-            //             imgUrl: "http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg"
-            //         },
-            //         {
-            //             imgId: 2,
-            //             imgUrl: "http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg"
-            //         }
-            //     ]
-            //     console.log(self.images.showlist)
-            //     Indicator.close(); // loading组件
-            // }, 1000)
         },
 		getCertification () {
             const param = {
@@ -143,7 +134,7 @@ export default {
                 sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                 success: function (res) {
                     self.images.localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                    alert('照片选择:', res.localIds)
+                    alert('照片选择:', res.localIds, self.images.localIds)
                     self.num = 0
                     self.upPhoto()
                 }
@@ -195,10 +186,7 @@ export default {
             } else { // 已上传列表
                 // const { showlist } = this.images
                 // this.images.showlist = showlist.filter(n => n.imgId !== id)
-                const param = {
-                    ids: [id]
-                }
-                this.getData(`/member/memberbasephotos/delete`, param)
+                this.getData(`/member/memberbasephotos/delete`, [id])
                     .then(res => {
                         console.log(res)
                         this.getPhotos()
