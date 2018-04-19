@@ -12,8 +12,8 @@
             </li>
         </div>
         <!-- <div v-if="images.localIds.length" class="photos"> -->
-        <p v-if="images.localIds.length" class="photos-tip">已添加</p>
-        <div v-if="images.localIds.length" class="photos">
+        <p v-if="images.serverIds.length" class="photos-tip">已添加</p>
+        <div v-if="images.serverIds.length" class="photos">
             <li v-for="(n,index) in images.localIds" @click="deletePhoto(index, true)" class="img-wrap">
                 <div class="shaow"><i class="fa fa-trash-o"></i></div>
                 <img :src="n">
@@ -128,23 +128,30 @@ export default {
         },
 	    addPhoto () {
             const self = this
+            const { length } = this.images.localIds
             wx.chooseImage({
                 // count: 1, // 默认9
                 sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                 sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                 success: function (res) {
-                    self.images.localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                    alert('照片选择:', res.localIds, self.images.localIds)
-                    self.num = 0
+                    if (length) { // 有数据
+                        self.images.localIds.push(res.localIds) // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                        alert('照片选择:', res.localIds, self.images.localIds)
+                    } else {
+                        self.images.localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                        alert('照片选择:', res.localIds, self.images.localIds)
+                        self.num = 0
+                    }
                     self.upPhoto()
                 }
             });
 	    },
         upPhoto () {
             const self = this
-            const { length } = this.images.localIds
+            const { localIds } = this.images
+            const { length } = localIds
             wx.uploadImage({
-                localId: localId[self.num],
+                localId: localIds[self.num],
                 success: function (res) {
                     self.num++
                     alert('已上传：' + self.num + '/' + length)
@@ -163,7 +170,7 @@ export default {
         saveUpload () {
             const { serverIds } = this.images
             const param = {
-                serverId: serverIds,
+                serverId: serverIds.join(','),
                 type: 1
             }
             Indicator.open(); // loading组件
