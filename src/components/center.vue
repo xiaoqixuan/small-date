@@ -2,8 +2,11 @@
   <div class="divBox">
       <section>
         <div class="centerDivTop">
-            <img :src="userInfo.headImgUrl" alt="">
-            <span class="fontSize28">{{userInfo.nickname}}</span>
+            <img class="bg" src="../assets/img/center.jpg" alt="">
+            <div class="user-wrap">
+                <img class= "avatar" :src="userInfo.headImgUrl" alt="">
+                <span class="fontSize28">{{userInfo.nickname}}</span>
+            </div>
         </div>
         <div class="centerdiv1 borderBottome5e5e5">
             <router-link :to="{path:'/basics'}" class="personal fl textC fontSize28 color42"><i></i>个人资料</router-link>
