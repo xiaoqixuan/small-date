@@ -12,8 +12,8 @@ function jsonToQueryString(json) {
 function getData(Vue, options) {
     return function (_url, _data, type) {
         return new Promise(function (resolve, reject) {
-            // let requestUrl = '/scrm-web' + (_url.indexOf('wxconfig') > -1 ? _url : (Host + _url));
-            let requestUrl = _url.indexOf('wxconfig') > -1 ? _url : (Host + _url);
+            let requestUrl = '/scrm-web' + (_url.indexOf('wxconfig') > -1 ? _url : (Host + _url));
+            // let requestUrl = _url.indexOf('wxconfig') > -1 ? _url : (Host + _url);
             // let requestUrl = Host + _url;
             const token = window.sessionStorage.samllLogin || ''
             // if (token) {

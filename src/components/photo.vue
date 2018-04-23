@@ -2,7 +2,7 @@
   <div>
     <header class="centertBC textC fontSize36">
         <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>我的相册
-            <span style="position: absolute;right: .3rem;font-size: .3rem;" @click="saveUpload">上传</span>
+            <span style="position: absolute;right: .3rem;font-size: .3rem;" @click="saveUpload">保存</span>
     </header>
     <section>
         <div v-if="images.showlist.length" class="photos">
@@ -11,16 +11,12 @@
                 <img :src="n.imgUrl">
             </li>
         </div>
-        <!-- <div v-if="images.localIds.length" class="photos"> -->
         <p v-if="images.serverIds.length" class="photos-tip">已添加</p>
         <div v-if="images.serverIds.length" class="photos">
-            <li v-for="(n,index) in images.localIds" @click="deletePhoto(index, true)" class="img-wrap">
+            <li v-for="(n,index) in images.localIds" @click="deletePhoto(n.id, true)" class="img-wrap">
                 <div class="shaow"><i class="fa fa-trash-o"></i></div>
-                <img :src="n">
-                <!-- <img v-for="(n,index) in images.localIds" :src="n"> -->
-                <!-- <img src="http://www.onegreen.org/QQ/UploadFiles/201302/2013022822455722.jpg"> -->
+                <img :src="n.src">
             </li>
-            
         </div>
         <div class="photoDiv" @click="addPhoto"></div>
     </section>
@@ -29,7 +25,7 @@
 <script>
 import footer from './comm/footer.vue'
 import { Indicator } from 'mint-ui'
-const wx = require('weixin-js-sdk')
+// const wx = require('weixin-js-sdk')
 export default {
     name: 'photo',
     data () {
@@ -49,7 +45,7 @@ export default {
         }
     },
     created(){
-        this.getCertification()
+        // this.getCertification()
         this.getPhotos()
     },
 	methods:{
@@ -134,12 +130,27 @@ export default {
                 sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                 sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                 success: function (res) {
+                    let list = []
                     if (length) { // 有数据
-                        self.images.localIds.push(res.localIds) // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                        alert('照片选择:', res.localIds, self.images.localIds)
+                        list = res.localIds.map((el, i) => {
+                            return {
+                                id: self.images.localIds[length].id + i + 1,
+                                src: el
+                            }
+                        })
+                        self.images.localIds.concat(list)
+                        // self.images.localIds.push(res.localIds) // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                        // alert('照片选择:', res.localIds, self.images.localIds)
                     } else {
-                        self.images.localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                        alert('照片选择:', res.localIds, self.images.localIds)
+                        list = res.localIds.map((el, i) => {
+                            return {
+                                id: i + 1,
+                                src: el
+                            }
+                        })
+                        self.images.localIds = list
+                        // self.images.localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                        // alert('照片选择:', res.localIds, self.images.localIds)
                         self.num = 0
                     }
                     self.upPhoto()
@@ -151,17 +162,22 @@ export default {
             const { localIds } = this.images
             const { length } = localIds
             wx.uploadImage({
-                localId: localIds[self.num],
+                localId: localIds[self.num].src,
                 success: function (res) {
                     self.num++
                     alert('已上传：' + self.num + '/' + length)
                     
-                    self.images.serverIds.push(res.serverId);
+                    self.images.serverIds.push({
+                        id: localIds[self.num].id,
+                        src: res.serverId
+                    });
                     if (self.num < length) {
                         self.upPhoto()
                     }
                 },
                 fail: function (res) {
+                    const { localIds } = self.images
+                    self.images.localIds = localIds.filter((n, index) => localIds[self.num].id !== id)
                     alert("上传失败，请稍候重试");
                 }
             });
@@ -169,8 +185,9 @@ export default {
         },
         saveUpload () {
             const { serverIds } = this.images
+            const list = serverIds.map(el => el.src)
             const param = {
-                serverId: serverIds.join(','),
+                serverId: list.join(','),
                 type: 1
             }
             Indicator.open(); // loading组件
@@ -188,11 +205,9 @@ export default {
         deletePhoto (id, type) {
             if (type) { // 待上传列表
                 const { localIds, serverIds } = this.images
-                this.images.localIds = localIds.filter((n, index) => index !== id)
-                this.images.serverIds = serverIds.filter((n, index) => index !== id)
+                this.images.localIds = localIds.filter((n, index) => n.id !== id)
+                this.images.serverIds = serverIds.filter((n, index) => n.id !== id)
             } else { // 已上传列表
-                // const { showlist } = this.images
-                // this.images.showlist = showlist.filter(n => n.imgId !== id)
                 this.getData(`/member/memberbasephotos/delete`, [id])
                     .then(res => {
                         console.log(res)

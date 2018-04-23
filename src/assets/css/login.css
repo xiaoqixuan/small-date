@@ -363,8 +363,8 @@ footer .indexS03{
 }
 /*我的账户*/
 .accountBanner{
-	background-image: url(../img/account.jpg);
-	background-size: 7rem 3.5rem;
+	/* background-image: url(../img/account.jpg); */
+	/* background-size: 7rem 3.5rem; */
 	height: 3.5rem;
 	width: 7rem;
 	margin: .24rem .3rem 0 .3rem;
