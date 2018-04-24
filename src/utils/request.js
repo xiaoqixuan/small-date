@@ -12,20 +12,16 @@ function jsonToQueryString(json) {
 function getData(Vue, options) {
     return function (_url, _data, type) {
         return new Promise(function (resolve, reject) {
-            let requestUrl = '/scrm-web' + (_url.indexOf('wxconfig') > -1 ? _url : (Host + _url));
-            // let requestUrl = _url.indexOf('wxconfig') > -1 ? _url : (Host + _url);
+            // let requestUrl = '/scrm-web' + (_url.indexOf('wechat') > -1 ? _url : (Host + _url));
+            const requestUrl = _url.indexOf('wechat') > -1 ? _url : (Host + _url);
             // let requestUrl = Host + _url;
             const token = window.sessionStorage.samllLogin || ''
-            // if (token) {
-            //     requestUrl += (requestUrl.indexOf('?') > -1 ? '&' : '?') + 'token=' + window.sessionStorage.samllLogin || '';
-            // }
             // 根据type判断是否为表单提交
             _data = type ? jsonToQueryString(_data) : JSON.stringify(_data)
             fetch(requestUrl, {
                 method: 'POST',
                 headers: {
                     "Content-Type": type ? "application/x-www-form-urlencoded" : "application/json;charset=utf-8",
-                    // "User-SessionID": window.sessionStorage.sessionId || "",
                     "token": window.sessionStorage.samllLogin || ''
                 },
                 body: _data
