@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>上传客户征信授权书</title>
+    <link rel="stylesheet" href="<?php echo dirname(__APP__);?>__PUBLIC__/WeChat/css/reset.css">
+    <link rel="stylesheet" href="<?php echo dirname(__APP__);?>__PUBLIC__/WeChat/css/Public.css">
+    <link rel="stylesheet" href="<?php echo dirname(__APP__);?>__PUBLIC__/WeChat/css/uploadInfo2.css">
+    <style>
+        .t_button{
+            height: 0.4rem !important;
+        }
+        .ire{
+            height: 0.4rem !important;
+            height: 0.4rem !important;
+        }
+        .styleImg img{
+            float: left;
+            width: 100%;
+            height: 100%;
+        }
+        .styleImg{
+            display: inline-block;
+        }
+        /*遮罩层样式*/
+        .shade{
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            position: absolute;
+            z-index: 999;
+        }
+        .inner_shade{
+            height: 1.6rem;
+            width: 1.8rem;
+            background: rgba(242,242,242,1);
+            opacity: 0.9;
+            position: absolute;
+            top:calc(50% - 48px);
+            left: 50%;
+            -webkit-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+            border-radius: 5px;
+        }
+        .jg{
+            height: 0.273rem;
+        }
+        .s_img{
+            overflow: hidden;
+            width: 0.62rem;
+            height: 0.61rem;
+            float: left;
+            margin-left: 50%;
+            -webkit-transform: translate(-50%,0);
+            transform: translate(-50%,0);
+
+        }
+        .s{
+            width: 100%;
+            overflow: hidden;
+        }
+        .Warning{
+            width: 100%;
+            height: 100%;
+            float: left;
+        }
+        .one{
+            font-size: 0.16rem;
+            color: #000000;
+            text-align: center;
+            font-weight: bold;
+        }
+        .one1{
+            font-size: 0.13rem;
+            margin-bottom: 0.1rem;
+            text-align: center;
+            color: #333333;
+        }
+        .s1{
+            width: 100%;
+            height: 0.16rem;
+        }
+        .s2{
+            width: 100%;
+            height: 0.1rem;
+        }
+        .shade{
+            display: none;
+        }
+        .delete{
+            position: absolute;
+            top:-6px;
+            right:-6px;
+            background: url("<?php echo dirname(__APP__);?>__PUBLIC__/WeChat/img/dele.png");
+            width: 16px;
+            height: 16px;
+        }
+        .styleImg{
+            position: relative;
+            width: 0.8rem;
+            height: 0.8rem;
+            margin-left: calc((100% - 2.4rem)/4);
+            margin-bottom:0.25rem;
+            float: left;
+
+        }
+        .styleImg img{
+            width: 100%;
+            height: 100%;
+        }
+        .uploading{
+            float: left;
+            margin-left: calc((100% - 2.4rem)/4);
+
+        }
+        .xiaoshi{
+            display: none;
+            margin-left: 0;
+        }
+        .uploading_picture:after{display:block;clear:both;content:"";visibility:hidden;height:0}
+    </style>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script src="<?php echo dirname(__APP__);?>__PUBLIC__/WeChat/js/jquery-2.0.3.min.js"></script>
+    <script src="<?php echo dirname(__APP__);?>__PUBLIC__/WeChat/js/fontSize.js"></script>
+
+</head>
+<body>
+<div class="shade">
+    <div class="inner_shade">
+        <div class="jg"></div>
+        <div class="s">
+            <div class="s_img">
+                <img class="Warning" src="" alt="">
+            </div>
+        </div>
+        <div class="s1"></div>
+        <div class="one"></div>
+        <div class="s2"></div>
+        <div class="one1"></div>
+    </div>
+</div>
+<div class="content">
+    <div class="top_spicing"></div>
+    <div class="identityCard">
+        <div class="inner_identityCard">上传客户征信授权书</div>
+    </div>
+    <div class="uploading_picture uploading_picture2">
+        <div class="uploading uploading2" id="show"></div>
+    </div>
+    <input type="hidden" name="orderId" id="orderId" value="{$orderId}" />
+    <div class="t_button"><span class="ire"></span></div>
+    <div class="button" id="tijiao">下一步</div>
+    <div style="width: 100%;height: 0.4rem"></div>
+</div>
+<script type="text/javascript">
+
+    wx.config({
+        debug:  false,		// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: '{$appId}', // 必填，公众号的唯一标识
+        timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+        nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+        signature: '{$signature}',// 必填，签名，见附录1
+        jsApiList: [
+            'chooseImage',//选图接口
+            'uploadImage',//上传图片接口
+            'downloadImage',//下载图片接口
+        ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
+
+    wx.ready(function(){
+        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+        wx.checkJsApi({
+            jsApiList: [
+                'chooseImage',
+                'uploadImage',
+                'downloadImage',
+            ],
+            success: function(res) {
+                //alert(JSON.stringify(res));
+            }
+        });
+
+        var images = {
+            localId: [],
+            serverId: [],
+            downloadId: []//可以无视
+        };
+        var aa=' ';
+        var bb='';
+        var deleteArr=[]
+        var upImg1;
+        var removeItem = 0;
+        document.getElementById("show").onclick = function(){
+            $(".ire").text("")
+            if(($(".uploading_picture2 .styleImg img").length - $(".uploading_picture2 .styleImg img.xiaoshi").length)>=9){
+                alert("最多上传9张")
+                return false
+            }
+            wx.chooseImage({
+                count:9, // 默认8
+                sizeType: [ 'original'], // 可以指定是原图'original',还是压缩图compressed，默认二者都有
+                sourceType: ['album'], // 可以指定来源是相册还是相机, 'camera'，默认二者都有
+                success: function (res) {
+                    images.localId = res.localIds;// 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    upImg1 = images.serverId;
+                    upImg();
+                    var str = '';
+
+                    for(var i=$(".uploading_picture2 .styleImg img").length;i<res.localIds.length+$(".uploading_picture2 .styleImg img").length;i++){
+
+                        str += '<div style="position: relative" class="styleImg">+<img  src="'+images.localId[i-$(".uploading_picture2 .styleImg img").length]+'" alt="" />+<input type="text" value="'+i+'" style="width: 0.4rem;height: 0.2rem;position: absolute;top: 0;left: 0;display: none;">+<span class="delete delete1">+</span>+</div>';
+
+                    }
+
+                    $(".uploading_picture2").prepend(str);
+
+                    $(function(){
+                        var obj = document.getElementsByClassName('delete1');
+                        for(var i=0;i<obj.length;i++){
+
+                            obj[i].index = i;
+                            obj[i].onclick = function(){
+                                $(".ire").text("")
+                                upImg1.splice($(this).prev().val(),1,0);
+                                $(this).addClass("xiaoshi");
+                                $(this).prev().prev().addClass("xiaoshi");
+                                $(this).prev().addClass("xiaoshi");
+                                $(this).parent().addClass("xiaoshi");
+                                return upImg1
+                            }
+                        }
+
+                    });
+
+                }
+            });
+            var num=0;
+            function upImg(){
+                var length = images.localId.length;
+                wx.uploadImage({
+                    localId: images.localId[num],
+                    success: function (res) {
+                        num++;
+                        /* 					        alert('已上传：' + num + '/' + length); */
+                        images.serverId.push(res.serverId);
+                        if (num < length) {
+                            upImg();
+                        }
+                    },
+                    fail: function (res) {
+                        alert("上传失败，请稍候重试");
+                    }
+                });
+
+            }
+
+        }
+
+        $("#tijiao").click(function(){
+            if(($(".uploading_picture2 .styleImg img").length - $(".uploading_picture2 .styleImg img.xiaoshi").length)<=0){
+
+                $(".ire").text("请上传客户征信授权书")
+                return false
+            }
+            if(($(".uploading_picture2 .styleImg img").length - $(".uploading_picture2 .styleImg img.xiaoshi").length)>9){
+                $(".ire").text("最多上传9张图片")
+                return false
+            }
+            $(".shade").show();
+            $(".Warning").attr("src","<?php echo dirname(__APP__);?>__PUBLIC__/WeChat/img/push.png");
+            $(".one").text("请耐心等待");
+            /* var upImg = images.serverId; */
+            var upImg1 = images.serverId;
+            upImg1 = $.grep(upImg1, function(value) {
+                return value != removeItem;
+            })
+            $.ajax({
+                type: "POST",
+                data: {
+                    'upImg': upImg1,'condition':1,'orderId':$("#orderId").val(),'imgPath':2
+                },
+                url: "__URL__/ajaxWxDownImg",
+                dataType: "json",
+                success: function (c) {
+                    if(c.status ==1){
+                        $(".shade").hide();
+                        location.href="__APP__"+c.url;
+                    }
+                }
+            })
+        });
+    });
+    wx.error(function(res){
+        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+    });
+
+
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@
   <div>
     <header class="centertBC textC fontSize36">
         <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>我的相册
-            <span style="position: absolute;right: .3rem;font-size: .3rem;" @click="saveUpload">上传XX</span>
+            <span style="position: absolute;right: .3rem;font-size: .3rem;" @click="saveUpload">保存</span>
     </header>
     <section>
         <div v-if="images.showlist.length" class="photos">
@@ -13,10 +13,6 @@
         </div>
         <p v-if="images.serverIds.length" class="photos-tip">已添加</p>
         <div v-if="images.serverIds.length" class="photos">
-            <!-- <li v-for="(n,index) in images.localIds" @click="deletePhoto(index, true)" class="img-wrap">
-                <div class="shaow"><i class="fa fa-trash-o"></i></div>
-                <img :src="n">
-            </li> -->
             <li v-for="(n,index) in images.localIds" @click="deletePhoto(n.id, true)" class="img-wrap">
                 <div class="shaow"><i class="fa fa-trash-o"></i></div>
                 <img :src="n.src">
@@ -78,8 +74,7 @@ export default {
             const param = {
                 appId: 'wx34a8632f0f8f508c',
                 secret: 'cfd47d86e739535cb980cb4544e1cf87',
-                url: window.location.host 
-                // url: 'http://www.guaiyun.store/xyh/'
+                url: window.location.host
             }
 			const url = window.location.host
 			this.getData(`/wechatmp/jssdk/wxconfig`, param, 'Form')
@@ -94,8 +89,7 @@ export default {
                 ...param,
                 jsApiList: [  
                     // 所有要调用的 API 都要加到这个列表中  
-                    'chooseImage',  
-                    // 'previewImage',  
+                    'chooseImage',
                     'uploadImage',  
                     'downloadImage'  
                 ]  
@@ -108,14 +102,11 @@ export default {
                         'uploadImage',  
                         'downloadImage'  
                     ],  
-                    success: function (res) {  
-                        //alert(JSON.stringify(res));  
-                        //alert(JSON.stringify(res.checkResult.getLocation));  
+                    success: function (res) {
                         if (res.checkResult.getLocation == false) {  
                             alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');  
                             return;  
-                        }else{  
-                            // wxChooseImage();  
+                        }else{
                             console.log(res)
                         }  
                     }  
@@ -137,18 +128,16 @@ export default {
                 success: function (res) {
                     let list = []
                     if (length) { // 有数据
-                        // self.images.localIds.push(res.localIds) // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                        // alert('照片选择:', res.localIds, self.images.localIds)
                         list = res.localIds.map((el, i) => {
                             return {
                                 id: self.images.localIds[length].id + i + 1,
                                 src: el
                             }
                         })
-                        self.images.localIds = self.images.localIds.concat(list)
-                    } else {
-                        // self.images.localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                        self.images.localIds.concat(list)
+                        // self.images.localIds.push(res.localIds) // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                         // alert('照片选择:', res.localIds, self.images.localIds)
+                    } else {
                         list = res.localIds.map((el, i) => {
                             return {
                                 id: i + 1,
@@ -156,6 +145,8 @@ export default {
                             }
                         })
                         self.images.localIds = list
+                        // self.images.localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                        // alert('照片选择:', res.localIds, self.images.localIds)
                         self.num = 0
                     }
                     self.upPhoto()
@@ -166,25 +157,22 @@ export default {
             const self = this
             const { localIds } = this.images
             const { length } = localIds
-            alert('当前localIds：', self.images.localIds[self.num].src, JSON.stringify(self.images.localIds))
             wx.uploadImage({
                 localId: localIds[self.num].src,
                 success: function (res) {
-                    alert('已经上传：' + self.num + '/' + length)
+                    self.num++
+                    alert('已上传：' + self.num + '/' + length)
                     
-                    // self.images.serverIds.push(res.serverId);
-                    alert('upload', JSON.stringify(res.serverId), JSON.stringify(self.images.serverIds))
                     self.images.serverIds.push({
-                        id: self.images.localIds[self.num].id,
+                        id: localIds[self.num].id,
                         src: res.serverId
                     });
-                    // alert('后', JSON.parse(self.images.localIds), JSON.parse(self.images.serverIds))
                     if (self.num < length) {
                         self.upPhoto()
                     }
-                    self.num++
                 },
                 fail: function (res) {
+                    const { localIds } = self.images
                     self.images.localIds = localIds.filter((n, index) => localIds[self.num].id !== id)
                     alert("上传失败，请稍候重试");
                 }
@@ -194,9 +182,8 @@ export default {
         saveUpload () {
             const { serverIds } = this.images
             const list = serverIds.map(el => el.src)
-            alert('保存上传', JSON.stringify(serverIds), JSON.stringify(list))
+            alert(list)
             const param = {
-                // serverId: serverIds.join(','),
                 serverId: list.join(','),
                 type: 1
             }
@@ -215,13 +202,9 @@ export default {
         deletePhoto (id, type) {
             if (type) { // 待上传列表
                 const { localIds, serverIds } = this.images
-                // this.images.localIds = localIds.filter((n, index) => index !== id)
-                // this.images.serverIds = serverIds.filter((n, index) => index !== id)
                 this.images.localIds = localIds.filter((n, index) => n.id !== id)
                 this.images.serverIds = serverIds.filter((n, index) => n.id !== id)
             } else { // 已上传列表
-                // const { showlist } = this.images
-                // this.images.showlist = showlist.filter(n => n.imgId !== id)
                 this.getData(`/member/memberbasephotos/delete`, [id])
                     .then(res => {
                         console.log(res)

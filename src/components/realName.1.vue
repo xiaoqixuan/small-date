@@ -1,85 +1,56 @@
 <template>
-  <div>
-    <header class="centertBC textC fontSize36">
-        <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>我的相册
-            <span style="position: absolute;right: .3rem;font-size: .3rem;" @click="saveUpload">上传XX</span>
-    </header>
-    <section>
-        <div v-if="images.showlist.length" class="photos">
-            <li v-for="(n,index) in images.showlist" @click="deletePhoto(n.id, false)" class="img-wrap">
-                <div class="shaow"><i class="fa fa-trash-o"></i></div>
-                <img :src="n.imgUrl">
-            </li>
-        </div>
-        <p v-if="images.serverIds.length" class="photos-tip">已添加</p>
-        <div v-if="images.serverIds.length" class="photos">
-            <!-- <li v-for="(n,index) in images.localIds" @click="deletePhoto(index, true)" class="img-wrap">
-                <div class="shaow"><i class="fa fa-trash-o"></i></div>
-                <img :src="n">
-            </li> -->
-            <li v-for="(n,index) in images.localIds" @click="deletePhoto(n.id, true)" class="img-wrap">
-                <div class="shaow"><i class="fa fa-trash-o"></i></div>
-                <img :src="n.src">
-            </li>
-        </div>
-        <div class="photoDiv" @click="addPhoto"></div>
-    </section>
-  </div>
+    <div>
+        <header class="centertBC textC fontSize36">
+            <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>实名认证
+        </header>
+        <section>
+            <div class="realNameDiv backGFFF">
+                <span class="realNamePic"></span>
+                <span class="fontSize36 color42 realName textC">实名认证</span>
+                <span class="fontSize24 realName textC color999" style="padding:0;">为了每个人的真诚，请完成实名认证，</span>
+                <span class="fontSize24 realName textC color999">我们绝不会泄露您的隐私</span>
+            </div>
+            <div class="realNamePhoto">
+                <div v-if="images.serverIds.length" class="photos">
+                    <li v-for="(n,index) in images.localIds" @click="deletePhoto(n.id)" class="img-wrap">
+                        <div class="shaow"><i class="fa fa-trash-o"></i></div>
+                        <img :src="n.src">
+                    </li>
+                </div>    
+                <div v-if="images.serverIds.length < 2" class="realNameBoder backGFFF">
+                    <span class="photoNum fontSize28 color999">{{images.serverIds.length}}/2</span>
+                    <div class="photoDiv" @click="addPhoto"></div>
+                    <div class="color999 fontSize28 realNameYu">请上传身份证正面和反面</div>
+                </div>
+            </div>
+            <div @click="saveUpload" class="indexButton loginButton textC centertBC fontSize28">提交</div>
+        </section>
+    </div>
 </template>
+
 <script>
-import footer from './comm/footer.vue'
-import { Indicator } from 'mint-ui'
 const wx = require('weixin-js-sdk')
 export default {
-    name: 'photo',
+    name: 'realName',
     data () {
         return {
-            pager: {
-                limit: 30,
-                page: 1,
-                sidx: 'create_time',
-                order: 'asc'
-            },
         	images: {
                 localIds: [],
-                serverIds: [],
-                showlist: []
+                serverIds: []
             },
             num: 0
         }
     },
     created(){
         this.getCertification()
-        this.getPhotos()
+        // this.getPhotos()
     },
 	methods:{
-        clearData () {
-            this.images = {
-                localIds: [],  
-                serverIds: [],
-                showlist: []
-            }
-            this.num = 0
-        },
-        getPhotos () {
-            const self = this
-            const { limit, page, sidx, order } = this.pager
-            Indicator.open(); // loading组件
-            this.getData(`/member/memberbasephotos/list?type=1&limit=${limit}&page=${page}&sidx=${sidx}&order=${order}`)
-                .then(res => {
-                    self.images.showlist = res.page.list
-                    Indicator.close(); // loading组件
-                }).catch(err => {
-                    console.log(err)
-                    Indicator.close(); // loading组件
-                })
-        },
 		getCertification () {
             const param = {
                 appId: 'wx34a8632f0f8f508c',
                 secret: 'cfd47d86e739535cb980cb4544e1cf87',
-                url: window.location.host 
-                // url: 'http://www.guaiyun.store/xyh/'
+                url: window.location.host
             }
 			const url = window.location.host
 			this.getData(`/wechatmp/jssdk/wxconfig`, param, 'Form')
@@ -131,24 +102,21 @@ export default {
             const self = this
             const { length } = this.images.localIds
             wx.chooseImage({
-                // count: 1, // 默认9
+                count: length ? 1 : 2, // 默认9
                 sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                 sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                 success: function (res) {
                     let list = []
                     if (length) { // 有数据
-                        // self.images.localIds.push(res.localIds) // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                        // alert('照片选择:', res.localIds, self.images.localIds)
                         list = res.localIds.map((el, i) => {
                             return {
                                 id: self.images.localIds[length].id + i + 1,
                                 src: el
                             }
                         })
-                        self.images.localIds = self.images.localIds.concat(list)
+                        self.images.localIds.concat(list)
+                        // self.images.localIds.push(res.localIds) // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                     } else {
-                        // self.images.localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                        // alert('照片选择:', res.localIds, self.images.localIds)
                         list = res.localIds.map((el, i) => {
                             return {
                                 id: i + 1,
@@ -156,6 +124,7 @@ export default {
                             }
                         })
                         self.images.localIds = list
+                        // self.images.localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                         self.num = 0
                     }
                     self.upPhoto()
@@ -166,25 +135,21 @@ export default {
             const self = this
             const { localIds } = this.images
             const { length } = localIds
-            alert('当前localIds：', self.images.localIds[self.num].src, JSON.stringify(self.images.localIds))
             wx.uploadImage({
                 localId: localIds[self.num].src,
                 success: function (res) {
-                    alert('已经上传：' + self.num + '/' + length)
-                    
-                    // self.images.serverIds.push(res.serverId);
-                    alert('upload', JSON.stringify(res.serverId), JSON.stringify(self.images.serverIds))
+                    self.num++
+                    alert('已上传：' + self.num + '/' + length)
                     self.images.serverIds.push({
-                        id: self.images.localIds[self.num].id,
+                        id: localIds[self.num].id,
                         src: res.serverId
                     });
-                    // alert('后', JSON.parse(self.images.localIds), JSON.parse(self.images.serverIds))
                     if (self.num < length) {
                         self.upPhoto()
                     }
-                    self.num++
                 },
                 fail: function (res) {
+                    const { localIds } = self.images
                     self.images.localIds = localIds.filter((n, index) => localIds[self.num].id !== id)
                     alert("上传失败，请稍候重试");
                 }
@@ -194,53 +159,38 @@ export default {
         saveUpload () {
             const { serverIds } = this.images
             const list = serverIds.map(el => el.src)
-            alert('保存上传', JSON.stringify(serverIds), JSON.stringify(list))
             const param = {
-                // serverId: serverIds.join(','),
                 serverId: list.join(','),
-                type: 1
+                type: 2
             }
             Indicator.open(); // loading组件
 			this.getData(`/member/memberbasephotos/save`, param)
                 .then(res => {
                     console.log(res)
-                    this.clearData() // 清空现有数据
-                    this.getPhotos() // 拉取最新数据
                     Indicator.close(); // loading组件
                 }).catch(err => {
                     console.log(err)
                     Indicator.close(); // loading组件
                 })
         },
-        deletePhoto (id, type) {
-            if (type) { // 待上传列表
-                const { localIds, serverIds } = this.images
-                // this.images.localIds = localIds.filter((n, index) => index !== id)
-                // this.images.serverIds = serverIds.filter((n, index) => index !== id)
-                this.images.localIds = localIds.filter((n, index) => n.id !== id)
-                this.images.serverIds = serverIds.filter((n, index) => n.id !== id)
-            } else { // 已上传列表
-                // const { showlist } = this.images
-                // this.images.showlist = showlist.filter(n => n.imgId !== id)
-                this.getData(`/member/memberbasephotos/delete`, [id])
-                    .then(res => {
-                        console.log(res)
-                        this.getPhotos()
-                    })
-            }
+        deletePhoto (id) {
+            const { localIds, serverIds } = this.images
+            this.images.localIds = localIds.filter((n, index) => n.id !== id)
+            this.images.serverIds = serverIds.filter((n, index) => n.id !== id)
         }
 	}
 }
 </script>
+
 <style lang="css" rel="stylesheet/css" scoped>
     /* 照片 */
-    .photos-tip {
+    /* .photos-tip {
         text-align: left;
         padding: .2rem .2rem 0 .2rem;
-    }
+    } */
     .photos {
         padding: .2rem;
-        padding-bottom: 0;
+        /* padding-bottom: 0; */
         text-align: left;
         font-size: 0;
     }
@@ -248,7 +198,7 @@ export default {
         position: relative;
         display: inline-block;
         margin-right: 2%;
-        margin-bottom: 2.5%;
+        /* margin-bottom: 2.5%; */
         width: 23.5%;
         border-radius: .1rem .1rem;
         overflow: hidden;
