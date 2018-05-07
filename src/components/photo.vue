@@ -2,7 +2,11 @@
   <div>
     <header class="centertBC textC fontSize36">
         <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>我的相册
+<<<<<<< HEAD
             <span style="position: absolute;right: .3rem;font-size: .3rem;" @click="saveUpload">上传XX</span>
+=======
+            <span style="position: absolute;right: .3rem;font-size: .3rem;" @click="saveUpload">保存</span>
+>>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
     </header>
     <section>
         <div v-if="images.showlist.length" class="photos">
@@ -13,12 +17,17 @@
         </div>
         <p v-if="images.serverIds.length" class="photos-tip">已添加</p>
         <div v-if="images.serverIds.length" class="photos">
+<<<<<<< HEAD
             <!-- <li v-for="(n,index) in images.localIds" @click="deletePhoto(index, true)" class="img-wrap">
                 <div class="shaow"><i class="fa fa-trash-o"></i></div>
                 <img :src="n">
             </li> -->
             <li v-for="(n,index) in images.localIds" @click="deletePhoto(n.id, true)" class="img-wrap">
                 <div class="shaow"><i class="fa fa-trash-o"></i></div>
+=======
+            <li v-for="(n,index) in images.localIds" @click="deletePhoto(n.id, true)" class="img-wrap">
+                <div class="shaow"><i class="fa fa-trash-o"></i></div>
+>>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
                 <img :src="n.src">
             </li>
         </div>
@@ -29,7 +38,7 @@
 <script>
 import footer from './comm/footer.vue'
 import { Indicator } from 'mint-ui'
-const wx = require('weixin-js-sdk')
+// const wx = require('weixin-js-sdk')
 export default {
     name: 'photo',
     data () {
@@ -49,7 +58,7 @@ export default {
         }
     },
     created(){
-        this.getCertification()
+        // this.getCertification()
         this.getPhotos()
     },
 	methods:{
@@ -137,18 +146,28 @@ export default {
                 success: function (res) {
                     let list = []
                     if (length) { // 有数据
+<<<<<<< HEAD
                         // self.images.localIds.push(res.localIds) // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                         // alert('照片选择:', res.localIds, self.images.localIds)
+=======
+>>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
                         list = res.localIds.map((el, i) => {
                             return {
                                 id: self.images.localIds[length].id + i + 1,
                                 src: el
                             }
                         })
+<<<<<<< HEAD
                         self.images.localIds = self.images.localIds.concat(list)
                     } else {
                         // self.images.localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                         // alert('照片选择:', res.localIds, self.images.localIds)
+=======
+                        self.images.localIds.concat(list)
+                        // self.images.localIds.push(res.localIds) // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                        // alert('照片选择:', res.localIds, self.images.localIds)
+                    } else {
+>>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
                         list = res.localIds.map((el, i) => {
                             return {
                                 id: i + 1,
@@ -156,6 +175,11 @@ export default {
                             }
                         })
                         self.images.localIds = list
+<<<<<<< HEAD
+=======
+                        // self.images.localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                        // alert('照片选择:', res.localIds, self.images.localIds)
+>>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
                         self.num = 0
                     }
                     self.upPhoto()
@@ -172,6 +196,7 @@ export default {
                 success: function (res) {
                     alert('已经上传：' + self.num + '/' + length)
                     
+<<<<<<< HEAD
                     // self.images.serverIds.push(res.serverId);
                     alert('upload', JSON.stringify(res.serverId), JSON.stringify(self.images.serverIds))
                     self.images.serverIds.push({
@@ -179,12 +204,22 @@ export default {
                         src: res.serverId
                     });
                     // alert('后', JSON.parse(self.images.localIds), JSON.parse(self.images.serverIds))
+=======
+                    self.images.serverIds.push({
+                        id: localIds[self.num].id,
+                        src: res.serverId
+                    });
+>>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
                     if (self.num < length) {
                         self.upPhoto()
                     }
                     self.num++
                 },
                 fail: function (res) {
+<<<<<<< HEAD
+=======
+                    const { localIds } = self.images
+>>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
                     self.images.localIds = localIds.filter((n, index) => localIds[self.num].id !== id)
                     alert("上传失败，请稍候重试");
                 }
@@ -194,9 +229,13 @@ export default {
         saveUpload () {
             const { serverIds } = this.images
             const list = serverIds.map(el => el.src)
+<<<<<<< HEAD
             alert('保存上传', JSON.stringify(serverIds), JSON.stringify(list))
             const param = {
                 // serverId: serverIds.join(','),
+=======
+            const param = {
+>>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
                 serverId: list.join(','),
                 type: 1
             }
@@ -215,13 +254,14 @@ export default {
         deletePhoto (id, type) {
             if (type) { // 待上传列表
                 const { localIds, serverIds } = this.images
+<<<<<<< HEAD
                 // this.images.localIds = localIds.filter((n, index) => index !== id)
                 // this.images.serverIds = serverIds.filter((n, index) => index !== id)
+=======
+>>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
                 this.images.localIds = localIds.filter((n, index) => n.id !== id)
                 this.images.serverIds = serverIds.filter((n, index) => n.id !== id)
             } else { // 已上传列表
-                // const { showlist } = this.images
-                // this.images.showlist = showlist.filter(n => n.imgId !== id)
                 this.getData(`/member/memberbasephotos/delete`, [id])
                     .then(res => {
                         console.log(res)

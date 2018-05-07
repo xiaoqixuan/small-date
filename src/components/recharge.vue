@@ -9,7 +9,10 @@
                 <input class="fl moneySpan colorb4" type="number"
                     placeholder="请输入充值金额" v-model="amount" />
             </div>
+<<<<<<< HEAD
             <!-- <div class="loginButton textC centertBC fontSize28" style="margin-top:.6rem" :class="{disable: !amount}">立即支付</div> -->
+=======
+>>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
             <div class="loginButton textC centertBC fontSize28" style="margin-top:.6rem" :class="{disable: !amount}" @click="payAmount">立即支付</div>
         </section>
     </div>
@@ -33,6 +36,7 @@ export default {
         this.getCertification()
     },
     methods: {
+<<<<<<< HEAD
 		getCertification () {
             const param = {
                 appId: 'wx34a8632f0f8f508c',
@@ -76,6 +80,8 @@ export default {
                 // wx.closeWindow();  
             }); 
         },
+=======
+>>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
         payAmount () {
             const { amount, type } = this
             const param = {
@@ -84,7 +90,11 @@ export default {
             }
 			this.getData(`/wechat/mp/prePay`, param)
                 .then(res => {
+<<<<<<< HEAD
                     alert(JSON.stringify(res.result))
+=======
+                    alert(res.result)
+>>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
                     this.wxPay(res.result)
                 }).catch(err => {
                     console.log(err)
@@ -98,12 +108,16 @@ export default {
                 // package: '', // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
                 // signType: '', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
                 // paySign: '', // 支付签名
+<<<<<<< HEAD
                 timestamp: param.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
                 nonceStr: param.nonceStr, // 支付签名随机串，不长于 32 位
                 package: param.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
                 signType: param.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
                 paySign: param.paySign, // 支付签名
                 // ...param,
+=======
+                ...param,
+>>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
                 success: function (res) {
                     // 支付成功后的回调函数
                     self.successBack()

@@ -4,7 +4,9 @@
             <a href="javascript:history.back(-1)" class="historyGo fontSize36"></a>我的账户
         </header>
         <section>
-            <router-link :to="{path:'/balance'}" class="accountBanner" style="display: block;"></router-link>
+            <router-link :to="{path:'/balance'}" class="accountBanner" style="display: block;">
+                <img src="../assets/img/account.jpg" alt="">
+            </router-link>
             
             <div class="borderBottome5e5e5 accountList textL fontSize28 color42">
                 开通会员
