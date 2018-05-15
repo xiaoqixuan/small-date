@@ -7,8 +7,26 @@
           <div class="rzTjPic"></div>
           <div class="rzTitle fontSize36 color42">提交成功</div>
           <div class="rzTitle fontSize28 color999" style="padding-top:.2rem;">预计审核将在48小时内完成</div>
-          <div class="indexButton loginButton textC centertBC fontSize28">完成</div>
+          <div @click="submit" class="indexButton loginButton textC centertBC fontSize28">完成</div>
       </section>
   </div>
 </template>
 
+<script>
+export default {
+    name:'rzDetails',
+    data () {
+        return{
+            
+        }
+    },
+    computed: {
+        
+    },
+    methods: {
+        submit () {
+            this.$router.push("/center")
+        }
+    }
+}
+</script>

@@ -9,10 +9,7 @@
                 <input class="fl moneySpan colorb4" type="number"
                     placeholder="请输入充值金额" v-model="amount" />
             </div>
-<<<<<<< HEAD
             <!-- <div class="loginButton textC centertBC fontSize28" style="margin-top:.6rem" :class="{disable: !amount}">立即支付</div> -->
-=======
->>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
             <div class="loginButton textC centertBC fontSize28" style="margin-top:.6rem" :class="{disable: !amount}" @click="payAmount">立即支付</div>
         </section>
     </div>
@@ -29,21 +26,24 @@ export default {
     },
     computed: {
         type () { // 1:余额/2:押金
-            return this.$route.params.type
+            return this.$route.query.type
+        },
+        verify () {
+            return JSON.parse(sessionStorage.getItem("verify") || {})
         }
     },
     created(){
         this.getCertification()
     },
     methods: {
-<<<<<<< HEAD
 		getCertification () {
+            const { verify } = this
             const param = {
-                appId: 'wx34a8632f0f8f508c',
-                secret: 'cfd47d86e739535cb980cb4544e1cf87',
-                url: window.location.host
+                // appId: 'wx34a8632f0f8f508c',
+                // secret: 'cfd47d86e739535cb980cb4544e1cf87',
+                ...verify,
+                url: window.location.href
             }
-			const url = window.location.host
 			this.getData(`/wechatmp/jssdk/wxconfig`, param, 'Form')
                 .then(res => {
                     this.wxConfig(res.result)
@@ -77,47 +77,38 @@ export default {
             wx.error(function(res){  
                 // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。  
                 console.log("验证失败，请重试！",res);  
-                // wx.closeWindow();  
             }); 
         },
-=======
->>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
         payAmount () {
             const { amount, type } = this
-            const param = {
-                amount,
-                orderType: type == 1 ? 2 : 3
+            if (amount) {
+                const param = {
+                    amount,
+                    orderType: type == 1 ? 2 : 3
+                }
+                this.getData(`/wechat/mp/prePay`, param)
+                    .then(res => {
+                        alert(JSON.stringify(res.result))
+                        this.wxPay(res.result)
+                    }).catch(err => {
+                        console.log(err)
+                    })
             }
-			this.getData(`/wechat/mp/prePay`, param)
-                .then(res => {
-<<<<<<< HEAD
-                    alert(JSON.stringify(res.result))
-=======
-                    alert(res.result)
->>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
-                    this.wxPay(res.result)
-                }).catch(err => {
-                    console.log(err)
-                })
         },
         wxPay (param) {
             const self = this
             wx.chooseWXPay({
-                // timestamp: 0, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-                // nonceStr: '', // 支付签名随机串，不长于 32 位
-                // package: '', // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-                // signType: '', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-                // paySign: '', // 支付签名
-<<<<<<< HEAD
-                timestamp: param.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-                nonceStr: param.nonceStr, // 支付签名随机串，不长于 32 位
-                package: param.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-                signType: param.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-                paySign: param.paySign, // 支付签名
+                timestamp: param.timeStamp,
+                nonceStr: param.nonceStr,
+                package: param.packageValue,
+                signType: param.signType,
+                paySign: param.paySign,
+                // timestamp: param.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                // nonceStr: param.nonceStr, // 支付签名随机串，不长于 32 位
+                // package: data.packageValue,// 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                // signType: param.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                // paySign: param.paySign, // 支付签名
                 // ...param,
-=======
-                ...param,
->>>>>>> 519146ddc7dded480abdec39560a320e5513a3f3
                 success: function (res) {
                     // 支付成功后的回调函数
                     self.successBack()
@@ -126,6 +117,7 @@ export default {
         },
         successBack () {
             alert('支付成功啦~')
+            this.$router.push("/account")
         }
     }
 }

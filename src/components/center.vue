@@ -41,7 +41,6 @@ export default {
     },
     computed: {
         userInfo () {
-            console.log()
             return JSON.parse(sessionStorage.getItem("userInfo") || '')
         }
     },

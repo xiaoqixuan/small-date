@@ -247,7 +247,6 @@
                     localId: images.localId[num],
                     success: function (res) {
                         num++;
-                        /* 					        alert('已上传：' + num + '/' + length); */
                         images.serverId.push(res.serverId);
                         if (num < length) {
                             upImg();

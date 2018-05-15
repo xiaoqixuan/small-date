@@ -518,7 +518,7 @@ footer .indexS03{
 }
 .realNamePhoto{
 	padding: .24rem;
-	height: 3.4rem;
+	/* height: 3.4rem; */
 }
 .realNameBoder{
 	border: .01rem dashed #fe5c5c;

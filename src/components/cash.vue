@@ -11,7 +11,7 @@
               <span class="spanMoney">{{depositBalance}}</span>
               <span>元</span>
           </div>
-          <div class="loginButton textC centertBC fontSize28">退回押金</div>
+          <div class="loginButton textC centertBC fontSize28" @click="submit">退回押金</div>
           <!-- <div class="loginButton textC centertBC fontSize28" style="margin-top:.3rem; background-color:#bbbbbb;">退回押金</div> -->
       </section>
   </div>
@@ -27,10 +27,26 @@ export default {
     computed: {
         depositBalance () {
             return this.$route.query.depositBalance
+        },
+        userInfo () {
+            return JSON.parse(sessionStorage.getItem("userInfo") || '')
         }
     },
     methods: {
-        
+        submit () {
+            const { userInfo, depositBalance } = this
+            delete userInfo.headImgUrl
+            const param = {
+                amount: depositBalance,
+                ...userInfo
+            }
+            this.getData(`/member/depositReturn`, param)
+                .then(res => {
+                    alert(JSON.stringify(res))
+                }).catch(err => {
+                    console.log(err)
+                })
+        }
     }
 }
 </script>

@@ -16,7 +16,7 @@
             <span class="fontSize28 color42 yue">余额</span>
             <div class="accountMon fontSize32 colorfe5c5c">
                 {{memberProperty.storeBalance}}元
-                <router-link :to="{path:'/recharge/1'}" class="kaitong fr fontSize28 chongzhi">充值</router-link>
+                <router-link :to="{path:'/recharge', query: {type: 1}}" class="kaitong fr fontSize28 chongzhi">充值</router-link>
             </div>
             </div>
             <p class="borderBottome5e5e5 cashDiv height88 paddingLR textL fontSize28 color42"
@@ -65,7 +65,7 @@ export default {
             if (depositBalance) {
                 this.$router.push({path:'/cash', query: { depositBalance } })
             } else {
-                this.$router.push({path:'/recharge/2'})
+                this.$router.push({path:'/recharge', query: {type: 2}})
             }
         }
     }

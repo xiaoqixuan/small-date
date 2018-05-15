@@ -8,7 +8,7 @@
             <!--展示上拉加载的数据列表-->
             <ul v-cloak>
                 <li id="dataList" v-for="n in list">
-                    <router-link :to="{path:'/dateDetails',query: {id: n.id, status: n.status}}" class="recordList borderBottome5e5e5 colorfe5c5c backGFFF">
+                    <router-link :to="{path:'/dateDetails', query: {id: n.id, status: n.status}}" class="recordList borderBottome5e5e5 colorfe5c5c backGFFF">
                         <p style="font-size:bold">
                             <span class="textL fontSize30 fl">{{n.createUser || '-'}}</span>
                             <span class="textR fontSize30 fl">{{n.dateTime ? ['未开始', '约会中', '约会结束'][n.status-1] : '-'}}</span>
