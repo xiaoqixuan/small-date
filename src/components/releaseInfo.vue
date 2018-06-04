@@ -26,7 +26,7 @@
                     </li>
                 </ul>
             </div>
-            <span @click="signUp" class="saveButton loginButton textC centertBC fontSize28 marginTop06" :class="{disable: loverInfo.status == 2}">报名</span> 
+            <span @click="signUp" class="saveButton loginButton textC centertBC fontSize28 marginTop06" :class="{disable: loverInfo.status}">报名</span> 
             <span @click="rejectedMsg" class="saveButton loginButton textC centertBC fontSize28 marginTop06 margintop03">不在接收此人信息</span> 
             <div class="textC colorfe5c5c wathYh">什么是小约会？</div>
         </section>
@@ -37,6 +37,11 @@ import { Indicator  } from 'mint-ui'
 export default {
     data () {
         return {
+            status: {
+                2: '已报名',
+                3: '已结束',
+                4: '不感兴趣'
+            },
             loverInfo: {},
             detail: [
                 { label: '约会项目', value: '喝咖啡', type: 'dateType' }, 
@@ -48,7 +53,7 @@ export default {
             ]
         }
     },
-    created(){
+    mounted(){
         this.getDetail()
     },
     computed: {
@@ -57,27 +62,31 @@ export default {
         },
         userInfo () {
             console.log()
-            return JSON.parse(sessionStorage.getItem("userInfo") || '')
+            return JSON.parse(sessionStorage.getItem("userInfo") || '{}')
+        },
+        token () {
+            console.log()
+            return sessionStorage.getItem("token") || ''
         }
     },
     methods: {
         getDetail () {
             const self = this
             Indicator.open(); // loading组件
-            self.getData(`/engage/engageengageinfo/detail/${this.id}`)
+            self.getData(`/engage/sendRecord/info/${this.id}`)
                 .then(res => {
                     console.log(res)
                     const { engageEngageInfo } = res
                     self.detail.forEach(it => {
-                        if (it.type == 'status') { // 0-未报名，1-已报名,2-已结束
+                        if (it.type == 'status') {
                             const val = engageEngageInfo[it.type]
-                            it.value = val ? (val == 1 ? '已报名' : '已结束') : '未报名'
+                            it.value = status[val] || '报名中'
                         } else {
                             it.value = engageEngageInfo[it.type]
                         }
                     })
                     self.loverInfo = {
-                        status: engageEngageInfo.status,
+                        status: status[engageEngageInfo.status],
                         // status: 2,
                         realname: engageEngageInfo.realname || '晴天',
                         sex: engageEngageInfo.sex || '女',

@@ -26,12 +26,18 @@ export default {
 	components: {
 		'my-footer':footer,
 	},
-	created () {
-		
-	},
+    computed: {
+        token () {
+            return window.sessionStorage.token || ''
+        },
+    },
   	methods: {
-		loginBut(){
-	  		this.$router.push({path:'/login'})
+		loginBut () {
+            if (this.token) {
+            	this.$router.push("/ReleaseDate")
+        	} else {
+	  		    this.$router.push({path:'/login'})
+        	}
 		}
 	}
 }

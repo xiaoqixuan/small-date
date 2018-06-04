@@ -36,16 +36,37 @@ export default {
     name: 'center',
     data () {
         return {
-
+            userInfo: {}
         }
     },
-    computed: {
-        userInfo () {
-            return JSON.parse(sessionStorage.getItem("userInfo") || '')
-        }
-    },
+    // computed: {
+    //     userInfo () {
+    //         return JSON.parse(sessionStorage.getItem("userInfo") || '{}')
+    //     }
+    // },
     components: {
         'my-footer':footer,
+    },
+    beforeMount() {
+        this.getUserInfo()
+    },
+    methods: {
+        getUserInfo () {
+            this.getData(`/fans/wxfansbase/info/`)
+                .then(res => {
+                    if (res.code === 0) {
+                        const { userInfo } = res
+                        const info = {
+                            id: userInfo.id,
+                            nickname: userInfo.nickname,
+                            headImgUrl: userInfo.headImgUrl
+                        }
+                        this.userInfo = userInfo
+                        sessionStorage.setItem("userInfo", JSON.stringify(info))
+                        console.log(res, info)
+                    }
+                })
+        }
     }
 }
 </script>

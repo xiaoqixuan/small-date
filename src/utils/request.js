@@ -12,18 +12,19 @@ function jsonToQueryString(json) {
 function getData(Vue, options) {
     return function (_url, _data, type) {
         return new Promise(function (resolve, reject) {
-            let requestUrl = '/scrm-web' + (_url.indexOf('wechat') > -1 ? _url : (Host + _url));
-            // let requestUrl = _url.indexOf('wechat') > -1 ? _url : (Host + _url);
+            // let requestUrl = '/scrm-web' + (_url.indexOf('wechat') > -1 ? _url : (Host + _url));
+            let requestUrl = _url.indexOf('wechat') > -1 ? _url : (Host + _url);
             const token = window.sessionStorage.samllLogin || ''
             // 根据type判断是否为表单提交
             _data = type ? jsonToQueryString(_data) : JSON.stringify(_data)
+            requestUrl = type == 'GET' ? `${requestUrl}?${_data}` : requestUrl
             fetch(requestUrl, {
-                method: 'POST',
+                method: type == 'GET' ? 'GET' : 'POST',
                 headers: {
-                    "Content-Type": type ? "application/x-www-form-urlencoded" : "application/json;charset=utf-8",
-                    "token": window.sessionStorage.samllLogin || ''
+                    "Content-Type": type == 'Form' ? "application/x-www-form-urlencoded" : "application/json;charset=utf-8",
+                    "token": window.sessionStorage.token || ''
                 },
-                body: _data
+                body: type == 'GET' ? null : _data
             }).then(function (_res) {
                 return _res.json();
             }).then(function (_data) {
@@ -32,10 +33,11 @@ function getData(Vue, options) {
                         resolve(_data);
                         break;
                     case 500:
-                        window.sessionStorage.removeItem('samllLogin');
+                        debugger
+                        window.sessionStorage.removeItem('token');
                         window.sessionStorage.removeItem('userInfo');
                         if (_data.msg.indexOf('token') > -1) {
-                            window.location.assign('/login');
+                            window.location.assign('/xyh');
                         }
                         reject(_data.msg);
                         break;

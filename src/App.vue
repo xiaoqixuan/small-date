@@ -10,20 +10,39 @@ export default {
     name: 'App',
     computed: {
         token () {
-            return window.sessionStorage.samllLogin || ''
-        },
+            return window.sessionStorage.token || ''
+        }
+    },
+    created(){
+        this.getAuthorization()
     },
     beforeMount() {
+        this.sessionUserMsg()
+        sessionStorage.setItem("verify", JSON.stringify({
+            appId: 'wx34a8632f0f8f508c',
+            secret: 'cfd47d86e739535cb980cb4544e1cf87'
+        }))
+    },
+    mounted(){
         if (this.token) {
             // this.$router.push("/ReleaseDate")
             this.getUserInfo()
-            sessionStorage.setItem("verify", JSON.stringify({
-                appId: 'wx34a8632f0f8f508c',
-                secret: 'cfd47d86e739535cb980cb4544e1cf87'
-            }))
         }
     },
     methods: {
+        getAuthorization () {
+            const { search } = window.location
+            if (!search) {
+                // window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbc238120799ab05e&redirect_uri=https://www.guaiyun.store/scrm-web/wechat/auth2&response_type=code&scope=snsapi_base&state=https://www.guaiyun.store/xyh/#wechat_redirect'
+            }
+        },
+        sessionUserMsg() {
+            const { search } = window.location || ''
+            const key = search.indexOf('fansId') > -1 ? 'fansId' : 'token'
+            const val = search.split('=')[1] || ''
+            key == 'fansId' ? sessionStorage.removeItem('token') : sessionStorage.removeItem('fansId')
+            sessionStorage.setItem(key, val)
+        },
         getUserInfo () {
             this.getData(`/fans/wxfansbase/info/`)
                 .then(res => {

@@ -26,7 +26,7 @@ export default {
   	},
     computed: {
         token () {
-            return window.sessionStorage.samllLogin || ''
+            return window.sessionStorage.token || ''
         },
     },
  	methods:{

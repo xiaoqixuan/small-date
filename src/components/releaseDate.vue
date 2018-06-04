@@ -91,7 +91,7 @@ export default {
     },
     computed: {
         token () {
-            return window.sessionStorage.samllLogin || ''
+            return window.sessionStorage.token || ''
         },
         startDate () {
             return new Date()
@@ -131,8 +131,9 @@ export default {
         getList () {
             const self = this
             const { limit, page, sidx, order } = this.pager
+            const param = { limit, page, sidx, order }
             Indicator.open(); // loading组件
-            self.getData(`/engage/engagebasedatetype/list?limit=${limit}&page=${page}&sidx=${sidx}&order=${order}`)
+            self.getData(`/engage/engagebasedatetype/list`, param, 'GET')
                 .then(res => {
                     if (res.code === 0) {
                         self.options.dateType = res.page.list.map(it => {
@@ -150,7 +151,7 @@ export default {
                 })
             
             Indicator.open(); // loading组件
-            self.getData(`/engage/engagebasedateplace/list?limit=${limit}&page=${page}&sidx=${sidx}&order=${order}`)
+            self.getData(`/engage/engagebasedateplace/list`, param , 'GET')
                 .then(res => {
                     if (res.code === 0) {
                         self.options.datePlace = res.page.list.map(it => {

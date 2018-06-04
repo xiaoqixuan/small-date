@@ -30,6 +30,16 @@ module.exports = {
             pathRewrite: {
             '^/wechatmp': 'wechatmp'
             }
+        },
+        '/wechat/**': {
+            // target: 'https://www.tanxiaojian.cn/scrm-web', //表示你跨域请求的接口的域名
+            // target: 'http://106.14.123.21/scrm-web/', //表示你跨域请求的接口的域名
+            target: 'https://www.guaiyun.store/scrm-web/', //表示你跨域请求的接口的域名
+            secure: true, //如果是https接口，需要配置这个参数
+            changeOrigin: true, //如果接口跨域，需要进行这个参数配置
+            pathRewrite: {
+            '^/wechat': 'wechat'
+            }
         }
     },
 

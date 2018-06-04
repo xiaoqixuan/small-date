@@ -6,7 +6,8 @@
 	width: 50%;
 }
 .telLogin{
-	width: 100%;
+    width: 100%;
+    margin-bottom: 1rem;
 }
 .telLogin input{
 	border-top: solid 1px #e5e5e5;
@@ -33,10 +34,13 @@
 	line-height: .88rem;
 }
 .telLogin p span{
+    margin: .1rem 0;
 	width: 30%;
-	height: .88rem;
-	line-height: .88rem;
-	display: block;
+	height: .68rem;
+	line-height: .68rem;
+    display: block;
+    border-radius: 5px;
+    color: #fff;
 }
 .passWordClass{
 	padding: .22rem .3rem .38rem 0;
@@ -152,7 +156,7 @@ body{
 .indexImg{
 	margin: 0 auto;
 	width: 4.8rem;
-	height: 7.58rem;
+	/* height: 7.58rem; */
 	padding-top: 1.28rem;
 }
 .coffee{

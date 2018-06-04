@@ -34,13 +34,10 @@ export default {
     },
     methods: {
         submit () {
-            const { userInfo, depositBalance } = this
-            delete userInfo.headImgUrl
             const param = {
-                amount: depositBalance,
-                ...userInfo
+                wxAccountId: '16'
             }
-            this.getData(`/member/depositReturn`, param)
+            this.getData(`/engage/refund`, param)
                 .then(res => {
                     alert(JSON.stringify(res))
                 }).catch(err => {

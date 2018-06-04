@@ -61,7 +61,7 @@ export default {
         },
         goCash () {
             const { depositBalance } = this.memberProperty
-            // const depositBalance = false
+            // this.$router.push({path:'/cash', query: { depositBalance: 100 } })
             if (depositBalance) {
                 this.$router.push({path:'/cash', query: { depositBalance } })
             } else {
